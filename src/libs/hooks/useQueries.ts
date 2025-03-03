@@ -5,7 +5,8 @@ import {
   UseQueryOptions,
   UseMutationOptions,
 } from "@tanstack/react-query";
-import { fetchApi } from "../api";
+import { AxiosError, AxiosRequestConfig } from 'axios';
+import { get, post, put, del } from '../api';
 
 interface PaginatedResponse<T> {
   data: T[];
@@ -18,64 +19,63 @@ interface PaginatedResponse<T> {
 }
 
 export function useGet<T>(
-  endpoint: string,
+  url: string,
   queryKey: string[],
-  options?: UseQueryOptions<T, Error, T, string[]>
+  config?: AxiosRequestConfig,
+  options?: UseQueryOptions<T, AxiosError, T, string[]>
 ) {
   return useQuery({
     queryKey,
-    queryFn: () => fetchApi<T>(endpoint),
+    queryFn: () => get<T>(url, config),
     ...options,
   });
 }
 
 export function useGetPaginated<T>(
-  endpoint: string,
+  url: string,
   page: number,
   pageSize: number,
   queryKey: string[],
-  options?: UseQueryOptions<
-    PaginatedResponse<T>,
-    Error,
-    PaginatedResponse<T>,
-    string[]
-  >
+  config?: AxiosRequestConfig,
+  options?: UseQueryOptions<PaginatedResponse<T>, AxiosError, PaginatedResponse<T>, string[]>
 ) {
-  const queryUrl = `${endpoint}?page=${page}&limit=${pageSize}`;
-
+  const queryUrl = `${url}?page=${page}&limit=${pageSize}`;
+  
   return useQuery({
     queryKey: [...queryKey, page.toString(), pageSize.toString()],
-    queryFn: () => fetchApi<PaginatedResponse<T>>(queryUrl),
-    staleTime: 5000,
+    queryFn: () => get<PaginatedResponse<T>>(queryUrl, config),
+    staleTime: 1000 * 60 * 5,
     ...options,
   });
 }
 
-export function usePost<T, R = T>(
-  endpoint: string,
-  options?: UseMutationOptions<R, Error, T, unknown>
+export function usePost<T, D = unknown>(
+  url: string,
+  options?: UseMutationOptions<T, AxiosError, D, unknown>
 ) {
   const queryClient = useQueryClient();
-
+  
   return useMutation({
-    mutationFn: (data: T) =>
-      fetchApi<R>(endpoint, { method: "POST", body: data }),
+    mutationFn: (data: D) => post<T, D>(url, data),
     onSuccess: () => {
-      // customize this to invalidate specific queries
+      // Invalidate related queries on success
       queryClient.invalidateQueries();
     },
     ...options,
   });
 }
-export function usePut<T, R = T>(
-  endpoint: string,
-  options?: UseMutationOptions<R, Error, T, unknown>
+
+export function usePut<T, D = unknown>(
+  url: string,
+  options?: UseMutationOptions<T, AxiosError, D & { id: string | number }, unknown>
 ) {
   const queryClient = useQueryClient();
-
+  
   return useMutation({
-    mutationFn: (data: T) =>
-      fetchApi<R>(endpoint, { method: "PUT", body: data }),
+    mutationFn: (data: D & { id: string | number }) => {
+      const { id, ...rest } = data;
+      return put<T, D>(`${url}/${id}`, rest as D);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries();
     },
@@ -84,14 +84,13 @@ export function usePut<T, R = T>(
 }
 
 export function useDelete<T = void>(
-  endpoint: string,
-  options?: UseMutationOptions<T, Error, string, unknown>
+  url: string,
+  options?: UseMutationOptions<T, AxiosError, string | number, unknown>
 ) {
   const queryClient = useQueryClient();
-
+  
   return useMutation({
-    mutationFn: (id: string) =>
-      fetchApi<T>(`${endpoint}/${id}`, { method: "DELETE" }),
+    mutationFn: (id: string | number) => del<T>(`${url}/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries();
     },
