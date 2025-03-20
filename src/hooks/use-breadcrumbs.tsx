@@ -8,9 +8,15 @@ type BreadcrumbItem = {
   link: string;
 };
 
+// Common breadcrumbs for recruiters
+const recruiterBreadcrumbs = [
+  { title: 'Thống kê', link: '/dashboard' },
+  { title: 'Nhà tuyển dụng', link: '/dashboard/recruiters' }
+];
+
 // This allows to add custom title as well
 const routeMapping: Record<string, BreadcrumbItem[]> = {
-  '/dashboard': [{ title: 'Dashboard', link: '/dashboard' }],
+  '/dashboard': [{ title: 'Thống kê', link: '/dashboard' }],
   '/dashboard/employee': [
     { title: 'Dashboard', link: '/dashboard' },
     { title: 'Employee', link: '/dashboard/employee' }
@@ -18,6 +24,11 @@ const routeMapping: Record<string, BreadcrumbItem[]> = {
   '/dashboard/product': [
     { title: 'Dashboard', link: '/dashboard' },
     { title: 'Product', link: '/dashboard/product' }
+  ],
+  '/dashboard/recruiters': recruiterBreadcrumbs,
+  '/dashboard/recruiters/add': [
+    ...recruiterBreadcrumbs,
+    { title: 'Thêm mới', link: '/dashboard/recruiters/add' }
   ]
   // Add more custom mappings as needed
 };
@@ -33,6 +44,7 @@ export function useBreadcrumbs() {
 
     // If no exact match, fall back to generating breadcrumbs from the path
     const segments = pathname.split('/').filter(Boolean);
+
     return segments.map((segment, index) => {
       const path = `/${segments.slice(0, index + 1).join('/')}`;
       return {
