@@ -24,10 +24,12 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [actionMode, setActionMode] = useState<'activate' | 'block' | ''>('');
+  const [actionMode, setActionMode] = useState<'activate' | 'block' | null>(
+    null
+  );
 
   const activateMutation = usePut<User, { id: string }>(
-    `users/${data.id}/activate`,
+    'users/activate',
     {
       onSuccess: () => {
         toast.success('Activate admin thành công');
@@ -41,7 +43,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   );
 
   const blockMutation = usePut<User, { id: string }>(
-    `users/${data.id}/block`,
+    'users/block',
     {
       onSuccess: () => {
         toast.success('Block admin thành công');
@@ -57,7 +59,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = async () => {
     setLoading(true);
     try {
-      // await someApiCall(data.id, mode);
+      if (actionMode === 'activate') {
+        await activateMutation.mutateAsync({ id: data.id });
+      } else {
+        await blockMutation.mutateAsync({ id: data.id });
+      }
     } catch (error) {
       console.error(error);
     } finally {
