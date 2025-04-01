@@ -1,7 +1,12 @@
 import React from 'react';
+import type { Metadata } from 'next';
 
 import PageContainer from '@/components/layout/page-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+export const metadata: Metadata = {
+  title: 'Dashboard'
+};
 
 export default function OverViewLayout({
   sales,
