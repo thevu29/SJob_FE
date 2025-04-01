@@ -49,15 +49,8 @@ apiClient.interceptors.response.use(
         case 400:
           toast.error(errorData?.message || 'Dữ liệu không hợp lệ');
           break;
-        case 500:
-          toast.error(
-            errorData?.message || 'Lỗi hệ thống. Vui lòng thử lại sau'
-          );
-          break;
         default:
-          toast.error(
-            errorData?.message || 'Có lỗi xảy ra. Vui lòng thử lại sau'
-          );
+          toast.error('Có lỗi xảy ra. Vui lòng thử lại sau');
       }
     } else {
       toast.error('Không thể kết nối đến máy chủ');

@@ -100,7 +100,7 @@ export function usePut<T, D = unknown>(
       unknown
     >
   >,
-  queryKeys?: (string | string[])[]
+  queryKeys?: string[]
 ) {
   const queryClient = useQueryClient();
 
@@ -145,7 +145,7 @@ export function useDelete<T = void>(
   options?: Partial<
     UseMutationOptions<ApiResponse<T>, AxiosError, string | number, unknown>
   >,
-  queryKeys?: (string | string[])[]
+  queryKeys?: string[]
 ) {
   const queryClient = useQueryClient();
 
