@@ -1,6 +1,6 @@
 'use client';
 
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import {
   DoubleArrowLeftIcon,
@@ -11,6 +11,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   PaginationState,
   useReactTable
 } from '@tanstack/react-table';
@@ -46,6 +47,16 @@ export function DataTable<TData, TValue>({
   totalItems,
   pageSizeOptions = [10, 20, 30, 40, 50]
 }: DataTableProps<TData, TValue>) {
+  const [sortBy, setSortBy] = useQueryState(
+    'sortBy',
+    parseAsString.withOptions({ shallow: false }).withDefault('createdAt')
+  );
+
+  const [sortDirection, setSortDirection] = useQueryState(
+    'direction',
+    parseAsString.withOptions({ shallow: false }).withDefault('DESC')
+  );
+
   const [currentPage, setCurrentPage] = useQueryState(
     'page',
     parseAsInteger.withOptions({ shallow: false }).withDefault(1)
@@ -61,6 +72,15 @@ export function DataTable<TData, TValue>({
   const paginationState = {
     pageIndex: currentPage - 1, // zero-based index for React Table
     pageSize: pageSize
+  };
+
+  const sortingState = {
+    sorting: [
+      {
+        id: sortBy,
+        desc: sortDirection === 'DESC'
+      }
+    ]
   };
 
   const pageCount = Math.ceil(totalItems / pageSize);
@@ -79,18 +99,35 @@ export function DataTable<TData, TValue>({
     setPageSize(pagination.pageSize);
   };
 
+  const handleSortingChange = (updaterOrValue: any) => {
+    if (typeof updaterOrValue === 'function') {
+      const newSorting = updaterOrValue(sortingState.sorting);
+      if (newSorting && newSorting.length > 0) {
+        setSortBy(newSorting[0].id);
+        setSortDirection(newSorting[0].desc ? 'DESC' : 'ASC');
+      }
+    } else if (Array.isArray(updaterOrValue) && updaterOrValue.length > 0) {
+      setSortBy(updaterOrValue[0].id);
+      setSortDirection(updaterOrValue[0].desc ? 'DESC' : 'ASC');
+    }
+  };
+
   const table = useReactTable({
     data,
     columns,
-    pageCount: pageCount,
-    state: {
-      pagination: paginationState
-    },
-    onPaginationChange: handlePaginationChange,
+    pageCount,
     getCoreRowModel: getCoreRowModel(),
+    onPaginationChange: handlePaginationChange,
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: handleSortingChange,
+    getSortedRowModel: getSortedRowModel(),
+    manualSorting: true,
     manualPagination: true,
-    manualFiltering: true
+    manualFiltering: true,
+    state: {
+      pagination: paginationState,
+      sorting: sortingState.sorting
+    }
   });
 
   return (

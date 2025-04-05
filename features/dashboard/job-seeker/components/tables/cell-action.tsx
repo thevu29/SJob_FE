@@ -3,10 +3,15 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import { LockKeyhole, LockKeyholeOpen, MoreHorizontal } from 'lucide-react';
+import {
+  LockKeyhole,
+  LockKeyholeOpen,
+  MoreHorizontal,
+  Trash
+} from 'lucide-react';
 
-import type { User } from '@/interfaces';
-import { usePut } from '@/hooks/useQueries';
+import type { JobSeeker, User } from '@/interfaces';
+import { useDelete, usePut } from '@/hooks/useQueries';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,51 +23,67 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 interface CellActionProps {
-  data: User;
+  data: JobSeeker;
 }
+
+type ActionMode = 'activate' | 'block' | 'delete' | null;
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [actionMode, setActionMode] = useState<'activate' | 'block' | null>(
-    null
-  );
+  const [actionMode, setActionMode] = useState<ActionMode>(null);
 
   const activateMutation = usePut<User, { id: string }>(
     'users/activate',
     {
       onSuccess: () => {
-        toast.success('Activate admin thành công');
+        toast.success('Activate job seeker thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
         console.error(error);
       }
     },
-    ['admins']
+    ['job-seekers']
   );
 
   const blockMutation = usePut<User, { id: string }>(
     'users/block',
     {
       onSuccess: () => {
-        toast.success('Block admin thành công');
+        toast.success('Block job seeker thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
         console.error(error);
       }
     },
-    ['admins']
+    ['job-seekers']
+  );
+
+  const deleteMutation = useDelete(
+    'job-seekers',
+    {
+      onSuccess: () => {
+        toast.success('Xóa job seeker thành công');
+      },
+      onError: (error: AxiosError) => {
+        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+        console.error(error);
+      }
+    },
+    ['job-seekers']
   );
 
   const onConfirm = async () => {
     setLoading(true);
     try {
       if (actionMode === 'activate') {
-        await activateMutation.mutateAsync({ id: data.id });
+        await activateMutation.mutateAsync({ id: data.userId });
+      } else if (actionMode === 'block') {
+        await blockMutation.mutateAsync({ id: data.userId });
       } else {
-        await blockMutation.mutateAsync({ id: data.id });
+        await deleteMutation.mutateAsync(data.id);
       }
     } catch (error) {
       console.error(error);
@@ -105,8 +126,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
               setOpen(true);
             }}
           >
-            <LockKeyhole color='#dc2626' className='mr-2 h-4 w-4' />
-            <p className='text-[#dc2626]'>Block</p>
+            <LockKeyhole color='#fbbf24' className='mr-2 h-4 w-4' />
+            <p className='text-[#fbbf24]'>Block</p>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              setActionMode('delete');
+              setOpen(true);
+            }}
+          >
+            <Trash color='#dc2626' className='mr-2 h-4 w-4' />
+            <p className='text-[#dc2626]'>Delete</p>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

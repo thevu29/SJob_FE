@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 
-import type { ApiResponse, PaginatedResponse } from '@/types';
+import type { ApiResponse, PaginatedResponse } from '@/interfaces';
 import { get, post, put, del, getPaginated } from '@/lib/api';
 
 export function useGet<T>(

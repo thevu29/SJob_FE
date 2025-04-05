@@ -4,9 +4,12 @@ import { DataTableSearch } from '@/components/ui/table/data-table-search';
 import { DataTableFilterBox } from '@/components/ui/table/data-table-filter-box';
 import { DataTableResetFilter } from '@/components/ui/table/data-table-reset-filter';
 
-import { ACTIVE_OPTIONS, useAdminTable } from '../../hooks/use-admin-table';
+import {
+  STATUS_OPTIONS,
+  userJobSeekerTable
+} from '../../hooks/use-job-seeker-table';
 
-export default function AdminTableAction() {
+export default function JobSeekerTableAction() {
   const {
     isAnyFilterActive,
     resetFilters,
@@ -15,7 +18,7 @@ export default function AdminTableAction() {
     setSearchQuery,
     activeFilter,
     setActiveFilter
-  } = useAdminTable();
+  } = userJobSeekerTable();
 
   return (
     <div className='flex flex-wrap items-center gap-4'>
@@ -26,11 +29,11 @@ export default function AdminTableAction() {
         setPage={setPage}
       />
       <DataTableFilterBox
-        filterKey='status'
+        filterKey='active'
         title='Tình trạng'
-        options={ACTIVE_OPTIONS}
-        setFilterValue={setActiveFilter}
+        options={STATUS_OPTIONS}
         filterValue={activeFilter}
+        setFilterValue={setActiveFilter}
         singleSelect={true}
       />
       <DataTableResetFilter

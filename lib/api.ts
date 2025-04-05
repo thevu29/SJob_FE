@@ -1,7 +1,11 @@
 import { toast } from 'react-hot-toast';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { ApiErrorResponse, ApiResponse, PaginatedResponse } from '@/types';
+import type {
+  ApiErrorResponse,
+  ApiResponse,
+  PaginatedResponse
+} from '@/interfaces';
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/',

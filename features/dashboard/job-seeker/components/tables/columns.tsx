@@ -3,16 +3,45 @@
 import { ArrowUpDown } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
 
-import type { User } from '@/interfaces';
-import { formatDate } from '@/lib/utils';
+import type { JobSeeker } from '@/interfaces';
+import { Button } from '@/components/ui/button';
+import { formatDate, shortenName } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { CellAction } from './cell-action';
-import { Button } from '@/components/ui/button';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<JobSeeker>[] = [
+  {
+    accessorKey: 'image',
+    header: '',
+    cell: ({ row }) => {
+      return (
+        <Avatar>
+          <AvatarImage src={row.original?.image} alt='User Image' />
+          <AvatarFallback>{shortenName(row.original?.name)}</AvatarFallback>
+        </Avatar>
+      );
+    }
+  },
+  {
+    accessorKey: 'name',
+    header: 'Họ tên'
+  },
   {
     accessorKey: 'email',
     header: 'Email'
+  },
+  {
+    accessorKey: 'phone',
+    header: 'Số điện thoại'
+  },
+  {
+    accessorKey: 'gender',
+    header: 'Giới tính'
+  },
+  {
+    accessorKey: 'address',
+    header: 'Địa chỉ'
   },
   {
     accessorKey: 'status',

@@ -2,13 +2,14 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import type { User } from '@/interfaces';
+import { formatGender } from '@/lib/utils';
+import type { JobSeeker } from '@/interfaces';
 import { useGetPaginated } from '@/hooks/useQueries';
-import { DataTable as AdminTable } from '@/components/ui/table/data-table';
+import { DataTable as JobSeekerTable } from '@/components/ui/table/data-table';
 
 import { columns } from './tables/columns';
 
-export default function AdminListingPage() {
+export default function JobSeekerListingPage() {
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get('page') || '1');
@@ -18,11 +19,11 @@ export default function AdminListingPage() {
   const sortBy = searchParams.get('sortBy') || 'createdAt';
   const direction = searchParams.get('direction') || 'DESC';
 
-  const { data } = useGetPaginated<User>(
-    'users',
+  const { data } = useGetPaginated<JobSeeker>(
+    'job-seekers',
     currentPage,
     pageSize,
-    ['admins', query, active, sortBy, direction],
+    ['job-seekers', query, active, sortBy, direction],
     {
       params: {
         ...(query && { query }),
@@ -33,10 +34,16 @@ export default function AdminListingPage() {
     }
   );
 
+  const formattedData =
+    data?.data.map((jobSeeker) => ({
+      ...jobSeeker,
+      gender: formatGender(jobSeeker.gender)
+    })) || [];
+
   return (
-    <AdminTable
+    <JobSeekerTable
       columns={columns}
-      data={data?.data || []}
+      data={formattedData || []}
       totalItems={data?.meta.totalElements || 0}
     />
   );

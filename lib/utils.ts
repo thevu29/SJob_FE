@@ -28,3 +28,24 @@ export function formatBytes(
 export function formatDate(date: Date): string {
   return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 }
+
+export function formatGender(
+  gender: boolean | null | undefined | string
+): string {
+  if (gender === true) return 'Nam';
+  if (gender === false) return 'Nữ';
+  return 'Khác';
+}
+
+export const shortenName = (name?: string, maxInitials: number = 2): string => {
+  if (!name) return '';
+
+  const nameParts = name.split(' ').filter((part) => part.trim() !== '');
+
+  if (nameParts.length === 0) return '';
+
+  return nameParts
+    .slice(0, maxInitials)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+};

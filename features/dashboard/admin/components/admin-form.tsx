@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import type { User } from '@/types';
+import type { User } from '@/interfaces';
 import { usePost } from '@/hooks/useQueries';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';

@@ -1,4 +1,4 @@
-import { Gender, UserRole } from '@/constants/enum';
+import { UserRole } from '@/constants/enum';
 
 export interface User {
   id: string;
@@ -14,7 +14,7 @@ export interface JobSeeker extends User {
   name: string;
   phone: string;
   image: string;
-  gender: Gender;
+  gender: boolean | string;
   address: string;
   about?: string;
   seeking: boolean;
