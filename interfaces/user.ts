@@ -19,3 +19,15 @@ export interface JobSeeker extends User {
   about?: string;
   seeking: boolean;
 }
+export interface Recruiter extends User {
+  userId: string;
+  fieldId: string;
+  name: string;
+  about: string;
+  image: string;
+  website: string;
+  address: string;
+  members: number;
+  status: boolean;
+  fieldName: string;
+}

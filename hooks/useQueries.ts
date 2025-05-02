@@ -8,7 +8,7 @@ import {
 import { AxiosError, AxiosRequestConfig } from 'axios';
 
 import type { ApiResponse, PaginatedResponse } from '@/interfaces';
-import { get, post, put, del, getPaginated } from '@/lib/api';
+import { get, post, put, del, getPaginated, putFormData } from '@/lib/api';
 
 export function useGet<T>(
   url: string,
@@ -127,6 +127,58 @@ export function usePut<T, D = unknown>(
         queryClient.invalidateQueries({ queryKey: [url] });
       }
 
+      if (userOnSuccess) {
+        userOnSuccess(data, variables, context);
+      }
+    },
+    onError: (error, variables, context) => {
+      if (userOnError) {
+        userOnError(error, variables, context);
+      }
+    },
+    ...restOptions
+  });
+}
+
+export function usePutFormData<T, D = unknown>(
+  url: string,
+  options?: Partial<
+    UseMutationOptions<
+      ApiResponse<T>,
+      AxiosError,
+      D & { id: string | number },
+      unknown
+    >
+  >,
+  queryKeys?: string[]
+) {
+  const queryClient = useQueryClient();
+
+  const userOnSuccess = options?.onSuccess;
+  const userOnError = options?.onError;
+
+  const restOptions = { ...options };
+  delete restOptions.onSuccess;
+  delete restOptions.onError;
+
+  return useMutation<
+    ApiResponse<T>,
+    AxiosError,
+    D & { id: string | number },
+    unknown
+  >({
+    mutationFn: (data) => {
+      const { id, ...rest } = data;
+      return putFormData<T, D>(`${url}/${id}`, rest as D);
+    },
+    onSuccess: (data, variables, context) => {
+      if (queryKeys && queryKeys.length > 0) {
+        queryKeys.forEach((key) => {
+          queryClient.invalidateQueries({ queryKey: [key] });
+        });
+      } else {
+        queryClient.invalidateQueries({ queryKey: [url] });
+      }
       if (userOnSuccess) {
         userOnSuccess(data, variables, context);
       }

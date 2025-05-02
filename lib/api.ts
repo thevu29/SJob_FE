@@ -114,6 +114,36 @@ export const put = async <T, D = unknown>(
   return response.data;
 };
 
+export const putFormData = async <T, D = unknown>(
+  url: string,
+  data: D,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
+  const formData = new FormData();
+
+  Object.entries(data as Record<string, any>).forEach(([key, value]) => {
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else {
+      formData.append(key, value != null ? value.toString() : '');
+    }
+  });
+
+  const response: AxiosResponse<ApiResponse<T>> = await apiClient.put(
+    url,
+    formData,
+    {
+      ...config,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(config?.headers || {})
+      }
+    }
+  );
+
+  return response.data;
+};
+
 export const del = async <T>(
   url: string,
   config?: AxiosRequestConfig
