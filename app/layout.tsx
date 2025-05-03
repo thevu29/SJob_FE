@@ -34,7 +34,7 @@ export default function RootLayout({
       className={`${beVietnamPro.className}`}
       suppressHydrationWarning
     >
-      <body className={'overflow-hidden'}>
+      <body>
         <NextTopLoader showSpinner={false} />
         <NuqsAdapter>
           <Providers>
