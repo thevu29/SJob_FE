@@ -79,7 +79,7 @@ export function Header() {
               className='bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs'
               asChild
             >
-              <Link href='/recruiter/candidates'>Tìm Ứng Viên</Link>
+              <Link href='/recruiter/job-seeker-search'>Tìm Ứng Viên</Link>
             </Button>
           </div>
           <div className='flex items-center space-x-4'>

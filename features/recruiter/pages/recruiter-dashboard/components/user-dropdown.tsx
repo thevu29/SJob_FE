@@ -14,6 +14,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible';
+import Link from 'next/link';
 
 export function UserDropdown() {
   const [open, setOpen] = React.useState(false);
@@ -78,10 +79,14 @@ export function UserDropdown() {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <DropdownMenuItem className='pl-10 focus:bg-gray-100'>
-                Quản lý tài khoản
+                <Link href='/recruiter/my-account' className='w-full'>
+                  Quản lý tài khoản
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className='pl-10 focus:bg-gray-100'>
-                Thông tin công ty
+                <Link href='/recruiter/company-general' className='w-full'>
+                  Thông tin công ty
+                </Link>
               </DropdownMenuItem>
             </CollapsibleContent>
           </Collapsible>
