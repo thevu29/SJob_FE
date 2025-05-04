@@ -14,7 +14,7 @@ import GooglePlay from '@/public/google-play.png';
 
 export function Footer() {
   return (
-    <footer className='bg-[#001c40] text-white'>
+    <footer className='bg-background text-foreground'>
       <div className='mx-auto max-w-7xl px-4 py-12'>
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4'>
           <div>
@@ -88,39 +88,37 @@ export function Footer() {
             </div>
           </div>
           <div>
-            <h3 className='mb-4 text-lg font-semibold'>
-              Kết Nối Với VietnamWorks
-            </h3>
+            <h3 className='mb-4 text-lg font-semibold'>Kết Nối Với SJob</h3>
             <div className='flex flex-wrap gap-2'>
               <Link
                 href='#'
-                className='rounded-full bg-blue-600 p-2 hover:bg-blue-700'
+                className='rounded-full bg-[#1877F2] p-2 transition hover:brightness-110'
               >
-                <Facebook className='h-5 w-5' />
+                <Facebook className='h-5 w-5 text-white' />
               </Link>
               <Link
                 href='#'
-                className='rounded-full bg-red-600 p-2 hover:bg-red-700'
+                className='rounded-full bg-[#FF0000] p-2 transition hover:brightness-110'
               >
-                <Youtube className='h-5 w-5' />
+                <Youtube className='h-5 w-5 text-white' />
               </Link>
               <Link
                 href='#'
-                className='rounded-full bg-blue-500 p-2 hover:bg-blue-600'
+                className='rounded-full bg-[#0A66C2] p-2 transition hover:brightness-110'
               >
-                <Linkedin className='h-5 w-5' />
+                <Linkedin className='h-5 w-5 text-white' />
               </Link>
               <Link
                 href='#'
-                className='rounded-full bg-black p-2 hover:bg-gray-800'
+                className='rounded-full bg-[#010101] p-2 transition hover:brightness-110'
               >
-                <Music className='h-5 w-5' />
+                <Music className='h-5 w-5 text-white' />
               </Link>
               <Link
                 href='#'
-                className='rounded-full bg-green-600 p-2 hover:bg-green-700'
+                className='rounded-full bg-[#1DB954] p-2 transition hover:brightness-110'
               >
-                <Spotify className='h-5 w-5' />
+                <Spotify className='h-5 w-5 text-white' />
               </Link>
             </div>
           </div>

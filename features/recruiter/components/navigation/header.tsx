@@ -14,7 +14,7 @@ import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/com
 
 export function Header() {
   return (
-    <header className='sticky top-0 z-50 w-full bg-[#001c40] text-white'>
+    <header className='bg-background text-foreground sticky top-0 z-50 w-full'>
       <div className='flex h-16 items-center justify-between px-5'>
         <div className='flex items-center'>
           <MobileNav />
@@ -30,7 +30,7 @@ export function Header() {
               <li>
                 <Link
                   href='#'
-                  className='flex items-center px-4 py-1 hover:text-[#ff5c30]'
+                  className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
                 >
                   Dashboard
                 </Link>
@@ -38,7 +38,7 @@ export function Header() {
               <li>
                 <Link
                   href='#'
-                  className='flex items-center px-4 py-1 hover:text-[#ff5c30]'
+                  className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
                 >
                   Việc Làm
                 </Link>
@@ -46,7 +46,7 @@ export function Header() {
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className='flex items-center px-4 py-1 hover:text-[#ff5c30]'>
+                    <button className='hover:text-primary-foreground/80 flex items-center px-4 py-1'>
                       Ứng viên <ChevronDown className='ml-1 h-4 w-4' />
                     </button>
                   </DropdownMenuTrigger>
@@ -69,18 +69,24 @@ export function Header() {
         </div>
         <div className='flex items-center'>
           <div className='mr-4 hidden md:flex md:space-x-2'>
-            <Button className='cursor-pointer bg-[#ff7d55] text-white hover:bg-[#ff5c30]'>
-              Đăng Tuyển Dụng
+            <Button
+              className='bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs'
+              asChild
+            >
+              <Link href='/recruiter/job-posting'>Đăng Tuyển Dụng</Link>
             </Button>
-            <Button className='cursor-pointer bg-[#ff7d55] text-white hover:bg-[#ff5c30]'>
-              Tìm Ứng Viên
+            <Button
+              className='bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs'
+              asChild
+            >
+              <Link href='/recruiter/candidates'>Tìm Ứng Viên</Link>
             </Button>
           </div>
           <div className='flex items-center space-x-4'>
             {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className='flex items-center'>
-                  <div className='flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#001c40]'>
+                  <div className='flex h-8 w-8 items-center justify-center rounded-full bg-background text-primary'>
                     <span>VN</span>
                   </div>
                   <ChevronDown className='ml-1 hidden h-4 w-4 md:block' />

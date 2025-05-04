@@ -3,13 +3,15 @@ import { Card, CardContent } from '@/components/ui/card';
 
 export function WelcomeCard() {
   return (
-    <Card className='overflow-hidden bg-blue-50'>
+    <Card className='bg-card overflow-hidden'>
       <CardContent className='p-6'>
         <div className='flex flex-col md:flex-row md:items-center md:justify-between'>
           <div className='space-y-4'>
             <div>
               <h2 className='text-xl font-medium text-gray-700'>Xin chào,</h2>
-              <h1 className='text-2xl font-bold text-[#ff7452]'>Vuong Hoang</h1>
+              <h1 className='text-primary-foreground text-2xl font-semibold'>
+                Vuong Hoang
+              </h1>
             </div>
             <p className='text-gray-600'>
               Hãy bắt đầu hành trình tuyển dụng của bạn ngay hôm nay. Chúc bạn

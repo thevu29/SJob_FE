@@ -42,7 +42,7 @@ export function UserDropdown() {
                 src='/placeholder.svg?height=40&width=40'
                 alt='Avatar'
               />
-              <AvatarFallback className='bg-gray-200 text-gray-600'>
+              <AvatarFallback className='bg-background text-foreground'>
                 VH
               </AvatarFallback>
             </Avatar>

@@ -35,7 +35,10 @@ export function MobileNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant='ghost' className='h-9 w-9 p-0 text-white md:hidden'>
+        <Button
+          variant='ghost'
+          className='text-primary-foreground h-9 w-9 p-0 md:hidden'
+        >
           <Menu className='h-6 w-6' />
           <span className='sr-only'>Toggle menu</span>
         </Button>
@@ -45,7 +48,7 @@ export function MobileNav() {
           <div className='border-b'>
             <Link
               href='/'
-              className='flex h-14 items-center px-4 font-medium hover:text-[#ff5c30]'
+              className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
               Dashboard
@@ -54,7 +57,7 @@ export function MobileNav() {
           <div className='border-b'>
             <Link
               href='#'
-              className='flex h-14 items-center px-4 font-medium hover:text-[#ff5c30]'
+              className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
               Việc Làm
@@ -62,7 +65,7 @@ export function MobileNav() {
           </div>
           <div className='border-b'>
             <button
-              className='flex h-14 w-full items-center justify-between px-4 font-medium hover:text-[#ff5c30]'
+              className='hover:bg-secondary/80 flex h-14 w-full items-center justify-between px-4 font-medium'
               onClick={() => toggleSubmenu('candidates')}
             >
               Ứng viên
@@ -82,17 +85,17 @@ export function MobileNav() {
               </svg>
             </button>
             {activeSubmenu === 'candidates' && (
-              <div className='bg-gray-50 py-2'>
+              <div className='py-2'>
                 <Link
                   href='#'
-                  className='flex h-10 items-center px-8 text-sm hover:bg-gray-100 hover:text-[#ff5c30]'
+                  className='hover:bg-secondary/80 flex h-10 items-center px-8 text-sm'
                   onClick={() => setOpen(false)}
                 >
                   Tìm kiếm ứng viên
                 </Link>
                 <Link
                   href='#'
-                  className='flex h-10 items-center px-8 text-sm hover:bg-gray-100 hover:text-[#ff5c30]'
+                  className='hover:bg-secondary/80 flex h-10 items-center px-8 text-sm'
                   onClick={() => setOpen(false)}
                 >
                   Quản lý ứng viên
@@ -111,13 +114,13 @@ export function MobileNav() {
           </div>
           <div className='mt-auto space-y-3 p-4'>
             <Button
-              className='w-full cursor-pointer bg-[#ff7d55] text-white hover:bg-[#ff5c30]'
+              className='bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer'
               onClick={() => setOpen(false)}
             >
               Đăng Tuyển Dụng
             </Button>
             <Button
-              className='w-full cursor-pointer bg-[#ff7d55] text-white hover:bg-[#ff5c30]'
+              className='bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer'
               onClick={() => setOpen(false)}
             >
               Tìm Ứng Viên

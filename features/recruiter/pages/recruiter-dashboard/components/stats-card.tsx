@@ -11,23 +11,18 @@ export function StatsCard({
   title,
   value,
   description,
-  color = 'text-orange-500'
+  color = 'text-primary-foreground'
 }: StatsCardProps) {
   return (
-    <Card className='bg-gray-50'>
+    <Card className='bg-secondary/50'>
       <CardHeader className='pb-2'>
-        <CardTitle className='text-sm font-medium text-gray-500'>
+        <CardTitle className='text-muted-foreground text-sm font-medium'>
           {title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div
-          className='text-3xl font-bold'
-          style={{ color: color === 'text-orange-500' ? '#ff7452' : color }}
-        >
-          {value}
-        </div>
-        <p className='text-xs text-gray-500'>{description}</p>
+        <div className={`text-3xl font-bold ${color}`}>{value}</div>
+        <p className='text-muted-foreground text-xs'>{description}</p>
       </CardContent>
     </Card>
   );
