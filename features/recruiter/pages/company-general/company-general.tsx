@@ -27,47 +27,74 @@ import {
   TUpdateRecruiter,
   UpdateRecruiterSchema
 } from '@/features/recruiter/schemas/recruiter.schema';
-
-// const formSchema = z.object({
-//   companyName: z.string().min(2, {
-//     message: 'Tên công ty phải có ít nhất 2 ký tự.'
-//   }),
-//   phone: z.string().min(10, {
-//     message: 'Số điện thoại không hợp lệ.'
-//   }),
-//   address: z.string().min(5, {
-//     message: 'Địa chỉ công ty phải có ít nhất 5 ký tự.'
-//   }),
-//   website: z.string().min(5, {
-//     message: 'website công ty phải có ít nhất 5 ký tự.'
-//   }),
-//   industry: z.string({
-//     required_error: 'Vui lòng chọn lĩnh vực công ty.'
-//   }),
-//   scale: z.string().optional(),
-//   description: z.string().max(10000, {
-//     message: 'Mô tả không được vượt quá 10000 ký tự.'
-//   })
-// });
+import { useGet, usePutFormData } from '@/hooks/useQueries';
+import { Recruiter } from '@/interfaces';
+import { useEffect, useMemo, useState } from 'react';
+import { Field } from '@/interfaces/field';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import Image from 'next/image';
 
 export function CompanyGeneral() {
+  const recruiterId = '68144e36647b71355acf11d1';
+
+  const [file, setFile] = useState<File | null>(null);
+  const previewImage = useMemo(() => {
+    return file ? URL.createObjectURL(file) : '';
+  }, [file]);
+
+  const { data: recruiterData } = useGet<Recruiter>(
+    'recruiters/' + recruiterId,
+    ['recruiters', recruiterId]
+  );
+  const { data: fieldsData } = useGet<Field[]>('fields', ['fields']);
+
+  const fields = fieldsData?.data || [];
+  const recruiter = recruiterData?.data;
+
+  const updateRecruiterMutation = usePutFormData<Recruiter, TUpdateRecruiter>(
+    'recruiters',
+    {
+      onSuccess: () => {
+        toast.success('Cập nhật thông tin công ty thành công!');
+      },
+      onError: (error: AxiosError) => {
+        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+        console.error(error);
+      }
+    },
+    ['recruiters', recruiterId]
+  );
+
   const form = useForm<TUpdateRecruiter>({
     resolver: zodResolver(UpdateRecruiterSchema),
-    defaultValues: {
+    values: recruiter || {
       fieldId: '',
       name: '',
       about: '',
       image: null,
       website: '',
       address: '',
-      members: 1,
-      status: false
+      members: 0
     }
   });
 
-  function onSubmit(values: TUpdateRecruiter) {
-    console.log(values);
-  }
+  const onSubmit = async (values: TUpdateRecruiter) => {
+    try {
+      // Remove the existing image from values
+      const { image, ...restValues } = values;
+
+      const payload = {
+        ...restValues,
+        id: recruiterId,
+        ...(file && { image: file }) // Only add image if there's a new file
+      };
+      await updateRecruiterMutation.mutateAsync(payload);
+      setFile(null);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
 
   return (
     <div className='bg-card rounded-md shadow-sm'>
@@ -84,7 +111,7 @@ export function CompanyGeneral() {
               render={({ field }) => (
                 <FormItem className='space-y-2'>
                   <FormLabel className='flex items-center font-medium'>
-                    Tên Công Ty <span className='text-destructive ml-1'>*</span>
+                    Tên Công Ty
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -96,26 +123,6 @@ export function CompanyGeneral() {
                 </FormItem>
               )}
             />
-            {/* <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-              
-
-              <FormField
-                control={form.control}
-                name='phone'
-                render={({ field }) => (
-                  <FormItem className='space-y-2'>
-                    <FormLabel className='flex items-center font-medium'>
-                      Điện Thoại{' '}
-                      <span className='text-destructive ml-1'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='0793857312' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div> */}
 
             <FormField
               control={form.control}
@@ -126,9 +133,6 @@ export function CompanyGeneral() {
                     <FormLabel className='font-medium'>
                       Địa Chỉ Công Ty
                     </FormLabel>
-                    <span className='text-muted-foreground ml-2 text-sm'>
-                      (Không Bắt Buộc)
-                    </span>
                   </div>
                   <FormControl>
                     <Input
@@ -149,9 +153,6 @@ export function CompanyGeneral() {
                     <FormLabel className='font-medium'>
                       Website Công Ty
                     </FormLabel>
-                    <span className='text-muted-foreground ml-2 text-sm'>
-                      (Không Bắt Buộc)
-                    </span>
                   </div>
                   <FormControl>
                     <Input placeholder='sjob.com' {...field} />
@@ -169,11 +170,11 @@ export function CompanyGeneral() {
                   <FormItem className='space-y-2'>
                     <FormLabel className='flex items-center font-medium'>
                       Lĩnh Vực Công Ty{' '}
-                      <span className='text-destructive ml-1'>*</span>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={String(field.value)}
+                      defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger className='w-full'>
@@ -181,15 +182,11 @@ export function CompanyGeneral() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value='ecommerce'>
-                          Thương mại điện tử
-                        </SelectItem>
-                        <SelectItem value='software'>Phần mềm</SelectItem>
-                        <SelectItem value='finance'>
-                          Tài chính / Ngân hàng
-                        </SelectItem>
-                        <SelectItem value='education'>Giáo dục</SelectItem>
-                        <SelectItem value='healthcare'>Y tế</SelectItem>
+                        {fields.map((field) => (
+                          <SelectItem key={field.id} value={field.id}>
+                            {field.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -205,23 +202,13 @@ export function CompanyGeneral() {
                     <FormLabel className='font-medium'>
                       Quy Mô Công Ty
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={String(field.value)}
-                    >
-                      <FormControl>
-                        <SelectTrigger className='w-full'>
-                          <SelectValue placeholder='Vui lòng chọn' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='small'>Dưới 50 nhân viên</SelectItem>
-                        <SelectItem value='medium'>50-200 nhân viên</SelectItem>
-                        <SelectItem value='large'>
-                          Trên 200 nhân viên
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Input
+                        type='number'
+                        placeholder='Nhập số lượng nhân viên'
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -243,39 +230,63 @@ export function CompanyGeneral() {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription className='text-right text-xs'>
-                    Bạn còn có thể nhập 10000 ký tự
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='image'
+              render={({ field }) => (
+                <FormItem className='space-y-2'>
+                  <FormLabel className='font-medium'>Logo Công Ty</FormLabel>
+                  <FormControl>
+                    <div className='md-border-l mx-auto flex justify-center md:w-72 md:border-l-gray-200'>
+                      <div className='flex flex-col items-center'>
+                        <div className='my-5 h-24 w-24'>
+                          {previewImage || field.value ? (
+                            <Image
+                              src={previewImage || field.value}
+                              alt='Logo'
+                              width={96}
+                              height={96}
+                              className='h-full w-full rounded-full object-cover'
+                            />
+                          ) : (
+                            <div className='flex h-full w-full items-center justify-center rounded-full border-2 border-dashed border-gray-300'>
+                              <ImageIcon className='h-8 w-8 text-gray-400' />
+                            </div>
+                          )}
+                        </div>
+
+                        <Input
+                          type='file'
+                          accept='.jpg,.jpeg,.png,.gif'
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] || null;
+                            field.onChange(file);
+                            setFile(file);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </FormControl>
+                  <FormDescription className='text-muted-foreground mx-auto text-sm'>
+                    Vui lòng chọn tập tin với phần mở rộng .jpg .jpeg .png .gif
+                    và kích thước {'<'}5MB
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className='space-y-2'>
-              <div className='font-medium'>Logo Công Ty</div>
-              <div className='rounded-md border border-dashed p-4 text-center md:p-6'>
-                <div className='flex flex-col items-center justify-center gap-2'>
-                  <div className='text-muted-foreground flex flex-wrap items-center justify-center gap-1 text-sm'>
-                    <ImageIcon className='h-4 w-4' />
-                    <span>Kéo Và Thả Hình Ảnh Ở Đây</span>
-                    <span className='text-accent-foreground'>
-                      Hoặc Chọn File
-                    </span>
-                  </div>
-                  <div className='text-muted-foreground text-center text-xs'>
-                    (Tập tin với phần mở rộng .jpg .jpeg .png .gif và kích thước{' '}
-                    {'<'}5MB)
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div className='flex justify-end pt-4'>
               <Button
                 type='submit'
                 className='bg-primary hover:bg-primary/90 w-full sm:w-auto'
               >
-                Lưu
+                {updateRecruiterMutation.isPending ? 'Đang lưu...' : 'Lưu'}
               </Button>
             </div>
           </form>

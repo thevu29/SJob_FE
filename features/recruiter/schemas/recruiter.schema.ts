@@ -34,20 +34,21 @@ export const UpdateRecruiterSchema = z.object({
     .min(10, {
       message: 'Giới thiệu về công ty phải chứa ít nhất 10 kí tự.'
     })
-    .max(500, {
-      message: 'Giới thiệu công ty không được vượt quá 500 kí tự.'
+    .max(10000, {
+      message: 'Giới thiệu công ty không được vượt quá 10000 kí tự.'
     }),
   image: z
     .any()
-    .refine((files) => files?.length == 1, 'Vui lòng chọn ảnh.')
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      (file) => file.size <= MAX_FILE_SIZE,
       `Kích thước file tối đa là 5MB.`
     )
     .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
       'Chỉ hỗ trợ định dạng file: .jpg, .jpeg, .png, .webp.'
-    ),
+    )
+    .optional(),
+
   website: z.string().url('URL cung cấp không hợp lệ'),
   address: z
     .string()
@@ -55,8 +56,7 @@ export const UpdateRecruiterSchema = z.object({
     .max(200, { message: 'Địa chỉ không được vượt quá 200 kí tự.' }),
   members: z.coerce
     .number()
-    .min(1, { message: 'Ít nhất 1 nhân sự là bắt buộc.' }),
-  status: z.boolean()
+    .min(1, { message: 'Ít nhất 1 nhân sự là bắt buộc.' })
 });
 
 export type TUpdateRecruiter = z.TypeOf<typeof UpdateRecruiterSchema>;
