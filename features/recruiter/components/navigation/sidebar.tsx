@@ -7,8 +7,8 @@ import { User, Building2, ChevronDown, ChevronUp } from 'lucide-react';
 
 export function Sidebar() {
   const pathname = usePathname();
-  const [accountExpanded, setAccountExpanded] = useState(true);
-  const [companyExpanded, setCompanyExpanded] = useState(true);
+  const [accountExpanded, setAccountExpanded] = useState(false);
+  const [companyExpanded, setCompanyExpanded] = useState(false);
 
   // Xác định active item và sub-item dựa trên pathname
   const isAccountActive = pathname === '/recruiter/my-account';

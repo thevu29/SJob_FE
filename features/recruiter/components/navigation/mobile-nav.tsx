@@ -47,7 +47,7 @@ export function MobileNav() {
         <nav className='flex h-full flex-col'>
           <div className='border-b'>
             <Link
-              href='/'
+              href='/recruiter'
               className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
@@ -56,7 +56,7 @@ export function MobileNav() {
           </div>
           <div className='border-b'>
             <Link
-              href='#'
+              href='/recruiter/job-listing'
               className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
@@ -64,6 +64,15 @@ export function MobileNav() {
             </Link>
           </div>
           <div className='border-b'>
+            <Link
+              href='/recruiter/invitation-listing'
+              className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
+              onClick={() => setOpen(false)}
+            >
+              Ứng viên
+            </Link>
+          </div>
+          {/* <div className='border-b'>
             <button
               className='hover:bg-secondary/80 flex h-14 w-full items-center justify-between px-4 font-medium'
               onClick={() => toggleSubmenu('candidates')}
@@ -102,16 +111,8 @@ export function MobileNav() {
                 </Link>
               </div>
             )}
-          </div>
-          <div className='border-b'>
-            {/* <Link
-              href='#'
-              className='flex h-14 items-center px-4 font-medium hover:text-[#ff5c30]'
-              onClick={() => setOpen(false)}
-            >
-              Báo cáo
-            </Link> */}
-          </div>
+          </div> */}
+
           <div className='mt-auto space-y-3 p-4'>
             <Button
               className='bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer'
