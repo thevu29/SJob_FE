@@ -11,6 +11,7 @@ import { MobileNav } from '@/features/recruiter/components/navigation/mobile-nav
 import Image from 'next/image';
 import Logo from '@/public/icon.png';
 import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/components/user-dropdown';
+import { ROUTES } from '@/constants/routes';
 
 export function Header() {
   return (
@@ -25,7 +26,7 @@ export function Header() {
             <ul className='flex'>
               <li>
                 <Link
-                  href='/recruiter'
+                  href={ROUTES.RECRUITER.DASHBOARD}
                   className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
                 >
                   Dashboard
@@ -33,7 +34,7 @@ export function Header() {
               </li>
               <li>
                 <Link
-                  href='/recruiter/job-listing'
+                  href={ROUTES.RECRUITER.JOBS.LIST}
                   className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
                 >
                   Việc Làm
@@ -41,7 +42,7 @@ export function Header() {
               </li>
               <li>
                 <Link
-                  href='/recruiter/invitation-listing'
+                  href={ROUTES.RECRUITER.JOBSEEKER.INVITATION_LISTING}
                   className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
                 >
                   Ứng viên
@@ -72,13 +73,13 @@ export function Header() {
               className='bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs'
               asChild
             >
-              <Link href='/recruiter/job-posting'>Đăng Tuyển Dụng</Link>
+              <Link href={ROUTES.RECRUITER.JOBS.CREATE}>Đăng Tuyển Dụng</Link>
             </Button>
             <Button
               className='bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs'
               asChild
             >
-              <Link href='/recruiter/job-seeker-search'>Tìm Ứng Viên</Link>
+              <Link href={ROUTES.RECRUITER.JOBSEEKER.SEARCH}>Tìm Ứng Viên</Link>
             </Button>
           </div>
           <div className='flex items-center space-x-4'>

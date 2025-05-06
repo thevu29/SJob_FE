@@ -1,6 +1,4 @@
 'use client';
-
-import { Trash, MapPin, AlertTriangle } from 'lucide-react';
 import type { UseFormReturn } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -19,15 +17,26 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui/form';
-import { Switch } from '@/components/ui/switch';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { RichTextEditor } from '@/features/recruiter/components/common/rich-text-editor';
-export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
+import { TCreateJob } from '@/features/recruiter/schemas/job.schema';
+import { useGet } from '@/hooks/useQueries';
+import { FieldDetail } from '@/interfaces/field';
+import { JobType } from '@/interfaces/job';
+export function JobDescriptionSection({
+  form
+}: {
+  form: UseFormReturn<TCreateJob>;
+}) {
+  const { data: fieldDetailsData } = useGet<FieldDetail[]>('field-details', [
+    'field-details'
+  ]);
+
+  const fieldDetails = fieldDetailsData?.data || [];
   return (
     <div className='space-y-6 p-2'>
       <FormField
         control={form.control}
-        name='jobTitle'
+        name='name'
         render={({ field }) => (
           <FormItem>
             <FormLabel className='text-base font-medium'>
@@ -47,24 +56,26 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         <FormField
           control={form.control}
-          name='positionLevel'
+          name='education'
           render={({ field }) => (
             <FormItem>
               <FormLabel className='text-base font-medium'>
-                Cấp bậc<span className='text-destructive'>*</span>
+                Trình độ học vấn
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Nhân viên' />
+                    <SelectValue placeholder='Cử nhân' />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value='intern'>Thực tập sinh</SelectItem>
-                  <SelectItem value='staff'>Nhân viên</SelectItem>
-                  <SelectItem value='senior'>Nhân viên cao cấp</SelectItem>
-                  <SelectItem value='manager'>Quản lý</SelectItem>
-                  <SelectItem value='director'>Giám đốc</SelectItem>
+                  <SelectItem value='Trung học phổ thông'>
+                    Trung học phổ thông
+                  </SelectItem>
+                  <SelectItem value='Cao đẳng'>Cao đẳng</SelectItem>
+                  <SelectItem value='Cử nhân'>Cử nhân</SelectItem>
+                  <SelectItem value='Thạc sĩ'>Thạc sĩ</SelectItem>
+                  <SelectItem value='Tiến sĩ'>Tiến sĩ</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -74,7 +85,7 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
 
         <FormField
           control={form.control}
-          name='workType'
+          name='type'
           render={({ field }) => (
             <FormItem>
               <FormLabel className='text-base font-medium'>
@@ -87,10 +98,11 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value='full-time'>Toàn thời gian</SelectItem>
-                  <SelectItem value='part-time'>Bán thời gian</SelectItem>
-                  <SelectItem value='contract'>Hợp đồng</SelectItem>
-                  <SelectItem value='freelance'>Freelance</SelectItem>
+                  {Object.entries(JobType).map(([key, value]) => (
+                    <SelectItem key={key} value={key}>
+                      {value}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -99,229 +111,10 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
         />
       </div>
 
-      <FormField
-        control={form.control}
-        name='industry'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className='text-base font-medium'>
-              Ngành nghề chủ lực<span className='text-destructive'>*</span>
-            </FormLabel>
-            <div className='grid grid-cols-1'>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Phần Cứng Máy Tính' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='it-hardware'>
-                    Phần Cứng Máy Tính
-                  </SelectItem>
-                  <SelectItem value='it-software'>Phần Mềm</SelectItem>
-                  <SelectItem value='it-network'>Mạng & Hệ thống</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name='jobNature'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className='text-base font-medium'>
-              Lĩnh vực công việc<span className='text-destructive'>*</span>
-            </FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Cung cấp phần lực' />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value='hardware-supply'>
-                  Cung cấp phần lực
-                </SelectItem>
-                <SelectItem value='software-dev'>
-                  Phát triển phần mềm
-                </SelectItem>
-                <SelectItem value='testing'>Kiểm thử</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name='workLocation'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className='text-base font-medium'>
-              Địa điểm làm việc<span className='text-destructive'>*</span>
-              <span className='text-muted-foreground ml-2 text-xs'>
-                (Tối đa 3 địa điểm)
-              </span>
-            </FormLabel>
-            <div className='relative'>
-              <FormControl>
-                <div className='flex'>
-                  <div className='relative flex-1'>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className='w-full pl-9'>
-                        <SelectValue placeholder='Office: Hà Nội, Vietnam' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='hanoi'>
-                          Office: Hà Nội, Vietnam
-                        </SelectItem>
-                        <SelectItem value='hcm'>
-                          Office: Hồ Chí Minh, Vietnam
-                        </SelectItem>
-                        <SelectItem value='danang'>
-                          Office: Đà Nẵng, Vietnam
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <div className='pointer-events-none absolute top-1/2 left-3 -translate-y-1/2'>
-                      <MapPin className='text-muted-foreground h-4 w-4' />
-                    </div>
-                  </div>
-                  <Button variant='ghost' size='icon' className='ml-2'>
-                    <span className='sr-only'>Xóa địa điểm</span>
-                    <Trash className='text-muted-foreground h-4 w-4' />
-                  </Button>
-                </div>
-              </FormControl>
-            </div>
-            <Button
-              variant='link'
-              size='sm'
-              className='text-primary mt-2 h-auto'
-            >
-              <span className='text-sm'>+ Thêm địa điểm làm việc</span>
-            </Button>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name='jobDescription'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className='text-base font-medium'>
-              Mô tả<span className='text-destructive'>*</span>
-            </FormLabel>
-            <FormControl>
-              <RichTextEditor
-                value={field.value || ''}
-                onChange={field.onChange}
-                placeholder='Nhập mô tả công việc'
-                initialContent={`- Viết test case và thực hiện test manual hoặc automation theo chức năng phần mềm của Tập đoàn
-- Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm
-- Hỗ trợ người dùng về các vấn đề liên quan đến hệ thống phần mềm
-- Các công việc khác theo phân công của quản lý`}
-              />
-            </FormControl>
-            <div className='text-muted-foreground mt-1 flex justify-between text-xs'>
-              <span>Xem mẫu mô tả công việc khác</span>
-              <span>0/4500 ký tự</span>
-            </div>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name='jobRequirements'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className='text-base font-medium'>
-              Yêu cầu công việc<span className='text-destructive'>*</span>
-            </FormLabel>
-            <FormControl>
-              <RichTextEditor
-                value={field.value || ''}
-                onChange={field.onChange}
-                placeholder='Nhập yêu cầu công việc'
-                initialContent={`- Tốt nghiệp các chuyên ngành có liên quan
-- Có kinh nghiệm ít nhất 2 năm với vị trí Tester
-- Có thể giao tiếp tiếng Anh cơ bản
-- Kỹ năng giao tiếp, quản lý công việc và làm việc nhóm tốt
-- Ưu tiên ứng viên có kinh nghiệm
-- Thích nghi với môi trường làm việc nhanh, cạnh tranh tính thử thách`}
-              />
-            </FormControl>
-            <div className='text-muted-foreground mt-1 flex justify-between text-xs'>
-              <span>Xem mẫu yêu cầu công việc khác</span>
-              <span>0/2744/4000 ký tự</span>
-            </div>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name='salary'
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className='text-base font-medium'>
-              Mức lương<span className='text-destructive'>*</span>{' '}
-              <span className='text-muted-foreground text-xs'>(USD)</span>
-            </FormLabel>
-            <div className='grid grid-cols-2 items-center gap-4'>
-              <Input type='number' placeholder='1000' />
-              <div className='flex items-center gap-2'>
-                <Input type='number' placeholder='1500' />
-                <FormField
-                  control={form.control}
-                  name='showSalary'
-                  render={({ field }) => (
-                    <FormItem className='flex items-center space-y-0 space-x-2'>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className='text-muted-foreground text-xs'>
-                        Hiển thị cho Ứng Viên
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-            <Alert
-              variant='default'
-              className='bg-warning/10 text-warning-foreground border-warning/50 mt-4'
-            >
-              <AlertTriangle className='h-4 w-4' />
-              <AlertDescription className='text-xs'>
-                Ấn mức lương có thể làm giảm lượng hồ sơ ứng tuyển hồ sơ ứng
-                tuyển đến 30%.
-              </AlertDescription>
-            </Alert>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <div className='space-y-6 p-2'>
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
         <FormField
           control={form.control}
-          name='positions'
+          name='slots'
           render={({ field }) => (
             <FormItem>
               <FormLabel className='text-base font-medium'>
@@ -341,7 +134,7 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
                   <Input
                     type='number'
                     className='h-9 w-16 rounded-none text-center'
-                    value={field.value}
+                    value={field.value || 1}
                     onChange={(e) =>
                       field.onChange(Number.parseInt(e.target.value) || 1)
                     }
@@ -357,25 +150,7 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
                     +
                   </Button>
                 </div>
-                <div>
-                  <FormField
-                    control={form.control}
-                    name='showPositions'
-                    render={({ field }) => (
-                      <FormItem className='ml-4 flex items-center space-y-0 space-x-2'>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className='text-muted-foreground text-xs'>
-                          Hiển thị cho Ứng Viên
-                        </FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <div></div>
               </div>
               <FormMessage />
             </FormItem>
@@ -384,68 +159,189 @@ export function JobDescriptionSection({ form }: { form: UseFormReturn<any> }) {
 
         <FormField
           control={form.control}
-          name='recruiterEmail'
+          name='deadline'
           render={({ field }) => (
             <FormItem>
               <FormLabel className='text-base font-medium'>
-                Địa chỉ email nhận hồ sơ
-                <span className='text-destructive'>*</span>
+                Hạn nộp hồ sơ<span className='text-destructive'>*</span>
               </FormLabel>
               <FormControl>
-                <Input type='email' {...field} />
+                <Input
+                  type='date'
+                  {...field}
+                  // min={new Date().toISOString().split('T')[0]} // Set min date to today
+                  className='w-full'
+                />
               </FormControl>
-              <p className='text-muted-foreground mt-1 text-xs'>
-                (Địa chỉ email sẽ được ẩn với người tìm việc. Bạn có thể nhập
-                nhiều địa chỉ cách nhau bởi dấu "," )
-              </p>
               <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name='experienceYears'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className='text-base font-medium'>
-                Năm kinh nghiệm tối thiểu
-              </FormLabel>
-              <div className='flex items-center gap-4'>
-                <div className='flex items-center'>
-                  <Button
-                    type='button'
-                    variant='outline'
-                    size='icon'
-                    className='h-9 w-9 rounded-r-none'
-                    onClick={() => field.onChange(Math.max(0, field.value - 1))}
-                  >
-                    -
-                  </Button>
-                  <Input
-                    type='number'
-                    className='h-9 w-16 rounded-none text-center'
-                    value={field.value}
-                    onChange={(e) =>
-                      field.onChange(Number.parseInt(e.target.value) || 0)
-                    }
-                    min={0}
-                  />
-                  <Button
-                    type='button'
-                    variant='outline'
-                    size='icon'
-                    className='h-9 w-9 rounded-l-none'
-                    onClick={() => field.onChange(field.value + 1)}
-                  >
-                    +
-                  </Button>
-                </div>
-              </div>
             </FormItem>
           )}
         />
       </div>
+
+      <FormField
+        control={form.control}
+        name='experience'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className='text-base font-medium'>
+              Kinh nghiệm yêu cầu<span className='text-destructive'>*</span>
+            </FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger className='w-full'>
+                  <SelectValue placeholder='Chọn số năm kinh nghiệm' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value='Không yêu cầu'>Không yêu cầu</SelectItem>
+                <SelectItem value='Dưới 1 năm'>Dưới 1 năm</SelectItem>
+                <SelectItem value='1-2 năm'>1-2 năm</SelectItem>
+                <SelectItem value='2-3 năm'>2-3 năm</SelectItem>
+                <SelectItem value='3-5 năm'>3-5 năm</SelectItem>
+                <SelectItem value='5-7 năm'>5-7 năm</SelectItem>
+                <SelectItem value='7-10 năm'>7-10 năm</SelectItem>
+                <SelectItem value='Trên 10 năm'>Trên 10 năm</SelectItem>
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name='fieldDetails'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className='text-base font-medium'>
+              Ngành nghề chi tiết<span className='text-destructive'>*</span>
+            </FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger className='w-full'>
+                  <SelectValue placeholder='Cung cấp phần lực' />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {fieldDetails.map((fieldDetail) => (
+                  <SelectItem key={fieldDetail.id} value={fieldDetail.id}>
+                    {fieldDetail.name}
+                  </SelectItem>
+                ))}
+
+                <SelectItem value='testing'>Kiểm thử</SelectItem>
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name='salary'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className='text-base font-medium'>
+              Mức lương mong muốn<span className='text-destructive'>*</span>{' '}
+              <span className='text-muted-foreground text-xs'>(VND)</span>
+            </FormLabel>
+            <div className='grid grid-cols-1 items-center gap-4'>
+              <Input type='number' placeholder='8.000.000' />
+              {/* <div className='flex items-center gap-2'>
+                <Input type='number' placeholder='1500' />
+                <FormField
+                  control={form.control}
+                  name='showSalary'
+                  render={({ field }) => (
+                    <FormItem className='flex items-center space-y-0 space-x-2'>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel className='text-muted-foreground text-xs'>
+                        Hiển thị cho Ứng Viên
+                      </FormLabel>
+                    </FormItem>
+                  )}
+                />
+              </div> */}
+            </div>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name='description'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className='text-base font-medium'>
+              Mô tả công việc<span className='text-destructive'>*</span>
+            </FormLabel>
+            <FormControl>
+              <RichTextEditor
+                value={field.value || ''}
+                onChange={field.onChange}
+                placeholder='- Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm'
+                //                 initialContent={`- Viết test case và thực hiện test manual hoặc automation theo chức năng phần mềm của Tập đoàn
+                // - Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm`}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name='requirement'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className='text-base font-medium'>
+              Yêu cầu công việc<span className='text-destructive'>*</span>
+            </FormLabel>
+            <FormControl>
+              <RichTextEditor
+                value={field.value || ''}
+                onChange={field.onChange}
+                placeholder='- Có kinh nghiệm ít nhất 2 năm với vị trí Tester'
+                //                 initialContent={`- Tốt nghiệp các chuyên ngành có liên quan
+                // - Có kinh nghiệm ít nhất 2 năm với vị trí Tester
+                // - Có thể giao tiếp tiếng Anh cơ bản`}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name='benefit'
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className='text-base font-medium'>
+              Quyền lợi được hưởng<span className='text-destructive'>*</span>
+            </FormLabel>
+            <FormControl>
+              <RichTextEditor
+                value={field.value || ''}
+                onChange={field.onChange}
+                placeholder='- Được đóng BHXH, BHYT, BHTN theo quy định'
+                //                 initialContent={`- Mức lương cạnh tranh, review định kỳ 2 lần/năm
+                // - Thưởng hiệu suất và các dịp lễ tết trong năm
+                // - Được đóng BHXH, BHYT, BHTN theo quy định`}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 }

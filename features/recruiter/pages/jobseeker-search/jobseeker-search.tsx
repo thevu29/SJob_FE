@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import FilterSidebar from '@/features/recruiter/pages/job-seeker-search/components/filter-sidebar';
+import FilterSidebar from '@/features/recruiter/pages/jobseeker-search/components/filter-sidebar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 export default function JobSeekerSearch() {

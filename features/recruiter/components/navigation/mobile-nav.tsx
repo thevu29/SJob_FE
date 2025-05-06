@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ROUTES } from '@/constants/routes';
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
@@ -47,7 +48,7 @@ export function MobileNav() {
         <nav className='flex h-full flex-col'>
           <div className='border-b'>
             <Link
-              href='/recruiter'
+              href={ROUTES.RECRUITER.DASHBOARD}
               className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
@@ -56,7 +57,7 @@ export function MobileNav() {
           </div>
           <div className='border-b'>
             <Link
-              href='/recruiter/job-listing'
+              href={ROUTES.RECRUITER.JOBS.LIST}
               className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
@@ -65,7 +66,7 @@ export function MobileNav() {
           </div>
           <div className='border-b'>
             <Link
-              href='/recruiter/invitation-listing'
+              href={ROUTES.RECRUITER.JOBSEEKER.INVITATION_LISTING}
               className='hover:bg-secondary/80 flex h-14 items-center px-4 font-medium'
               onClick={() => setOpen(false)}
             >
@@ -117,14 +118,16 @@ export function MobileNav() {
             <Button
               className='bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer'
               onClick={() => setOpen(false)}
+              asChild
             >
-              Đăng Tuyển Dụng
+              <Link href={ROUTES.RECRUITER.JOBS.CREATE}>Đăng Tuyển Dụng</Link>
             </Button>
             <Button
               className='bg-primary text-primary-foreground hover:bg-primary/90 w-full cursor-pointer'
               onClick={() => setOpen(false)}
+              asChild
             >
-              Tìm Ứng Viên
+              <Link href={ROUTES.RECRUITER.JOBSEEKER.SEARCH}>Tìm Ứng Viên</Link>
             </Button>
           </div>
         </nav>

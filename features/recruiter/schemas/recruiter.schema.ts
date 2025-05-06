@@ -1,4 +1,3 @@
-import { fi } from '@faker-js/faker';
 import z from 'zod';
 
 const MAX_FILE_SIZE = 5000000;
