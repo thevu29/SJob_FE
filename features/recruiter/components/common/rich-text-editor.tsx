@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Bold, Italic, List } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -21,12 +21,17 @@ export function RichTextEditor({
   placeholder,
   initialContent
 }: RichTextEditorProps) {
-  const [content, setContent] = useState(initialContent || value || '');
-
+  const [content, setContent] = useState(value || initialContent || '');
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
     onChange(e.target.value);
   };
+  console.log('content', content);
+  console.log('value', value);
+
+  useEffect(() => {
+    setContent(value || '');
+  }, [value]);
 
   const handleFormat = (format: string) => {
     // This is a simplified implementation

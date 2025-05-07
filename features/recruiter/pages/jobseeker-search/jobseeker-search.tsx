@@ -59,60 +59,9 @@ export default function JobSeekerSearch() {
           </div>
         </div>
 
-        <div className='mb-6 flex items-center justify-between'>
+        <div className='mb-6 flex items-center'>
           <div className='text-muted-foreground text-sm'>
             1536842 kết quả tìm kiếm
-          </div>
-          <div className='flex items-center gap-2'>
-            <Button
-              variant='ghost'
-              size='icon'
-              onClick={() => setViewMode('list')}
-              className={cn(viewMode === 'list' ? 'bg-muted' : '')}
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                className='h-4 w-4'
-              >
-                <line x1='3' x2='21' y1='6' y2='6' />
-                <line x1='3' x2='21' y1='12' y2='12' />
-                <line x1='3' x2='21' y1='18' y2='18' />
-              </svg>
-              <span className='sr-only'>List view</span>
-            </Button>
-            <Button
-              variant='ghost'
-              size='icon'
-              onClick={() => setViewMode('grid')}
-              className={cn(viewMode === 'grid' ? 'bg-muted' : '')}
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                className='h-4 w-4'
-              >
-                <rect width='7' height='7' x='3' y='3' rx='1' />
-                <rect width='7' height='7' x='14' y='3' rx='1' />
-                <rect width='7' height='7' x='14' y='14' rx='1' />
-                <rect width='7' height='7' x='3' y='14' rx='1' />
-              </svg>
-              <span className='sr-only'>Grid view</span>
-            </Button>
           </div>
         </div>
 

@@ -18,18 +18,22 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { RichTextEditor } from '@/features/recruiter/components/common/rich-text-editor';
-import { TCreateJob } from '@/features/recruiter/schemas/job.schema';
+import {
+  TCreateJob,
+  TUpdateJob
+} from '@/features/recruiter/schemas/job.schema';
 import { useGet } from '@/hooks/useQueries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
 export function JobDescriptionSection({
   form
 }: {
-  form: UseFormReturn<TCreateJob>;
+  form: UseFormReturn<TUpdateJob>;
 }) {
   const { data: fieldDetailsData } = useGet<FieldDetail[]>('field-details', [
     'field-details'
   ]);
+  console.log('form', form.getValues());
 
   const fieldDetails = fieldDetailsData?.data || [];
   return (
@@ -45,7 +49,8 @@ export function JobDescriptionSection({
             <FormControl>
               <Input
                 placeholder='Chuyên Viên Kiểm Thử Và Vận Hành Phần Mềm (Tester)'
-                {...field}
+                value={field.value}
+                onChange={field.onChange}
               />
             </FormControl>
             <FormMessage />
@@ -62,7 +67,7 @@ export function JobDescriptionSection({
               <FormLabel className='text-base font-medium'>
                 Trình độ học vấn
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className='w-full'>
                     <SelectValue placeholder='Cử nhân' />
@@ -91,7 +96,7 @@ export function JobDescriptionSection({
               <FormLabel className='text-base font-medium'>
                 Loại việc làm
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger className='w-full'>
                     <SelectValue placeholder='Toàn thời gian' />
@@ -127,7 +132,9 @@ export function JobDescriptionSection({
                     variant='outline'
                     size='icon'
                     className='h-9 w-9 rounded-r-none'
-                    onClick={() => field.onChange(Math.max(1, field.value - 1))}
+                    onClick={() =>
+                      field.onChange(Math.max(1, (field.value ?? 1) - 1))
+                    }
                   >
                     -
                   </Button>
@@ -145,7 +152,7 @@ export function JobDescriptionSection({
                     variant='outline'
                     size='icon'
                     className='h-9 w-9 rounded-l-none'
-                    onClick={() => field.onChange(field.value + 1)}
+                    onClick={() => field.onChange((field.value ?? 1) + 1)}
                   >
                     +
                   </Button>
@@ -187,7 +194,7 @@ export function JobDescriptionSection({
             <FormLabel className='text-base font-medium'>
               Kinh nghiệm yêu cầu<span className='text-destructive'>*</span>
             </FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger className='w-full'>
                   <SelectValue placeholder='Chọn số năm kinh nghiệm' />
@@ -217,7 +224,7 @@ export function JobDescriptionSection({
             <FormLabel className='text-base font-medium'>
               Ngành nghề chi tiết<span className='text-destructive'>*</span>
             </FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} value={field.value}>
               <FormControl>
                 <SelectTrigger className='w-full'>
                   <SelectValue placeholder='Cung cấp phần lực' />
@@ -250,7 +257,8 @@ export function JobDescriptionSection({
             <div className='grid grid-cols-1 items-center gap-4'>
               <Input
                 type='number'
-                placeholder='8.000.000'
+                placeholder='8000000'
+                value={field.value}
                 onChange={(e) =>
                   field.onChange(Number.parseInt(e.target.value))
                 }

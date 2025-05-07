@@ -13,7 +13,7 @@ export interface Job {
   education: string;
   experience: string;
   closeWhenFull: boolean;
-  status: boolean;
+  status: JobStatus;
 }
 
 export enum JobType {
@@ -21,4 +21,10 @@ export enum JobType {
   PART_TIME = 'Bán thời gian',
   INTERNSHIP = 'Thực tập',
   FREELANCE = 'Freelance'
+}
+
+export enum JobStatus {
+  OPEN = 'Đang tuyển',
+  CLOSED = 'Đã đóng',
+  EXPIRED = 'Hết hạn'
 }

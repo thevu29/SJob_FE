@@ -9,72 +9,82 @@ import { ChevronDown, ChevronUp, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
-import { JobDescriptionSection } from '@/features/recruiter/pages/job-posting/components/job-description-section';
 import {
   CreateJobSchema,
-  TCreateJob
+  TCreateJob,
+  TUpdateJob,
+  UpdateJobSchema
 } from '@/features/recruiter/schemas/job.schema';
-import { usePost } from '@/hooks/useQueries';
+import { useGet, usePost, usePut } from '@/hooks/useQueries';
 import { Job } from '@/interfaces/job';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { JobDescriptionSection } from '@/features/recruiter/pages/job-updating/components/job-description-section';
+import { FieldDetail } from '@/interfaces/field';
 
-export default function JobPostingForm() {
-  const recruiterId = '68144e36647b71355acf11d1';
+export default function JobUpdatingForm() {
+  const params = useParams();
+  const router = useRouter();
+  const jobId = params.jobId as string;
 
   const [openJobDescription, setOpenJobDescription] = useState(true);
-  const router = useRouter();
 
-  const createJobMutation = usePost<Job, TCreateJob>(
-    'jobs/recruiters/' + recruiterId,
+  const { data: jobData } = useGet<Job>('jobs/' + jobId, ['jobs', jobId]);
+  const { data: fieldDetailData } = useGet<FieldDetail[]>(
+    '/field-details/jobs/' + jobId,
+    ['field-details', jobId]
+  );
+  const job = jobData?.data as Job;
+  const fieldDetails = fieldDetailData?.data[0] as FieldDetail;
+
+  const updateJobMutation = usePut<Job, TUpdateJob>(
+    'jobs',
     {
       onSuccess: () => {
-        toast.success('Đăng tin tuyển dụng thành công!');
-        form.reset(); // Reset form after successful submission
+        toast.success('Cập nhật tin tuyển dụng thành công!');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Error creating job:', error);
       }
-    }
+    },
+    ['jobs']
   );
 
-  const form = useForm<TCreateJob>({
-    resolver: zodResolver(CreateJobSchema),
-    defaultValues: {
-      name: '',
-      description: '',
-      salary: 0,
-      requirement: '',
-      benefit: '',
-      deadline: new Date().toISOString().split('T')[0], // 2015-03-25
-      slots: 1,
-      type: 'FULL_TIME',
-      education: 'Cử nhân',
-      experience: 'Không yêu cầu'
+  const form = useForm<TUpdateJob>({
+    resolver: zodResolver(UpdateJobSchema),
+    values: {
+      name: job?.name || '',
+      description: job?.description || '',
+      salary: Number(job?.salary) || 0,
+      requirement: job?.requirement || '',
+      benefit: job?.benefit || '',
+      deadline: job?.deadline || new Date().toISOString().split('T')[0], // 2015-03-25
+      slots: job?.slots || 1,
+      type: job?.type || 'FULL_TIME',
+      education: job?.education || 'Cử nhân',
+      experience: job?.experience || 'Không yêu cầu',
+      fieldDetails: fieldDetails?.id || ''
     }
   });
 
-  async function onSubmit(values: TCreateJob) {
+  async function onSubmit(values: TUpdateJob) {
     try {
       const payload = {
         ...values,
+        id: jobId,
         fieldDetails: [values.fieldDetails]
       };
-      console.log('Submitting form with values:', payload);
-      await createJobMutation.mutateAsync(payload as any);
+      await updateJobMutation.mutateAsync(payload as any);
       form.reset();
       router.push(ROUTES.RECRUITER.JOBS.LIST);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error updating job:', error);
     }
   }
 
   const handleCancel = () => {
-    console.log('hi');
-    form.reset();
     router.push(ROUTES.RECRUITER.DASHBOARD);
   };
 
@@ -139,11 +149,11 @@ export default function JobPostingForm() {
                 <Button
                   className='bg-primary text-primary-foreground flex-1'
                   type='submit'
-                  disabled={createJobMutation.isPending}
+                  disabled={updateJobMutation.isPending}
                 >
-                  {createJobMutation.isPending
-                    ? 'Đang đăng...'
-                    : 'Đăng tuyển dụng'}
+                  {updateJobMutation.isPending
+                    ? 'Đang cập nhật...'
+                    : 'Cập nhật tin tuyển dụng'}
                 </Button>
               </div>
             </CardContent>

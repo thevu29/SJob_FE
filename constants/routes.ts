@@ -13,13 +13,13 @@ export const ROUTES = {
   RECRUITER: {
     DASHBOARD: '/recruiter',
     JOBS: {
-      LIST: '/recruiter/job-listing',
-      CREATE: '/recruiter/job-posting'
-      // EDIT: (id: string) => `/recruiter/jobs/${id}/edit`,
+      LIST: '/recruiter/job',
+      CREATE: '/recruiter/job/posting',
+      EDIT: (id: string) => `/recruiter/job/${id}`
       // DETAIL: (id: string) => `/recruiter/jobs/${id}`,
     },
     JOBSEEKER: {
-      INVITATION_LISTING: '/recruiter/invitation_listing',
+      INVITATION_LISTING: '/recruiter/invitation-listing',
       SEARCH: '/recruiter/jobseeker-search'
       // DETAIL: (id: string) => `/recruiter/candidates/${id}`,
     },
