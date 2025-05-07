@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import {
+  Eye,
   LockKeyhole,
   LockKeyholeOpen,
   MoreHorizontal,
@@ -24,6 +25,7 @@ import {
 import { Job, JobStatus } from '@/interfaces/job';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { JobDetail } from '@/features/recruiter/pages/job-listing/components/job-detail';
 
 interface CellActionProps {
   data: Job;
@@ -36,6 +38,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [actionMode, setActionMode] = useState<ActionMode>(null);
+  const [showDetail, setShowDetail] = useState(false);
 
   const deleteMutation = useDelete(
     'jobs',
@@ -76,6 +79,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onConfirm={onConfirm}
         loading={loading}
       />
+      <JobDetail
+        isOpen={showDetail}
+        onClose={() => setShowDetail(false)}
+        job={data}
+      />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant='ghost' className='h-8 w-8 cursor-pointer p-0'>
@@ -85,6 +93,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+          <DropdownMenuItem onClick={() => setShowDetail(true)}>
+            <Eye className='mr-2 h-4 w-4 text-blue-500' />
+            <p className='text-blue-500'>Xem chi tiết</p>
+          </DropdownMenuItem>
           {JobStatus[data.status as unknown as keyof typeof JobStatus] ===
             JobStatus.OPEN && (
             <DropdownMenuItem onClick={onEdit}>
