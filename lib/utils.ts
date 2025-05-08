@@ -49,3 +49,10 @@ export const shortenName = (name?: string, maxInitials: number = 2): string => {
     .map((part) => part[0].toUpperCase())
     .join('');
 };
+
+export const getValueOfKeyFromEnum = <T extends Record<string, string>>(
+  enums: T,
+  key: string
+): string => {
+  return enums[key as keyof T] || key;
+};

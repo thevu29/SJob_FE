@@ -20,8 +20,8 @@ export const ROUTES = {
     },
     JOBSEEKER: {
       INVITATION_LISTING: '/recruiter/invitation-listing',
-      SEARCH: '/recruiter/jobseeker-search'
-      // DETAIL: (id: string) => `/recruiter/candidates/${id}`,
+      SEARCH: '/recruiter/job-seeker/search',
+      DETAIL: (id: string) => `/recruiter/job-seeker/${id}`
     },
     SETTINGS: {
       COMPANY_GENERAL: '/recruiter/company-general',

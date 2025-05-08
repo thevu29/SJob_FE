@@ -12,6 +12,7 @@ export interface User {
 export interface JobSeeker extends User {
   userId: string;
   name: string;
+  field: string;
   phone: string;
   image: string;
   gender: boolean | string;
