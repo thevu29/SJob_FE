@@ -47,7 +47,7 @@ export default function SkillsCard({
                 </div>
                 <div className='flex-1'>
                   <h3 className='font-medium'>{skill.name}</h3>
-                  <div className='mt-1 flex items-center'>
+                  {/* <div className='mt-1 flex items-center'>
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
@@ -58,7 +58,7 @@ export default function SkillsCard({
                         }`}
                       />
                     ))}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* Add separator if not the last item */}
@@ -74,7 +74,7 @@ export default function SkillsCard({
             <Button
               variant='outline'
               size='sm'
-              className='text-primary'
+              className='bg-primary text-primary-foreground hover:bg-primary/80 cursor-pointer'
               onClick={toggleShowAll}
             >
               {showAll ? 'Thu gọn' : 'Hiển thị tất cả'}
