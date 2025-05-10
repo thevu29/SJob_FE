@@ -12,6 +12,7 @@ import Image from 'next/image';
 import Logo from '@/public/icon.png';
 import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/components/user-dropdown';
 import { ROUTES } from '@/constants/routes';
+import { NotificationBell } from '@/features/notification/notification';
 
 export function Header() {
   return (
@@ -83,9 +84,10 @@ export function Header() {
             </Button>
           </div>
           <div className='flex items-center space-x-4'>
-            <button className='relative'>
+            {/* <button className='relative'>
               <Bell className='h-6 w-6' />
-            </button>
+            </button> */}
+            <NotificationBell />
             <UserDropdown />
           </div>
         </div>

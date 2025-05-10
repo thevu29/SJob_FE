@@ -73,20 +73,16 @@ export function JobInvitationModal() {
   const jobSeeker = jobSeekerData?.data as JobSeeker;
   const jobs = jobData?.data as Job[];
 
-  const createInvitationMutation = usePost<Invitation>(
-    'invitations',
-    {
-      onSuccess: () => {
-        toast.success('Gửi thư mời ứng tuyển thành công');
-      },
-      onError: (error: AxiosError) => {
-        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Failed to create invitation:', error);
-        setOpen(false);
-      }
+  const createInvitationMutation = usePost<Invitation>('invitations', {
+    onSuccess: () => {
+      toast.success('Gửi thư mời ứng tuyển thành công');
+    },
+    onError: (error: AxiosError) => {
+      toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+      console.error('Failed to create invitation:', error);
+      setOpen(false);
     }
-    // ['invitations']
-  );
+  });
 
   const form = useForm<TCreateInvitation>({
     resolver: zodResolver(CreateInvitationSchema),
