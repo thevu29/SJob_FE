@@ -14,7 +14,7 @@ import GooglePlay from '@/public/google-play.png';
 
 export function Footer() {
   return (
-    <footer className='bg-background text-foreground'>
+    <footer className='bg-secondary text-foreground'>
       <div className='mx-auto max-w-7xl px-4 py-12'>
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4'>
           <div>

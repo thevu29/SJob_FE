@@ -8,7 +8,7 @@ export default function RecruiterDashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className='bg-secondary flex min-h-screen flex-col'>
+    <div className='bg-background flex min-h-screen flex-col'>
       <Header />
       <main className='relative flex-1 p-4 md:p-6'>{children}</main>
       <Footer />

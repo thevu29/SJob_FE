@@ -55,7 +55,7 @@ export default function ProfileJobSeeker() {
   return (
     <div className='bg-background mx-auto min-h-screen max-w-7xl overflow-hidden rounded-lg md:rounded-xl'>
       {/* Header */}
-      <div className='bg-color-3 relative h-48 md:h-64'>
+      <div className='bg-secondary relative h-48 md:h-64'>
         <div className='container mx-auto px-4'>
           <div className='absolute -bottom-20 flex flex-col items-start gap-4 md:-bottom-24 md:flex-row md:items-end'>
             <Avatar className='border-background h-32 w-32 rounded-full border-4 md:h-48 md:w-48'>

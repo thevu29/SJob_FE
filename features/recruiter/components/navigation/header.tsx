@@ -16,7 +16,7 @@ import { NotificationBell } from '@/features/notification/notification';
 
 export function Header() {
   return (
-    <header className='bg-background text-foreground sticky top-0 z-50 w-full'>
+    <header className='bg-secondary text-foreground sticky top-0 z-50 w-full'>
       <div className='flex h-16 items-center justify-between px-5'>
         <div className='flex items-center'>
           <MobileNav />
