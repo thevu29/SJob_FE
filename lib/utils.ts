@@ -56,3 +56,8 @@ export const getValueOfKeyFromEnum = <T extends Record<string, string>>(
 ): string => {
   return enums[key as keyof T] || key;
 };
+
+export const formatSalary = (salary: number) => {
+  const salaryInTrillions = salary / 1000000;
+  return `${salaryInTrillions}tr ₫/tháng`;
+};
