@@ -1,8 +1,10 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { ROUTES } from '@/constants/routes';
 import { Job } from '@/interfaces/job';
 import { formatSalary } from '@/lib/utils';
 import { Badge } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface JobCardProps {
   job: Job;
@@ -12,7 +14,10 @@ export function JobCard({ job }: JobCardProps) {
   return (
     <Card className='overflow-hidden border transition-shadow duration-300 hover:shadow-md'>
       <CardContent className='p-4'>
-        <div className='flex items-start gap-4'>
+        <Link
+          href={ROUTES.JOBSEEKER.JOBS.DETAIL(job.id)}
+          className='flex items-start gap-4'
+        >
           {job.recruiterImage ? (
             <div className='relative h-12 w-12 flex-shrink-0'>
               <Image
@@ -51,7 +56,7 @@ export function JobCard({ job }: JobCardProps) {
               {job.location}
             </p> */}
           </div>
-        </div>
+        </Link>
       </CardContent>
     </Card>
   );

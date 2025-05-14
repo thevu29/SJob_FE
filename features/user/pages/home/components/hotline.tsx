@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import HotLineImg from '@/public/hotline.jpg';
+import HotLineImg from '@/public/hotline1.png';
 
 export default function Hotline() {
   return (

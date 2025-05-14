@@ -35,7 +35,7 @@ export const ROUTES = {
     PROFILE: '/jobseeker/profile',
     JOBS: {
       SEARCH: '/jobs/search',
-      DETAIL: (id: string) => `/jobs/${id}`,
+      DETAIL: (id: string) => `/job/${id}`,
       APPLIED: '/jobseeker/jobs/applied',
       SAVED: '/jobseeker/jobs/saved'
     },
