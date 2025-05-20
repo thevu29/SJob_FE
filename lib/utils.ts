@@ -96,3 +96,19 @@ export const formatEmployeeCount = (count: number): string => {
     return 'Trên 1000 nhân viên';
   }
 };
+
+export const formatToYearMonth = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid date format');
+  }
+
+  // Lấy năm và tháng
+  const yearMonth =
+    date.getFullYear() +
+    '-' +
+    (date.getMonth() + 1).toString().padStart(2, '0');
+
+  return yearMonth;
+};

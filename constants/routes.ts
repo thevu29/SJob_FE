@@ -31,18 +31,15 @@ export const ROUTES = {
 
   // Job Seeker routes
   JOBSEEKER: {
-    DASHBOARD: '/jobseeker/dashboard',
-    PROFILE: '/jobseeker/profile',
+    // DASHBOARD: '/jobseeker/dashboard',
+    PROFILE: '/user/profile',
     JOBS: {
       SEARCH: '/jobs/search',
       DETAIL: (id: string) => `/job/${id}`,
       APPLIED: '/jobseeker/jobs/applied',
       SAVED: '/jobseeker/jobs/saved'
     },
-    COMPANIES: {
-      LIST: '/companies',
-      DETAIL: (id: string) => `/companies/${id}`
-    }
+    SETTINGS: '/user/setting-accounts'
   },
 
   // Error pages
