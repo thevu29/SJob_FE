@@ -25,11 +25,17 @@ import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useDebounce } from '@/hooks/use-debounce';
 import { ROUTES } from '@/constants/routes';
+import Image from 'next/image';
+import placeholder from '@/public/placeholder.jpg';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 export function Sidebar() {
+  const pathname = usePathname();
   const { data, isLoading, isError, error } = useJobSeekerContext();
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
+
   const debouncedIsSeeking = useDebounce(isSeeking, 1000);
   const {
     jobSeeker,
@@ -39,7 +45,6 @@ export function Sidebar() {
     certifications = [],
     resumes = []
   } = data;
-
   const updateJobSeekerMutation = usePatchFormData<JobSeeker>(
     'job-seekers',
     {
@@ -111,7 +116,14 @@ export function Sidebar() {
 
                 {/* Avatar centered inside the completion circle */}
                 <div className='relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-white/20'>
-                  <User className='h-10 w-10 text-white' />
+                  {/* <User className='h-10 w-10 text-white' /> */}
+                  <Image
+                    src={jobSeeker?.image || placeholder}
+                    width={48}
+                    height={48}
+                    className='h-full w-full rounded-full object-cover'
+                    alt='Avatar'
+                  />
                 </div>
               </div>
 
@@ -159,7 +171,12 @@ export function Sidebar() {
                 <li>
                   <Link
                     href={ROUTES.JOBSEEKER.PROFILE}
-                    className='bg-accent text-accent-foreground flex items-center gap-3 rounded-md p-3'
+                    className={cn(
+                      'hover:bg-accent text-foreground flex items-center gap-3 rounded-md p-3',
+                      {
+                        'bg-accent': pathname === ROUTES.JOBSEEKER.PROFILE
+                      }
+                    )}
                   >
                     <FileText className='h-5 w-5' />
                     <span>Hồ Sơ Của Tôi</span>
@@ -168,7 +185,12 @@ export function Sidebar() {
                 <li>
                   <Link
                     href='#'
-                    className='hover:bg-accent text-foreground flex items-center gap-3 rounded-md p-3'
+                    className={cn(
+                      'hover:bg-accent text-foreground flex items-center gap-3 rounded-md p-3',
+                      {
+                        'bg-accent': pathname === '#'
+                      }
+                    )}
                   >
                     <Briefcase className='h-5 w-5' />
                     <span>Việc Làm Của Tôi</span>
@@ -177,7 +199,12 @@ export function Sidebar() {
                 <li>
                   <Link
                     href={ROUTES.JOBSEEKER.SETTINGS}
-                    className='hover:bg-accent text-foreground flex items-center gap-3 rounded-md p-3'
+                    className={cn(
+                      'hover:bg-accent text-foreground flex items-center gap-3 rounded-md p-3',
+                      {
+                        'bg-accent': pathname === ROUTES.JOBSEEKER.SETTINGS
+                      }
+                    )}
                   >
                     <Settings className='h-5 w-5' />
                     <span>Quản Lý Tài Khoản</span>
