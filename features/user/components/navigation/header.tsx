@@ -14,6 +14,7 @@ import {
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
 import { Avatar } from '@/components/ui/avatar';
+import { navUserItems } from '@/constants/navigation';
 
 export function Header() {
   return (
@@ -59,7 +60,7 @@ export function Header() {
               <Bell className='h-6 w-6' />
             </button> */}
             <NotificationBell />
-            <UserDropdown />
+            <UserDropdown navItems={navUserItems} />
           </div>
         </div>
       </div>

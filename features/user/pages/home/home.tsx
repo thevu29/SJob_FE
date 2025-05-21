@@ -12,20 +12,48 @@ import { FieldDetailCount } from '@/interfaces/field';
 import Image from 'next/image';
 import Banner3 from '@/public/banner3.jpg';
 import Hotline from '@/features/user/pages/home/components/hotline';
+import { Recruiter } from '@/interfaces';
+// import RecruiterListings from '@/features/user/pages/home/components/recruiter-listing';
+import { useQueries } from '@tanstack/react-query';
+import { get } from '@/lib/api';
+import { LoadingPage } from '@/components/common/loading';
 
 export default function HomePage() {
-  // Fetch dữ liệu công việc từ API
-  const { data: jobData } = useGet<Job[]>(`jobs/all`, [`jobs/all`]);
-  const jobs = jobData?.data || [];
-  const { data: fieldDetailCountData } = useGet<FieldDetailCount[]>(
-    `field-details/counts`,
-    [`field-details/counts`]
-  );
-  const fieldDetailCounts = fieldDetailCountData?.data || [];
+  // Gọi API song song
+  const queries = useQueries({
+    queries: [
+      {
+        queryKey: ['jobs/all'],
+        queryFn: () => get<Job[]>('jobs/all'),
+        staleTime: 5 * 60 * 1000
+      },
+      {
+        queryKey: ['field-details/counts'],
+        queryFn: () => get<FieldDetailCount[]>('field-details/counts'),
+        staleTime: 5 * 60 * 1000
+      }
+      // {
+      //   queryKey: ['recruiters/all'],
+      //   queryFn: () => get<Recruiter[]>('recruiters/all')
+      // }
+    ]
+  });
+  const jobs = queries[0].data?.data as unknown as Job[];
+  const fieldDetailCounts = queries[1].data
+    ?.data as unknown as FieldDetailCount[];
+  // const recruiters = queries[2].data?.data as unknown as Recruiter[];
+
+  const isLoading = queries.some((query) => query.isLoading);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
   return (
     <div>
       {/* Hero Banner */}
       <HeroBanner />
+
+      {/* <RecruiterListings recruiters={[]} /> */}
 
       {/* Job Listing  */}
       <JobListings title='Việc làm mới nhất' jobs={jobs} />

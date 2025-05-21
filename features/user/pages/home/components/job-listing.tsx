@@ -27,7 +27,7 @@ export default function JobListings({
   const [desktopPage, setDesktopPage] = useState(0);
   const itemsPerPage = 9;
 
-  const totalDesktopPages = Math.ceil(jobs.length / itemsPerPage);
+  const totalDesktopPages = Math.ceil(jobs?.length / itemsPerPage);
 
   // const displayJobs: Job[] = [...jobs];
   // if (displayJobs.length < itemsPerPage) {
@@ -98,7 +98,7 @@ export default function JobListings({
   );
 
   // Calculate actual number of slides for mobile (excluding placeholders)
-  const actualJobCount = jobs.length;
+  const actualJobCount = jobs?.length;
   const mobileSlideCount = Math.max(actualJobCount, 1);
 
   return (
@@ -130,14 +130,15 @@ export default function JobListings({
             <div className='lg:hidden'>
               <div className='overflow-hidden' ref={emblaRef}>
                 <div className='flex'>
-                  {jobs.map((job) => (
-                    <div
-                      key={job.id}
-                      className='min-w-0 flex-[0_0_100%] pl-4 first:pl-0 md:flex-[0_0_50%]'
-                    >
-                      <JobCard job={job} />
-                    </div>
-                  ))}
+                  {jobs &&
+                    jobs.map((job) => (
+                      <div
+                        key={job.id}
+                        className='min-w-0 flex-[0_0_100%] pl-4 first:pl-0 md:flex-[0_0_50%]'
+                      >
+                        <JobCard job={job} />
+                      </div>
+                    ))}
                 </div>
               </div>
 

@@ -5,6 +5,7 @@ import { Recruiter } from '@/interfaces';
 import { Job } from '@/interfaces/job';
 import { formatSalary, getExpirationMessage } from '@/lib/utils';
 import { Clock, MapPin } from 'lucide-react';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface JobInfoProps {
   job: Job;
@@ -12,83 +13,6 @@ interface JobInfoProps {
 }
 
 export default function JobInfo({ job, recruiter }: JobInfoProps) {
-  // const details = [
-  //   {
-  //     label: "NGÀY ĐĂNG",
-  //     value: job.date,
-  //     icon: <Calendar className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "TRẠNG THÁI",
-  //     value: <span className={statusInfo.color}>{statusInfo.text}</span>,
-  //     icon: <BadgeCheck className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "NGÀNH NGHỀ",
-  //     value: "Kinh Doanh > Bán Hàng/Phát Triển Kinh Doanh",
-  //     icon: <Building className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "MỨC LƯƠNG",
-  //     value: formatSalary(job.salary),
-  //     icon: <Banknote className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "LĨNH VỰC",
-  //     value: "Phần Mềm CNTT/Dịch vụ Phần mềm",
-  //     icon: <Briefcase className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "SỐ LƯỢNG TUYỂN DỤNG",
-  //     value: job.slots > 0 ? job.slots : "Không hiển thị",
-  //     icon: <Users className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "KINH NGHIỆM",
-  //     value: job.experience || "Không yêu cầu",
-  //     icon: <UserCircle className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "QUỐC TỊCH",
-  //     value: "Không hiển thị",
-  //     icon: <Globe className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "TRÌNH ĐỘ HỌC VẤN",
-  //     value: job.education || "Không yêu cầu",
-  //     icon: <GraduationCap className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "GIỚI TÍNH",
-  //     value: "Không hiển thị",
-  //     icon: <User className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "THỜI HẠN",
-  //     value: job.deadline,
-  //     icon: <Clock className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "TÌNH TRẠNG HÔN NHÂN",
-  //     value: "Không hiển thị",
-  //     icon: <Heart className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "LOẠI HÌNH LÀM VIỆC",
-  //     value: jobTypeInfo.text,
-  //     icon: jobTypeInfo.icon,
-  //   },
-  //   {
-  //     label: "NGÀY LÀM VIỆC",
-  //     value: "T2 - T6",
-  //     icon: <CalendarDays className="h-4 w-4" />,
-  //   },
-  //   {
-  //     label: "GIỜ LÀM VIỆC",
-  //     value: "09:00 - 18:00",
-  //     icon: <Clock className="h-4 w-4" />,
-  //   },
-  // ]
   const details = generateJobDetails(job);
 
   return (
@@ -138,15 +62,27 @@ export default function JobInfo({ job, recruiter }: JobInfoProps) {
         </div>
 
         <h3 className='pt-4 text-lg font-semibold'>Mô tả công việc</h3>
-        <div>{job.description}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(job.description)
+          }}
+        ></div>
 
         <h3 className='pt-4 text-lg font-semibold'>Yêu cầu công việc</h3>
-        <div>{job.requirement}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(job.requirement)
+          }}
+        ></div>
 
         <h3 className='pt-4 text-lg font-semibold'>
           Các phúc lợi dành cho bạn
         </h3>
-        <div>{job.benefit}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(job.benefit)
+          }}
+        ></div>
 
         <h3 className='pt-4 text-lg font-semibold'>Thông tin việc làm</h3>
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>

@@ -15,8 +15,12 @@ import {
   CollapsibleTrigger
 } from '@/components/ui/collapsible';
 import Link from 'next/link';
+import { NavItem } from '@/constants/navigation';
+interface UserDropdownProps {
+  navItems: NavItem[];
+}
 
-export function UserDropdown() {
+export function UserDropdown({ navItems }: UserDropdownProps) {
   const [open, setOpen] = React.useState(false);
   const [accountSettingsOpen, setAccountSettingsOpen] = React.useState(false);
 
@@ -61,7 +65,7 @@ export function UserDropdown() {
         </div>
 
         <div className='p-1'>
-          <Collapsible
+          {/* <Collapsible
             open={accountSettingsOpen}
             onOpenChange={setAccountSettingsOpen}
             className='w-full'
@@ -89,12 +93,25 @@ export function UserDropdown() {
                 </Link>
               </DropdownMenuItem>
             </CollapsibleContent>
-          </Collapsible>
+          </Collapsible> */}
 
-          <DropdownMenuItem className='focus:bg-secondary/40 mt-2 flex items-center border-t p-3'>
+          {navItems &&
+            navItems.map((navItem, index) => (
+              <DropdownMenuItem
+                key={index}
+                className='focus:bg-secondary/40 mt-2 flex items-center border-t p-3'
+              >
+                {navItem.icon}
+                <Link href={navItem.url} className='w-full'>
+                  {navItem.title}
+                </Link>
+              </DropdownMenuItem>
+            ))}
+
+          {/* <DropdownMenuItem className='focus:bg-secondary/40 mt-2 flex items-center border-t p-3'>
             <LogOut className='mr-2 h-5 w-5 text-gray-500' />
             <span>Thoát</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

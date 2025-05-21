@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Recruiter } from '@/interfaces';
 import { formatEmployeeCount } from '@/lib/utils';
+import placeholder from '@/public/placeholder.jpg';
 
 interface CompanyInfoProps {
   recruiter: Recruiter;
@@ -16,7 +17,7 @@ export default function CompanyInfo({ recruiter }: CompanyInfoProps) {
         <div className='flex flex-col items-center text-center'>
           <div className='relative mb-4 h-24 w-24 overflow-hidden'>
             <Image
-              src={recruiter.image || '/placeholder.svg'}
+              src={recruiter.image || placeholder}
               alt='1C Vietnam LLC'
               width={96}
               height={96}

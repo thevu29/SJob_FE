@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import placeholder from '@/public/placeholder.jpg';
 
 interface SimilarJob {
   id: string;
@@ -17,7 +18,7 @@ export default function SimilarJobs() {
       id: '1',
       title: 'Nhân Viên Kinh Doanh',
       company: 'Công Ty TNHH Rich Media',
-      logo: '/placeholder.svg?height=48&width=48',
+      logo: '',
       salary: '10tr-30tr đ/tháng',
       location: 'Hà Nội'
     },
@@ -25,7 +26,7 @@ export default function SimilarJobs() {
       id: '2',
       title: 'Chuyên Viên Kinh Doanh',
       company: 'Stavian Group',
-      logo: '/placeholder.svg?height=48&width=48',
+      logo: '',
       salary: '$ 500-2,000 /tháng',
       location: 'Hà Nội, Hưng Yên'
     },
@@ -33,7 +34,7 @@ export default function SimilarJobs() {
       id: '3',
       title: 'Nhân Viên Kinh Doanh',
       company: 'Công Ty Cổ Phần Vật Tư Chăn Nuôi',
-      logo: '/placeholder.svg?height=48&width=48',
+      logo: '',
       salary: 'Tới 40,000 đ/tháng',
       location: 'Hà Nội'
     },
@@ -41,7 +42,7 @@ export default function SimilarJobs() {
       id: '4',
       title: 'Chuyên Viên Kinh Doanh',
       company: 'Công Ty Cổ Phần Xuất Nhập Khẩu',
-      logo: '/placeholder.svg?height=48&width=48',
+      logo: '',
       salary: 'Thương lượng',
       location: 'Hà Nội'
     }
@@ -61,7 +62,7 @@ export default function SimilarJobs() {
           >
             <div className='shrink-0'>
               <Image
-                src={job.logo || '/placeholder.svg'}
+                src={job.logo || placeholder}
                 alt={job.company}
                 width={48}
                 height={48}

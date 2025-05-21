@@ -13,6 +13,7 @@ import Logo from '@/public/icon.png';
 import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/components/user-dropdown';
 import { ROUTES } from '@/constants/routes';
 import { NotificationBell } from '@/features/notification/notification';
+import { navRecruiterItems } from '@/constants/navigation';
 
 export function Header() {
   return (
@@ -88,7 +89,7 @@ export function Header() {
               <Bell className='h-6 w-6' />
             </button> */}
             <NotificationBell />
-            <UserDropdown />
+            <UserDropdown navItems={navRecruiterItems} />
           </div>
         </div>
       </div>
