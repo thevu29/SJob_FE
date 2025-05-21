@@ -16,6 +16,7 @@ import CertificationCard from '@/features/recruiter/pages/profile-jobseeker/comp
 import { Resume } from '@/interfaces/resume';
 import ResumeCard from '@/features/recruiter/pages/profile-jobseeker/components/resume-card';
 import { JobInvitationModal } from '@/features/recruiter/pages/profile-jobseeker/components/job-invitation-modal';
+import placeholder from '@/public/placeholder.jpg';
 
 export default function ProfileJobSeeker() {
   const params = useParams();
@@ -60,7 +61,7 @@ export default function ProfileJobSeeker() {
           <div className='absolute -bottom-20 flex flex-col items-start gap-4 md:-bottom-24 md:flex-row md:items-end'>
             <Avatar className='border-background h-32 w-32 rounded-full border-4 md:h-48 md:w-48'>
               <Image
-                src={jobSeeker?.image || '/placeholder.svg'}
+                src={jobSeeker?.image || placeholder}
                 alt='Profile picture'
                 loading='eager'
                 quality={100}
@@ -94,7 +95,13 @@ export default function ProfileJobSeeker() {
               <CardTitle className='text-xl'>Giới thiệu</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className='text-foreground'>{jobSeeker?.about}</p>
+              {jobSeeker?.about ? (
+                <p className='text-foreground'>{jobSeeker?.about}</p>
+              ) : (
+                <div className='text-muted-foreground py-8 text-center'>
+                  <p>Chưa có thông tin giới thiệu nào được thêm vào</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

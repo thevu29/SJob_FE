@@ -34,7 +34,7 @@ export const ROUTES = {
     // DASHBOARD: '/jobseeker/dashboard',
     PROFILE: '/user/profile',
     JOBS: {
-      SEARCH: '/jobs/search',
+      SEARCH: '/jobs-search',
       DETAIL: (id: string) => `/job/${id}`,
       APPLIED: '/jobseeker/jobs/applied',
       SAVED: '/jobseeker/jobs/saved'

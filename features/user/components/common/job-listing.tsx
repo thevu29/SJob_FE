@@ -9,18 +9,19 @@ import Pagination from '@/features/user/components/common/pagination';
 import { useGet, useGetPaginated } from '@/hooks/useQueries';
 import { Recruiter } from '@/interfaces';
 import { Job } from '@/interfaces/job';
-import { useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 export default function JobListing() {
   const searchParams = useSearchParams();
+  const params = useParams();
 
   const query = searchParams.get('query') || '';
   const currentPage = Number(searchParams.get('page') || '1');
   const pageSize = Number(searchParams.get('limit') || '10');
 
-  //   const recruiterId = params.recruiterId as string;
-  const recruiterId = '68144e36647b71355acf11d1';
+  const recruiterId = params.recruiterId as string;
+  // const recruiterId = '68144e36647b71355acf11d1';
 
   const { data: JobsData, isLoading: isJobsLoading } = useGetPaginated<Job>(
     'jobs',

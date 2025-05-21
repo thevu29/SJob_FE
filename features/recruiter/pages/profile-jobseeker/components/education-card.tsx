@@ -12,10 +12,9 @@ export default function EducationCard({ educations = [] }: EducationCardProps) {
       <CardHeader>
         <CardTitle className='text-xl'>Học vấn</CardTitle>
       </CardHeader>
-      {educations &&
-        educations.length > 0 &&
+      {educations && educations.length > 0 ? (
         educations.map((education) => (
-          <CardContent key={education.id} className='space-y-4'>
+          <CardContent key={education?.id} className='space-y-4'>
             <div className='flex items-start gap-4'>
               <div className='bg-muted rounded-full p-3'>
                 <Building2 className='h-5 w-5' />
@@ -29,7 +28,12 @@ export default function EducationCard({ educations = [] }: EducationCardProps) {
               </div>
             </div>
           </CardContent>
-        ))}
+        ))
+      ) : (
+        <div className='text-muted-foreground py-8 text-center'>
+          <p>Chưa có học vấn nào được thêm vào</p>
+        </div>
+      )}
     </Card>
   );
 }

@@ -38,16 +38,17 @@ export default function SkillsCard({
       </CardHeader>
       <CardContent className='space-y-6'>
         <div className='space-y-4'>
-          {visibleSkills.map((skill, index) => (
-            <div key={skill.id}>
-              {/* Skill item */}
-              <div className='flex flex-col gap-2 md:flex-row md:items-center md:gap-4'>
-                <div className='bg-muted w-fit rounded-full p-3'>
-                  <Code2 />
-                </div>
-                <div className='flex-1'>
-                  <h3 className='font-medium'>{skill.name}</h3>
-                  {/* <div className='mt-1 flex items-center'>
+          {visibleSkills && visibleSkills.length > 0 ? (
+            visibleSkills.map((skill, index) => (
+              <div key={skill.id}>
+                {/* Skill item */}
+                <div className='flex flex-col gap-2 md:flex-row md:items-center md:gap-4'>
+                  <div className='bg-muted w-fit rounded-full p-3'>
+                    <Code2 />
+                  </div>
+                  <div className='flex-1'>
+                    <h3 className='font-medium'>{skill.name}</h3>
+                    {/* <div className='mt-1 flex items-center'>
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
@@ -59,17 +60,22 @@ export default function SkillsCard({
                       />
                     ))}
                   </div> */}
+                  </div>
                 </div>
+                {/* Add separator if not the last item */}
+                {index < visibleSkills.length - 1 && (
+                  <Separator className='my-4' />
+                )}
               </div>
-              {/* Add separator if not the last item */}
-              {index < visibleSkills.length - 1 && (
-                <Separator className='my-4' />
-              )}
+            ))
+          ) : (
+            <div className='text-muted-foreground py-8 text-center'>
+              <p>Chưa có kỹ năng nào được thêm vào</p>
             </div>
-          ))}
+          )}
         </div>
 
-        {skills.length > initialVisibleCount && (
+        {skills?.length > initialVisibleCount && (
           <div className='flex justify-center'>
             <Button
               variant='outline'

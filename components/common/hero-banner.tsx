@@ -10,6 +10,7 @@ import Banner5 from '@/public/banner5.jpg';
 import Banner6 from '@/public/banner6.jpg';
 import Banner7 from '@/public/banner7.jpg';
 import Link from 'next/link';
+import SearchInput from '@/features/user/components/common/search-input';
 
 export default function HeroBanner() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -64,18 +65,19 @@ export default function HeroBanner() {
       <div className='bg-card text-card-foreground relative mx-auto flex w-full flex-col gap-6 rounded-xl border p-6 shadow-sm md:p-12'>
         <div className='relative flex flex-col gap-2 md:flex-row'>
           <div className='relative flex-grow'>
-            <Search className='absolute top-1/2 left-3 -translate-y-1/2 transform border text-gray-400' />
+            {/* <Search className='absolute top-1/2 left-3 -translate-y-1/2 transform border text-gray-400' />
             <Input
               type='text'
               placeholder='Tìm kiếm việc làm, công ty, kỹ năng'
               className='w-full rounded-md bg-white py-6 pr-4 pl-10 text-black'
-            />
+            /> */}
+            <SearchInput redirectTo='/jobs-search' />
           </div>
-          <div className='flex items-center gap-2'>
+          {/* <div className='flex items-center gap-2'>
             <Button className='h-12 bg-orange-500 text-white hover:bg-orange-600'>
               Tìm kiếm
             </Button>
-          </div>
+          </div> */}
         </div>
         <div className='relative h-[300px] w-full overflow-hidden md:h-[400px]'>
           {slides.map((slide, index) => (

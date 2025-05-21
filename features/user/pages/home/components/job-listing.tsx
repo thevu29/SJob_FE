@@ -29,33 +29,6 @@ export default function JobListings({
 
   const totalDesktopPages = Math.ceil(jobs?.length / itemsPerPage);
 
-  // const displayJobs: Job[] = [...jobs];
-  // if (displayJobs.length < itemsPerPage) {
-  //   // Add placeholder jobs to prevent layout shift
-  //   const placeholdersNeeded = itemsPerPage - displayJobs.length;
-  //   for (let i = 0; i < placeholdersNeeded; i++) {
-  //     displayJobs.push({
-  //       id: String(jobs.length + i + 1),
-  //       recruiterId: '',
-  //       recruiterName: '',
-  //       recruiterImage: '',
-  //       name: '',
-  //       description: '',
-  //       salary: 0,
-  //       requirement: '',
-  //       benefit: '',
-  //       deadline: '',
-  //       slots: 0,
-  //       type: '',
-  //       date: '',
-  //       education: '',
-  //       experience: '',
-  //       closeWhenFull: false,
-  //       status: JobStatus.OPEN
-  //     });
-  //   }
-  // }
-
   // Handle mobile carousel slide change
   useEffect(() => {
     if (!emblaApi) return;
