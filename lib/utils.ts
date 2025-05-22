@@ -49,3 +49,74 @@ export const shortenName = (name?: string, maxInitials: number = 2): string => {
     .map((part) => part[0].toUpperCase())
     .join('');
 };
+
+export const getValueOfKeyFromEnum = <T extends Record<string, string>>(
+  enums: T,
+  key: string
+): string => {
+  return enums[key as keyof T] || key;
+};
+
+export const formatSalary = (salary: number) => {
+  const salaryInTrillions = salary / 1000000;
+  return `${salaryInTrillions}tr ₫/tháng`;
+};
+
+export const getExpirationMessage = (expirationDateStr: string) => {
+  const expirationDate = new Date(expirationDateStr);
+  const currentDate = new Date();
+
+  expirationDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  const daysRemaining = Math.ceil(
+    (expirationDate.getTime() - currentDate.getTime()) / millisecondsPerDay
+  );
+
+  if (daysRemaining > 0) {
+    return `Hết hạn trong ${daysRemaining} ngày`;
+  } else if (daysRemaining === 0) {
+    return 'Hết hạn hôm nay';
+  } else {
+    return `Hết hạn ${Math.abs(daysRemaining)} ngày trước`;
+  }
+};
+
+export const formatEmployeeCount = (count: number): string => {
+  if (count < 25) {
+    return 'Dưới 25 nhân viên';
+  } else if (count < 100) {
+    return '25-99 nhân viên';
+  } else if (count < 500) {
+    return '100-499 nhân viên';
+  } else if (count < 1000) {
+    return '500-999 nhân viên';
+  } else {
+    return 'Trên 1000 nhân viên';
+  }
+};
+
+export const formatToYearMonth = (dateString: string): string => {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid date format');
+  }
+
+  // Lấy năm và tháng
+  const yearMonth =
+    date.getFullYear() +
+    '-' +
+    (date.getMonth() + 1).toString().padStart(2, '0');
+
+  return yearMonth;
+};
+
+export function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    maximumFractionDigits: 0
+  }).format(amount);
+}

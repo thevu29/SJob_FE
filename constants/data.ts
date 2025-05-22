@@ -44,6 +44,11 @@ export const navItems: NavItem[] = [
         title: 'Ứng viên',
         url: '/dashboard/job-seeker',
         shortcut: ['l', 'l']
+      },
+      {
+        title: 'Nhà tuyển dụng',
+        url: '/dashboard/recruiter',
+        shortcut: ['o', 'o']
       }
     ]
   }

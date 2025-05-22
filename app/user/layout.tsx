@@ -1,0 +1,27 @@
+'use client';
+import { Footer } from '@/features/recruiter/components/navigation/footer';
+import { Header } from '@/features/user/components/navigation/header';
+import { Sidebar } from '@/features/user/components/navigation/sidebar';
+import { JobSeekerProvider } from '@/features/user/contexts/job-seeker-context';
+import React from 'react';
+
+export default function UserLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const jobSeekerId = '35a7eaf6-a6d4-4332-a489-77c4fd4074f4';
+
+  return (
+    <JobSeekerProvider jobSeekerId={jobSeekerId}>
+      <div>
+        <Header />
+        <div className='bg-muted/30 flex min-h-screen flex-col md:flex-row'>
+          <Sidebar />
+          <main className='flex-1 p-4 md:p-6'>{children}</main>
+        </div>
+        <Footer />
+      </div>
+    </JobSeekerProvider>
+  );
+}

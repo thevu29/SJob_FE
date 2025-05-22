@@ -101,6 +101,36 @@ export const post = async <T, D = unknown>(
   return response.data;
 };
 
+export const postFormData = async <T, D = unknown>(
+  url: string,
+  data: D,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
+  const formData = new FormData();
+
+  Object.entries(data as Record<string, any>).forEach(([key, value]) => {
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else {
+      formData.append(key, value != null ? value.toString() : '');
+    }
+  });
+
+  const response: AxiosResponse<ApiResponse<T>> = await apiClient.post(
+    url,
+    formData,
+    {
+      ...config,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(config?.headers || {})
+      }
+    }
+  );
+
+  return response.data;
+};
+
 export const put = async <T, D = unknown>(
   url: string,
   data?: D,
@@ -111,6 +141,79 @@ export const put = async <T, D = unknown>(
     data,
     config
   );
+  return response.data;
+};
+
+export const patch = async <T, D = unknown>(
+  url: string,
+  data?: D,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
+  const response: AxiosResponse<ApiResponse<T>> = await apiClient.patch(
+    url,
+    data,
+    config
+  );
+  return response.data;
+};
+
+export const putFormData = async <T, D = unknown>(
+  url: string,
+  data: D,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
+  const formData = new FormData();
+
+  Object.entries(data as Record<string, any>).forEach(([key, value]) => {
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else {
+      formData.append(key, value != null ? value.toString() : '');
+    }
+  });
+
+  const response: AxiosResponse<ApiResponse<T>> = await apiClient.put(
+    url,
+    formData,
+    {
+      ...config,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(config?.headers || {})
+      }
+    }
+  );
+
+  return response.data;
+};
+
+export const patchFormData = async <T, D = unknown>(
+  url: string,
+  data: D,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
+  const formData = new FormData();
+
+  Object.entries(data as Record<string, any>).forEach(([key, value]) => {
+    if (value instanceof File) {
+      formData.append(key, value);
+    } else {
+      formData.append(key, value != null ? value.toString() : '');
+    }
+  });
+
+  const response: AxiosResponse<ApiResponse<T>> = await apiClient.patch(
+    url,
+    formData,
+    {
+      ...config,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        ...(config?.headers || {})
+      }
+    }
+  );
+
   return response.data;
 };
 
