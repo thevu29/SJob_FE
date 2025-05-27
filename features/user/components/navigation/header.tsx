@@ -1,25 +1,23 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import Logo from '@/public/icon.png';
-import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/components/user-dropdown';
-import { ROUTES } from '@/constants/routes';
-import { NotificationBell } from '@/features/notification/notification';
-import { MobileNav } from '@/features/user/components/navigation/mobile-nav';
 import { ChevronDown } from 'lucide-react';
+
+import Logo from '@/public/icon.png';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
-import { Avatar } from '@/components/ui/avatar';
 import { navUserItems } from '@/constants/navigation';
+import { NotificationBell } from '@/features/notification/notification';
+import { MobileNav } from '@/features/user/components/navigation/mobile-nav';
+import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/components/user-dropdown';
 
 export function Header() {
   return (
     <header className='bg-secondary text-foreground sticky top-0 z-50 w-full'>
-      <div className='flex h-16 items-center justify-between px-5'>
+      <div className='container flex h-16 items-center justify-between px-5'>
         <div className='flex items-center'>
           <MobileNav />
           <Link href='/' className='mr-6 flex items-center'>
@@ -27,14 +25,6 @@ export function Header() {
           </Link>
           <nav className='hidden md:flex'>
             <ul className='flex'>
-              {/* <li>
-                <Link
-                  href={ROUTES.RECRUITER.DASHBOARD}
-                  className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
-                >
-                  Dashboard
-                </Link>
-              </li> */}
               <li>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -56,9 +46,6 @@ export function Header() {
         </div>
         <div className='flex items-center'>
           <div className='flex items-center space-x-4'>
-            {/* <button className='relative'>
-              <Bell className='h-6 w-6' />
-            </button> */}
             <NotificationBell />
             <UserDropdown navItems={navUserItems} />
           </div>

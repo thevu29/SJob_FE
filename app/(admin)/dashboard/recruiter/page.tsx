@@ -1,6 +1,4 @@
-import Link from 'next/link';
 import { Suspense } from 'react';
-import { Plus } from 'lucide-react';
 import { SearchParams } from 'nuqs/server';
 
 import { Heading } from '@/components/ui/heading';
@@ -27,7 +25,7 @@ export default async function Page(props: pageProps) {
 
   return (
     <PageContainer scrollable={false}>
-      <div className='flex flex-1 flex-col space-y-4'>
+      <div className='flex flex-1 flex-col space-y-4 overflow-hidden'>
         <div className='flex items-start justify-between'>
           <Heading
             title='Nhà tuyển dụng'

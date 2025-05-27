@@ -1,8 +1,3 @@
-import {
-  LoadingPage,
-  LoadingSkeleton,
-  LoadingSpinner
-} from '@/components/common/loading';
 import { JobCard } from '@/features/user/components/common/job-card';
 import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
 import Pagination from '@/features/user/components/common/pagination';
@@ -21,7 +16,6 @@ export default function JobListing() {
   const pageSize = Number(searchParams.get('limit') || '10');
 
   const recruiterId = params.recruiterId as string;
-  // const recruiterId = '68144e36647b71355acf11d1';
 
   const { data: JobsData, isLoading: isJobsLoading } = useGetPaginated<Job>(
     'jobs',

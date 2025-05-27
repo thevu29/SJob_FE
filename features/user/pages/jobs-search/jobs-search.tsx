@@ -4,14 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Search, MapPin, Check, X } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { JobCard } from '@/features/user/components/common/job-card';
 import {
   FilterValues,
   AdvancedFilters
@@ -19,9 +12,6 @@ import {
 import { JobType, JobStatus } from '@/interfaces/job';
 import SearchInput from '@/features/user/components/common/search-input';
 import JobListing from '@/features/user/components/common/job-listing';
-// import { JobCard } from "@/components/job-card"
-// import { JobStatus, JobType } from "@/lib/job"
-// import { AdvancedFilters, type FilterValues } from "@/components/filters/advanced-filters"
 
 const searchFormSchema = z.object({
   keyword: z.string().optional(),

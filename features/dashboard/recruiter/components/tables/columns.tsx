@@ -32,10 +32,6 @@ export const columns: ColumnDef<Recruiter>[] = [
     header: 'Email'
   },
   {
-    accessorKey: 'about',
-    header: 'Giới thiệu'
-  },
-  {
     accessorKey: 'website',
     header: 'Website'
   },

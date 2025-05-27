@@ -1,28 +1,24 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronDown, ChevronRight, LogOut, User, X } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { X } from 'lucide-react';
+import Link from 'next/link';
+
+import { NavItem } from '@/constants/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible';
-import Link from 'next/link';
-import { NavItem } from '@/constants/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 interface UserDropdownProps {
   navItems: NavItem[];
 }
 
 export function UserDropdown({ navItems }: UserDropdownProps) {
   const [open, setOpen] = React.useState(false);
-  const [accountSettingsOpen, setAccountSettingsOpen] = React.useState(false);
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -65,36 +61,6 @@ export function UserDropdown({ navItems }: UserDropdownProps) {
         </div>
 
         <div className='p-1'>
-          {/* <Collapsible
-            open={accountSettingsOpen}
-            onOpenChange={setAccountSettingsOpen}
-            className='w-full'
-          >
-            <CollapsibleTrigger className='hover:bg-secondary flex w-full items-center justify-between p-3'>
-              <div className='flex items-center'>
-                <User className='mr-2 h-5 w-5 text-gray-500' />
-                <span>Thiết lập tài khoản</span>
-              </div>
-              {accountSettingsOpen ? (
-                <ChevronDown className='h-4 w-4' />
-              ) : (
-                <ChevronRight className='h-4 w-4' />
-              )}
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <DropdownMenuItem className='focus:bg-secondary/40 pl-10'>
-                <Link href='/recruiter/my-account' className='w-full'>
-                  Quản lý tài khoản
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem className='focus:bg-secondary/40 pl-10'>
-                <Link href='/recruiter/company-general' className='w-full'>
-                  Thông tin công ty
-                </Link>
-              </DropdownMenuItem>
-            </CollapsibleContent>
-          </Collapsible> */}
-
           {navItems &&
             navItems.map((navItem, index) => (
               <DropdownMenuItem
@@ -107,11 +73,6 @@ export function UserDropdown({ navItems }: UserDropdownProps) {
                 </Link>
               </DropdownMenuItem>
             ))}
-
-          {/* <DropdownMenuItem className='focus:bg-secondary/40 mt-2 flex items-center border-t p-3'>
-            <LogOut className='mr-2 h-5 w-5 text-gray-500' />
-            <span>Thoát</span>
-          </DropdownMenuItem> */}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

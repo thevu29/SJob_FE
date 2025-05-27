@@ -1,4 +1,5 @@
 'use client';
+
 import { LoadingSpinner } from '@/components/common/loading';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +15,7 @@ interface SearchInputProps {
 export default function SearchInput({ redirectTo }: SearchInputProps) {
   const router = useRouter();
   const { query, setQuery, isPending } = useJobParams();
+
   const handleSearch = () => {
     if (redirectTo) {
       const currentParams = new URLSearchParams(window.location.search);
@@ -24,13 +26,14 @@ export default function SearchInput({ redirectTo }: SearchInputProps) {
       setQuery(query);
     }
   };
+
   return (
     <div className='relative flex flex-col gap-2 md:flex-row'>
       <div className='relative flex-grow'>
         {isPending ? (
           <LoadingSpinner className='absolute top-1/2 left-3 -translate-y-1/2 transform border text-gray-400' />
         ) : (
-          <Search className='absolute top-1/2 left-3 -translate-y-1/2 transform border text-gray-400' />
+          <Search className='absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-400' />
         )}
 
         <Input

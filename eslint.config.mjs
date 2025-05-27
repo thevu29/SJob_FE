@@ -1,6 +1,8 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+
 import { FlatCompat } from '@eslint/eslintrc';
+import parser from '@typescript-eslint/parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,8 +16,6 @@ const eslintConfig = [
   ...compat.extends(
     'next/core-web-vitals',
     'plugin:@typescript-eslint/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
     'prettier' // Make sure prettier is last to avoid conflicts
   ),
 
@@ -23,7 +23,7 @@ const eslintConfig = [
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      parser: compat.config('@typescript-eslint/parser').parser,
+      parser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
@@ -38,35 +38,23 @@ const eslintConfig = [
   {
     rules: {
       // React/Next.js specific rules
-      'react/react-in-jsx-scope': 'off', // Not needed in Next.js
-      'react/prop-types': 'off', // We use TypeScript for type checking
+      'react/prop-types': 'off', // use TypeScript for type checking
       'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
 
       // TypeScript specific rules
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' }
-      ],
-      '@typescript-eslint/no-explicit-any': 'warn',
-
-      // Import rules for better module organization
-      'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            ['parent', 'sibling'],
-            'index',
-            'object',
-            'type'
-          ],
-          'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true }
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_'
         }
       ],
+      '@typescript-eslint/no-explicit-any': 'off', // Allow any type for now
+
       'import/no-unresolved': 'off', // TypeScript handles this
 
       // General code quality rules

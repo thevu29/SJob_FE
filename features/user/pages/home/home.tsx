@@ -1,19 +1,12 @@
 'use client';
+
 import HeroBanner from '@/components/common/hero-banner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import JobListings from '@/features/user/pages/home/components/job-listing';
-import { Search, MapPin } from 'lucide-react';
 import React from 'react';
-import { useGet, useGetPaginated } from '@/hooks/useQueries';
 import { Job } from '@/interfaces/job';
 import FieldListings from '@/features/user/pages/home/components/field-listing';
 import { FieldDetailCount } from '@/interfaces/field';
-import Image from 'next/image';
-import Banner3 from '@/public/banner3.jpg';
 import Hotline from '@/features/user/pages/home/components/hotline';
-import { Recruiter } from '@/interfaces';
-// import RecruiterListings from '@/features/user/pages/home/components/recruiter-listing';
 import { useQueries } from '@tanstack/react-query';
 import { get } from '@/lib/api';
 import { LoadingPage } from '@/components/common/loading';
@@ -24,8 +17,8 @@ export default function HomePage() {
   const queries = useQueries({
     queries: [
       {
-        queryKey: ['jobs/all'],
-        queryFn: () => get<Job[]>('jobs/all'),
+        queryKey: ['jobs'],
+        queryFn: () => get<Job[]>('jobs'),
         staleTime: 5 * 60 * 1000
       },
       {
