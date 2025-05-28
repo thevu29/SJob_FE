@@ -48,7 +48,7 @@ export default function FieldListings({
       <Card className='border-border border'>
         <CardHeader className='pb-0'>
           <CardTitle className='text-2xl font-bold'>
-            Ngành Nghề Trọng Điểm
+            Ngành Nghề Hiện Có
           </CardTitle>
         </CardHeader>
         <CardContent className='pt-6'>

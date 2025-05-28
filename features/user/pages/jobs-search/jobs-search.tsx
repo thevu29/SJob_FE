@@ -1,165 +1,47 @@
 'use client';
-
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Search, MapPin, Check, X } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { JobCard } from '@/features/user/components/common/job-card';
-import {
-  FilterValues,
-  AdvancedFilters
-} from '@/features/user/pages/jobs-search/components/advanced-filters';
-import { JobType, JobStatus } from '@/interfaces/job';
+import { AdvancedFilters } from '@/features/user/pages/jobs-search/components/advanced-filters';
+import { JobType, JobStatus, Job } from '@/interfaces/job';
 import SearchInput from '@/features/user/components/common/search-input';
 import JobListing from '@/features/user/components/common/job-listing';
-// import { JobCard } from "@/components/job-card"
-// import { JobStatus, JobType } from "@/lib/job"
-// import { AdvancedFilters, type FilterValues } from "@/components/filters/advanced-filters"
-
-const searchFormSchema = z.object({
-  keyword: z.string().optional(),
-  location: z.string().optional(),
-  searchType: z
-    .enum(['Tên việc làm', 'Tên công ty', 'Cả hai'])
-    .default('Tên việc làm')
-});
-
-type SearchFormValues = z.infer<typeof searchFormSchema>;
+import { useSearchParams } from 'next/navigation';
+import { useGetPaginated } from '@/hooks/useQueries';
+import { useEffect } from 'react';
+import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
 
 export default function JobsSearch() {
-  const [filters, setFilters] = useState<FilterValues>({
-    experience: 'all',
-    salary: 'all',
-    field: '',
-    jobType: 'all'
-  });
+  const searchParams = useSearchParams();
 
-  const form = useForm<SearchFormValues>({
-    resolver: zodResolver(searchFormSchema),
-    defaultValues: {
-      keyword: 'nodejs',
-      location: 'Hồ Chí Minh',
-      searchType: 'Tên việc làm'
+  const query = searchParams.get('query') || '';
+  const currentPage = Number(searchParams.get('page') || '1');
+  const pageSize = Number(searchParams.get('limit') || '10');
+  const experience = searchParams.get('experience') || '';
+  const salary = searchParams.get('salary') || '';
+  const type = searchParams.get('type') || '';
+  const fieldDetailIds = searchParams.get('fieldDetailIds') || '';
+
+  const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
+
+  const { data: JobsData } = useGetPaginated<Job>(
+    'jobs',
+    currentPage,
+    pageSize,
+    ['jobs', query, experience, salary, type, fieldDetailIds],
+    {
+      params: {
+        ...(query && { query }),
+        ...(experience && { experience }),
+        ...(salary && { salary }),
+        ...(type && { type }),
+        ...(fieldDetailIds && { fieldDetailIds })
+      }
     }
-  });
+  );
 
-  const onSubmit = (data: SearchFormValues) => {
-    console.log(data);
-  };
-
-  const resetFilters = () => {
-    setFilters({
-      experience: 'all',
-      salary: 'all',
-      field: '',
-      jobType: 'all'
-    });
-  };
-
-  const jobs = [
-    {
-      id: '1',
-      recruiterId: 'trident',
-      recruiterName: 'CÔNG TY TNHH TRIDENT DIGITAL TECH',
-      recruiterImage: '/placeholder.svg?height=80&width=80',
-      name: 'Senior Fullstack Developer (VueJS, NodeJS, English)',
-      description: '',
-      salary: 0,
-      requirement: '4 năm',
-      benefit: '',
-      deadline: '',
-      slots: 0,
-      type: JobType.FULL_TIME,
-      date: '1 tuần trước',
-      education: '',
-      experience: '4 năm',
-      closeWhenFull: false,
-      status: JobStatus.OPEN
-    },
-    {
-      id: '2',
-      recruiterId: 'fpt',
-      recruiterName: 'FPT SOFTWARE',
-      recruiterImage: '/placeholder.svg?height=80&width=80',
-      name: 'Senior Team Lead Nodejs Engineer',
-      description: '',
-      salary: 0,
-      requirement: 'Trên 5 năm',
-      benefit: '',
-      deadline: '',
-      slots: 0,
-      type: JobType.FULL_TIME,
-      date: '1 tuần trước',
-      education: '',
-      experience: 'Trên 5 năm',
-      closeWhenFull: false,
-      status: JobStatus.OPEN
-    },
-    {
-      id: '3',
-      recruiterId: 'tvt',
-      recruiterName: 'CÔNG TY CỔ PHẦN TVT GROUP',
-      recruiterImage: '/placeholder.svg?height=80&width=80',
-      name: 'JavaScript Developer (Reactjs, Nodejs)',
-      description: '',
-      salary: 0,
-      requirement: '4 năm',
-      benefit: '',
-      deadline: '',
-      slots: 0,
-      type: JobType.FULL_TIME,
-      date: '2 tuần trước',
-      education: '',
-      experience: '4 năm',
-      closeWhenFull: false,
-      status: JobStatus.OPEN
-    },
-    {
-      id: '4',
-      recruiterId: 'haravan',
-      recruiterName: 'CÔNG TY CỔ PHẦN CÔNG NGHỆ HARAVAN',
-      recruiterImage: '/placeholder.svg?height=80&width=80',
-      name: 'NodeJS Engineer (React,Angular) - TP.HCM',
-      description: '',
-      salary: 0,
-      requirement: '1 năm',
-      benefit: '',
-      deadline: '',
-      slots: 0,
-      type: JobType.FULL_TIME,
-      date: '2 tuần trước',
-      education: '',
-      experience: '1 năm',
-      closeWhenFull: false,
-      status: JobStatus.OPEN
-    },
-    {
-      id: '5',
-      recruiterId: 'belleza',
-      recruiterName: 'CÔNG TY TNHH BELLEZA VIỆT NAM',
-      recruiterImage: '/placeholder.svg?height=80&width=80',
-      name: 'Lập Trình Viên Nodejs',
-      description: '',
-      salary: 0,
-      requirement: '3 năm',
-      benefit: '',
-      deadline: '',
-      slots: 0,
-      type: JobType.FULL_TIME,
-      date: '2 tuần trước',
-      education: '',
-      experience: '3 năm',
-      closeWhenFull: false,
-      status: JobStatus.OPEN
-    }
-  ];
+  // Scroll to top when currentPage changes
+  useEffect(() => {
+    if (!isBrowser()) return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentPage]);
 
   return (
     <div className='container mx-auto px-4 py-4 md:px-6 lg:px-8'>
@@ -169,20 +51,23 @@ export default function JobsSearch() {
 
       <div className='grid grid-cols-1 gap-6 lg:grid-cols-4'>
         <div className='lg:col-span-1'>
-          <div className='sticky top-4 space-y-6'>
-            <AdvancedFilters
-              filters={filters}
-              onChange={setFilters}
-              onReset={resetFilters}
-            />
+          <div className='sticky top-24 space-y-6'>
+            <AdvancedFilters />
           </div>
         </div>
 
         <div className='space-y-4 lg:col-span-3'>
-          {/* {jobs.map((job) => (
-            <JobCard key={job.id} job={job} recruiter={} />
-          ))} */}
-          <JobListing />
+          {JobsData && JobsData.data && JobsData.data.length > 0 ? (
+            <JobListing
+              jobs={JobsData.data}
+              currentPage={currentPage}
+              totalPages={JobsData?.meta.totalPages as number}
+            />
+          ) : (
+            Array(3)
+              .fill(0)
+              .map((_, index) => <JobCardSkeleton key={index} />)
+          )}
         </div>
       </div>
     </div>

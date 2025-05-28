@@ -6,14 +6,17 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Job } from '@/interfaces/job';
 import placeholder from '@/public/placeholder.jpg';
-import { Recruiter } from '@/interfaces';
+import {
+  formatExperience,
+  formatRelativeDate,
+  formatSalary
+} from '@/lib/utils';
 
 interface JobCardProps {
   job: Job;
-  recruiter: Recruiter;
 }
 
-export function JobCard({ job, recruiter }: JobCardProps) {
+export function JobCard({ job }: JobCardProps) {
   return (
     <Card className='border-border mt-4 overflow-hidden border transition-shadow duration-300 hover:shadow-md'>
       <CardContent className='p-0'>
@@ -22,8 +25,8 @@ export function JobCard({ job, recruiter }: JobCardProps) {
             <div className='flex items-start gap-4'>
               <div className='hidden flex-shrink-0 sm:block'>
                 <Image
-                  src={recruiter?.image || placeholder}
-                  alt={recruiter?.name || 'Recruiter Logo'}
+                  src={job.recruiterImage || placeholder}
+                  alt={job.recruiterName || 'Recruiter Logo'}
                   width={80}
                   height={80}
                   loading='lazy'
@@ -32,31 +35,29 @@ export function JobCard({ job, recruiter }: JobCardProps) {
               </div>
               <div className='min-w-0 flex-1'>
                 <h3 className='mb-1 line-clamp-2 text-lg font-semibold'>
-                  {job?.name}
+                  {job.name}
                 </h3>
                 <p className='text-muted-foreground mb-2 text-sm'>
-                  {recruiter?.name}
+                  {job.recruiterName}
                 </p>
                 <div className='mb-2 flex'>
-                  {job.experience && (
-                    <Badge variant='outline' className='bg-muted/50'>
-                      {job.experience}
-                    </Badge>
-                  )}
+                  <Badge variant='outline' className='bg-muted/50'>
+                    {formatExperience(job.experience)}
+                  </Badge>
                 </div>
                 <div className='text-muted-foreground flex items-center text-sm'>
-                  <span>Đăng {job.date}</span>
-                  <span className='mx-2'>•</span>
-                  <span>Đã xem</span>
+                  <span>{formatRelativeDate(job.date)}</span>
+                  {/* <span className='mx-2'>•</span>
+                  <span>Đã xem</span> */}
                 </div>
               </div>
             </div>
           </div>
           <div className='col-span-12 flex flex-col justify-between p-4 md:col-span-3'>
             <div className='flex items-center justify-items-start md:justify-end'>
-              <Badge variant='outline' className='bg-muted/50 text-green-600'>
-                Thoả thuận
-              </Badge>
+              <p className='text-color-5 font-bold'>
+                {job.salary ? formatSalary(job.salary) : 'Thỏa thuận'}
+              </p>
             </div>
             <div className='mt-auto flex justify-end gap-2'>
               <Button size='sm' variant='outline'>
