@@ -60,7 +60,7 @@ export default function HeroBanner() {
       <div className='bg-card text-card-foreground relative mx-auto flex w-full flex-col gap-6 rounded-xl border p-6 shadow-sm md:p-12'>
         <div className='relative flex flex-col gap-2 md:flex-row'>
           <div className='relative flex-grow'>
-            <SearchInput redirectTo='/jobs-search' />
+            <SearchInput redirectTo='/job' />
           </div>
         </div>
         <div className='relative h-[300px] w-full overflow-hidden md:h-[400px]'>
