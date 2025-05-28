@@ -7,7 +7,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { EditGeneralInfoForm } from '@/features/user/pages/profile/components/forms/edit-general-info-form';
 import { JobSeeker } from '@/interfaces';
-import { usePatchFormData, usePutFormData } from '@/hooks/useQueries';
+import { usePatchFormData, usePutFormData } from '@/hooks/use-queries';
 import { TUpdateJobSeekerSchema } from '@/features/user/schemas/job-seeker.schema';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

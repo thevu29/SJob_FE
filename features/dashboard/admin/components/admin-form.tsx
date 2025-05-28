@@ -8,7 +8,7 @@ import { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import type { User } from '@/interfaces';
-import { usePost } from '@/hooks/useQueries';
+import { usePost } from '@/hooks/use-queries';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,7 +20,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { PasswordInput } from '@/components/ui/password-input';
+import { PasswordInput } from '@/components/common/password-input';
 
 const formSchema = z
   .object({
@@ -117,13 +117,14 @@ export default function AdminForm() {
               <FormField
                 control={form.control}
                 name='confirmPassword'
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <FormItem>
                     <FormLabel>Nhập lại mật khẩu</FormLabel>
                     <FormControl>
                       <PasswordInput
-                        placeholder='Xác nhận mật khẩu'
                         {...field}
+                        placeholder='Xác nhận mật khẩu'
+                        error={!!fieldState.error}
                       />
                     </FormControl>
                     <FormMessage />

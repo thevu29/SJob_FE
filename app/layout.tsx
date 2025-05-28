@@ -38,7 +38,7 @@ export default function RootLayout({
         <NextTopLoader showSpinner={false} />
         <NuqsAdapter>
           <Providers>
-            <Toaster position='top-right' closeButton />
+            <Toaster position='top-right' closeButton richColors />
             {children}
           </Providers>
         </NuqsAdapter>

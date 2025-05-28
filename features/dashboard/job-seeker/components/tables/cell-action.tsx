@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 import type { JobSeeker, User } from '@/interfaces';
-import { useDelete, usePut } from '@/hooks/useQueries';
+import { useDelete, usePut } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {

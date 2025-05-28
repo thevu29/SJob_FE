@@ -20,7 +20,7 @@ import {
   TUpdateCertification,
   UpdateCertificationSchema
 } from '@/features/user/schemas/certification.schema';
-import { usePatchFormData } from '@/hooks/useQueries';
+import { usePatchFormData } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { formatToYearMonth } from '@/lib/utils';

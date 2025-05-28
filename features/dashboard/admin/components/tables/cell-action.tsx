@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 import { LockKeyhole, LockKeyholeOpen, MoreHorizontal } from 'lucide-react';
 
 import type { User } from '@/interfaces';
-import { usePut } from '@/hooks/useQueries';
+import { usePut } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {

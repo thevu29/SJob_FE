@@ -21,7 +21,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import type { Notification } from '@/interfaces/notification';
-import { useGet, useGetPaginated, usePut } from '@/hooks/useQueries';
+import { useGet, useGetPaginated, usePut } from '@/hooks/use-queries';
 import { NotificationItem } from '@/features/notification/components/notification-item';
 
 export function NotificationBell() {

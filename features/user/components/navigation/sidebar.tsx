@@ -25,9 +25,9 @@ import {
 } from '@/components/ui/collapsible';
 
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
-import { usePatchFormData } from '@/hooks/useQueries';
-import type { JobSeeker } from '@/interfaces';
-import type { AxiosError } from 'axios';
+import { usePatchFormData } from '@/hooks/use-queries';
+import { JobSeeker } from '@/interfaces';
+import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useDebounce } from '@/hooks/use-debounce';
 import { ROUTES } from '@/constants/routes';

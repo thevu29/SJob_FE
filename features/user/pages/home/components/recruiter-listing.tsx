@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { Recruiter } from '@/interfaces';
 import Image from 'next/image';
-import { useGet } from '@/hooks/useQueries';
+import { useGet } from '@/hooks/use-queries';
 
 interface RecruiterListingsProps {
   recruiters: Recruiter[];

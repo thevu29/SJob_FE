@@ -1,6 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { useGetPaginated } from '@/hooks/useQueries';
+import { useGetPaginated } from '@/hooks/use-queries';
 import { Job } from '@/interfaces/job';
 import { DataTable as JobTable } from '@/components/ui/table/data-table';
 import { columns } from './components/tables/columns';

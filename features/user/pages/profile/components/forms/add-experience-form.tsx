@@ -32,7 +32,7 @@ import {
   TExperience
 } from '@/features/user/schemas/experience.schema';
 import { JobSeeker } from '@/interfaces';
-import { usePost } from '@/hooks/useQueries';
+import { usePost } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { getValueOfKeyFromEnum } from '@/lib/utils';

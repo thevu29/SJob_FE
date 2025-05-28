@@ -32,7 +32,7 @@ import {
   TUpdateExperience,
   UpdateExperienceSchema
 } from '@/features/user/schemas/experience.schema';
-import { usePatch, usePut } from '@/hooks/useQueries';
+import { usePatch, usePut } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { formatToYearMonth } from '@/lib/utils';

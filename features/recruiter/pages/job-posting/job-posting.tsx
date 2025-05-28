@@ -14,7 +14,7 @@ import {
   CreateJobSchema,
   TCreateJob
 } from '@/features/recruiter/schemas/job.schema';
-import { usePost } from '@/hooks/useQueries';
+import { usePost } from '@/hooks/use-queries';
 import { Job } from '@/interfaces/job';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

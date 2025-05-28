@@ -27,7 +27,7 @@ import {
   TUpdateRecruiter,
   UpdateRecruiterSchema
 } from '@/features/recruiter/schemas/recruiter.schema';
-import { useGet, usePutFormData } from '@/hooks/useQueries';
+import { useGet, usePutFormData } from '@/hooks/use-queries';
 import { Recruiter } from '@/interfaces';
 import { useEffect, useMemo, useState } from 'react';
 import { Field } from '@/interfaces/field';

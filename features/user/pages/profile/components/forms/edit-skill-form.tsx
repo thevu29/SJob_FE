@@ -19,7 +19,7 @@ import {
   TUpdateSkill,
   UpdateSkillSchema
 } from '@/features/user/schemas/skill.schema';
-import { usePatch } from '@/hooks/useQueries';
+import { usePatch } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 

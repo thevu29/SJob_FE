@@ -15,7 +15,7 @@ import {
   TUpdateJob,
   UpdateJobSchema
 } from '@/features/recruiter/schemas/job.schema';
-import { useGet, usePost, usePut } from '@/hooks/useQueries';
+import { useGet, usePost, usePut } from '@/hooks/use-queries';
 import { Job } from '@/interfaces/job';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

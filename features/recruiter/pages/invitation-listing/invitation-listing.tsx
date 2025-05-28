@@ -1,6 +1,6 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { useGetPaginated } from '@/hooks/useQueries';
+import { useGetPaginated } from '@/hooks/use-queries';
 import { Invitation } from '@/interfaces/invitation';
 import { columns } from '@/features/recruiter/pages/invitation-listing/components/tables/columns';
 import { DataTable as InvitationTable } from '@/components/ui/table/data-table';

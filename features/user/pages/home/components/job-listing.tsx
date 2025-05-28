@@ -1,14 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import useEmblaCarousel from 'embla-carousel-react';
-import { Job, JobStatus } from '@/interfaces/job';
+import { Job } from '@/interfaces/job';
 import { JobCard } from '@/features/user/pages/home/components/job-card';
 
 interface JobListingsProps {
@@ -84,12 +83,12 @@ export default function JobListings({
                 <div className='mr-2 h-12 w-3 rounded-sm bg-gradient-to-b from-orange-500 to-blue-500'></div>
                 <h2 className='text-xl font-bold md:text-2xl'>{title}</h2>
               </div>
-              <a
+              <Link
                 href={viewAllLink}
                 className='text-primary-foreground font-medium uppercase hover:underline'
               >
                 Xem tất cả
-              </a>
+              </Link>
             </div>
 
             {/* Desktop view - Grid layout */}

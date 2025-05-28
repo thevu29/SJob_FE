@@ -1,21 +1,14 @@
 'use client';
+
 import HeroBanner from '@/components/common/hero-banner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import JobListings from '@/features/user/pages/home/components/job-listing';
-import { Search, MapPin } from 'lucide-react';
 import React from 'react';
-import { useGet, useGetPaginated } from '@/hooks/useQueries';
 import { Job } from '@/interfaces/job';
 import FieldListings from '@/features/user/pages/home/components/field-listing';
 import { FieldDetailCount } from '@/interfaces/field';
-import Image from 'next/image';
-import Banner3 from '@/public/banner3.jpg';
 import Hotline from '@/features/user/pages/home/components/hotline';
-import { Recruiter } from '@/interfaces';
-// import RecruiterListings from '@/features/user/pages/home/components/recruiter-listing';
 import { useQueries } from '@tanstack/react-query';
-import { get } from '@/lib/api';
+import { getPaginatedPublic, getPublic } from '@/lib/api';
 import { LoadingPage } from '@/components/common/loading';
 import { ROUTES } from '@/constants/routes';
 
@@ -24,14 +17,12 @@ export default function HomePage() {
   const queries = useQueries({
     queries: [
       {
-        queryKey: ['jobs/all'],
-        queryFn: () => get<Job[]>('jobs/all'),
-        staleTime: 5 * 60 * 1000
+        queryKey: ['jobs'],
+        queryFn: () => getPaginatedPublic<Job>('jobs')
       },
       {
         queryKey: ['field-details/counts'],
-        queryFn: () => get<FieldDetailCount[]>('field-details/counts'),
-        staleTime: 5 * 60 * 1000
+        queryFn: () => getPublic<FieldDetailCount[]>('field-details/counts')
       }
       // {
       //   queryKey: ['recruiters/all'],
@@ -39,9 +30,9 @@ export default function HomePage() {
       // }
     ]
   });
-  const jobs = queries[0].data?.data as unknown as Job[];
-  const fieldDetailCounts = queries[1].data
-    ?.data as unknown as FieldDetailCount[];
+
+  const jobResponse = queries[0].data;
+  const fieldDetailCounts = queries[1].data;
   // const recruiters = queries[2].data?.data as unknown as Recruiter[];
 
   const isLoading = queries.some((query) => query.isLoading);
@@ -57,21 +48,29 @@ export default function HomePage() {
       {/* <RecruiterListings recruiters={[]} /> */}
 
       {/* Job Listing  */}
-      <JobListings
-        title='Việc làm mới nhất'
-        jobs={jobs}
-        viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
-      />
+      {jobResponse && jobResponse.data && jobResponse.data.length > 0 && (
+        <JobListings
+          title='Việc làm mới nhất'
+          jobs={jobResponse.data}
+          viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
+        />
+      )}
 
       {/* Field Listing  */}
-      <FieldListings fieldDetailCounts={fieldDetailCounts} />
+      {fieldDetailCounts &&
+        fieldDetailCounts.data &&
+        fieldDetailCounts.data.length > 0 && (
+          <FieldListings fieldDetailCounts={fieldDetailCounts.data} />
+        )}
 
       {/* Job Listing  */}
-      <JobListings
-        title='Việc làm gợi ý'
-        jobs={jobs}
-        viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
-      />
+      {jobResponse && jobResponse.data && jobResponse.data.length > 0 && (
+        <JobListings
+          title='Việc làm gợi ý'
+          jobs={jobResponse.data}
+          viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
+        />
+      )}
 
       {/* Hotline*/}
       <Hotline />
