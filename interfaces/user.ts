@@ -1,4 +1,4 @@
-import { UserRole } from '@/constants/enum';
+import { UserRole } from '@/constants/enums';
 
 export interface User {
   id: string;
@@ -20,6 +20,7 @@ export interface JobSeeker extends User {
   about?: string;
   seeking: boolean;
 }
+
 export interface Recruiter extends User {
   userId: string;
   fieldId: string;

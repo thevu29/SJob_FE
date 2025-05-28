@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 
 import { formatGender } from '@/lib/utils';
 import type { JobSeeker } from '@/interfaces';
-import { useGetPaginated } from '@/hooks/useQueries';
+import { useGetPaginated } from '@/hooks/use-queries';
 import { DataTable as JobSeekerTable } from '@/components/ui/table/data-table';
 import { columns } from '@/features/recruiter/pages/jobseeker-search/components/tables/columns';
 

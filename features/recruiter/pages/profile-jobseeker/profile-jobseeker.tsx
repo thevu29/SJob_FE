@@ -1,7 +1,7 @@
 'use client';
 import EducationCard from '@/features/recruiter/pages/profile-jobseeker/components/education-card';
 import SkillsCard from '@/features/recruiter/pages/profile-jobseeker/components/skills-card';
-import { useGet } from '@/hooks/useQueries';
+import { useGet } from '@/hooks/use-queries';
 import { JobSeeker } from '@/interfaces/user';
 import { Avatar } from '@radix-ui/react-avatar';
 import { useParams } from 'next/navigation';

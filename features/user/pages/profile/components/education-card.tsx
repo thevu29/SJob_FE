@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useDelete } from '@/hooks/useQueries';
+import { useDelete } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { DeleteConfirmationDialog } from '@/features/user/pages/profile/components/delete-confirmation-dialog';

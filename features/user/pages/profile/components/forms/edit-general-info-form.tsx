@@ -25,7 +25,7 @@ import { Switch } from '@/components/ui/switch';
 import { DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { JobSeeker } from '@/interfaces';
-import { usePutFormData } from '@/hooks/useQueries';
+import { usePutFormData } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import {

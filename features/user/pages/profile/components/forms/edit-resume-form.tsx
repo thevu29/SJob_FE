@@ -20,7 +20,7 @@ import {
   TUpdateResume,
   UpdateResumeSchema
 } from '@/features/user/schemas/resume.schema';
-import { usePatchFormData } from '@/hooks/useQueries';
+import { usePatchFormData } from '@/hooks/use-queries';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { toast } from 'sonner';

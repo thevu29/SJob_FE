@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar } from '@/components/ui/avatar';
-import { useGet } from '@/hooks/useQueries';
+import { useGet } from '@/hooks/use-queries';
 import { Recruiter } from '@/interfaces';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';

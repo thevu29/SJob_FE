@@ -18,7 +18,7 @@ import {
   CreateSkillSchema,
   TCreateSkill
 } from '@/features/user/schemas/skill.schema';
-import { usePost } from '@/hooks/useQueries';
+import { usePost } from '@/hooks/use-queries';
 import { Skill } from '@/interfaces/skill';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

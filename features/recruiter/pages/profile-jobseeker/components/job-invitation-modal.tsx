@@ -40,7 +40,7 @@ import { useParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { JobSeeker } from '@/interfaces';
 import { Job } from '@/interfaces/job';
-import { useGet, usePost } from '@/hooks/useQueries';
+import { useGet, usePost } from '@/hooks/use-queries';
 import { Invitation } from '@/interfaces/invitation';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

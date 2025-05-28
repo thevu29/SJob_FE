@@ -22,7 +22,7 @@ import {
   TCreateJob,
   TUpdateJob
 } from '@/features/recruiter/schemas/job.schema';
-import { useGet } from '@/hooks/useQueries';
+import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
 export function JobDescriptionSection({

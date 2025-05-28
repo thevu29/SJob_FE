@@ -23,7 +23,7 @@ import { useMemo, useState } from 'react';
 import { Resume } from '@/interfaces/resume';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
-import { usePostFormData } from '@/hooks/useQueries';
+import { usePostFormData } from '@/hooks/use-queries';
 
 interface AddResumeFormProps {
   jobSeekerId: string;

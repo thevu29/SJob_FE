@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 
 import type { Recruiter } from '@/interfaces';
-import { useGetPaginated } from '@/hooks/useQueries';
+import { useGetPaginated } from '@/hooks/use-queries';
 import { DataTable as RecruiterTable } from '@/components/ui/table/data-table';
 
 import { columns } from './tables/columns';

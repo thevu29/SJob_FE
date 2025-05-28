@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 import type { JobSeeker, Recruiter, User } from '@/interfaces';
-import { useDelete, usePut, usePutFormData } from '@/hooks/useQueries';
+import { useDelete, usePut, usePutFormData } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {

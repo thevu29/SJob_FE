@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DeleteConfirmationDialog } from '@/features/user/pages/profile/components/delete-confirmation-dialog';
 import { Skill } from '@/interfaces/skill';
-import { useDelete } from '@/hooks/useQueries';
+import { useDelete } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 

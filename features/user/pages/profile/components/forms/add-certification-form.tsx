@@ -18,7 +18,7 @@ import {
   CreateCertificationSchema,
   TCreateCertification
 } from '@/features/user/schemas/certification.schema';
-import { usePost, usePostFormData } from '@/hooks/useQueries';
+import { usePost, usePostFormData } from '@/hooks/use-queries';
 import { Certification } from '@/interfaces/certification';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

@@ -1,7 +1,7 @@
 import { JobCard } from '@/features/user/components/common/job-card';
 import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
 import Pagination from '@/features/user/components/common/pagination';
-import { useGet, useGetPaginated } from '@/hooks/useQueries';
+import { useGet, useGetPaginated } from '@/hooks/use-queries';
 import { Recruiter } from '@/interfaces';
 import { Job } from '@/interfaces/job';
 import { useParams, useSearchParams } from 'next/navigation';

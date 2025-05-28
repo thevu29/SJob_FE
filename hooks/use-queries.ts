@@ -7,18 +7,19 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig } from 'axios';
 
-import type { ApiResponse, PaginatedResponse } from '@/interfaces';
 import {
   get,
   post,
-  put,
   del,
+  put,
   getPaginated,
   putFormData,
   patch,
   patchFormData,
-  postFormData
+  postFormData,
+  getPublic
 } from '@/lib/api';
+import type { ApiResponse, PaginatedResponse } from '@/interfaces';
 
 export function useGet<T>(
   url: string,
@@ -31,6 +32,21 @@ export function useGet<T>(
   return useQuery({
     queryKey,
     queryFn: () => get<T>(url, config),
+    ...(options || {})
+  });
+}
+
+export function useGetPublic<T>(
+  url: string,
+  queryKey: string[],
+  config?: AxiosRequestConfig,
+  options?: Partial<
+    UseQueryOptions<ApiResponse<T>, AxiosError, ApiResponse<T>, string[]>
+  >
+) {
+  return useQuery({
+    queryKey,
+    queryFn: () => getPublic<T>(url, config),
     ...(options || {})
   });
 }

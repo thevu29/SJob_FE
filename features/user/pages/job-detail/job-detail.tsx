@@ -3,7 +3,7 @@ import CompanyInfo from '@/features/user/pages/job-detail/components/company-inf
 import SimilarJobs from '@/features/user/pages/job-detail/components/similar-jobs';
 import { useParams } from 'next/navigation';
 import { Job } from '@/interfaces/job';
-import { useGet } from '@/hooks/useQueries';
+import { useGet } from '@/hooks/use-queries';
 import JobInfo from '@/features/user/pages/job-detail/components/job-info';
 import { Recruiter } from '@/interfaces';
 

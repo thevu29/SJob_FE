@@ -17,7 +17,7 @@ import {
   Experience,
   LocationType
 } from '@/interfaces/experience';
-import { useDelete } from '@/hooks/useQueries';
+import { useDelete } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { Badge } from '@/components/ui/badge';

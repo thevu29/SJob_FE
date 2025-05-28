@@ -19,7 +19,7 @@ import {
 } from '@/features/user/pages/profile/utils/profile-completion';
 
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
-import { usePatchFormData } from '@/hooks/useQueries';
+import { usePatchFormData } from '@/hooks/use-queries';
 import { JobSeeker } from '@/interfaces';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';

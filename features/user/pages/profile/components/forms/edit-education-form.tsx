@@ -21,7 +21,7 @@ import {
   UpdateEducationSchema
 } from '@/features/user/schemas/education.schema';
 import { formatToYearMonth } from '@/lib/utils';
-import { usePatch } from '@/hooks/useQueries';
+import { usePatch } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 

@@ -19,7 +19,7 @@ import {
   CreateEducationSchema,
   TCreateEducation
 } from '@/features/user/schemas/education.schema';
-import { usePost } from '@/hooks/useQueries';
+import { usePost } from '@/hooks/use-queries';
 import { Education } from '@/interfaces/education';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
