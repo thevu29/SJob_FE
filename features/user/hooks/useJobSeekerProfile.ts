@@ -5,7 +5,7 @@ import { Experience } from '@/interfaces/experience';
 import { Resume } from '@/interfaces/resume';
 import { Skill } from '@/interfaces/skill';
 import { get } from '@/lib/api';
-import { useQueries, UseQueryResult } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 interface JobSeekerProfile {

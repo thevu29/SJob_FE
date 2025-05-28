@@ -1,15 +1,14 @@
 'use client';
 
 import { Avatar } from '@/components/ui/avatar';
-import { useGet, useGetPaginated } from '@/hooks/useQueries';
+import { useGet, useGetPaginated } from '@/hooks';
 import { Recruiter } from '@/interfaces';
 import Image from 'next/image';
 import { useParams, useSearchParams } from 'next/navigation';
 import placeholder from '@/public/placeholder.jpg';
 import { formatEmployeeCount } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import DOMPurify from 'isomorphic-dompurify';
-import { LoadingPage } from '@/components/common/loading';
 import { Building, MapPin, User } from 'lucide-react';
 import Link from 'next/link';
 import SearchInput from '@/features/user/components/common/search-input';
@@ -22,7 +21,6 @@ export default function RecruiterDetailPage() {
   const searchParams = useSearchParams();
   const params = useParams();
   const recruiterId = params.recruiterId as string;
-  // const recruiterId = '68144e36647b71355acf11d1';
 
   const query = searchParams.get('query') || '';
   const currentPage = Number(searchParams.get('page') || '1');
@@ -109,9 +107,6 @@ export default function RecruiterDetailPage() {
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
           {/* Bio */}
           <Card className='lg:col-span-3'>
-            {/* <CardHeader>
-              <CardTitle className='text-xl'>Giới thiệu</CardTitle>
-            </CardHeader> */}
             <CardContent>
               <div className='space-y-2'>
                 <h3 className='text-lg font-semibold'>Giới thiệu</h3>
@@ -139,9 +134,6 @@ export default function RecruiterDetailPage() {
 
           {/* Bio */}
           <Card className='lg:col-span-3'>
-            {/* <CardHeader>
-              <CardTitle className='text-xl'>Giới thiệu</CardTitle>
-            </CardHeader> */}
             <CardContent>
               <div className='space-y-2'>
                 <h3 className='text-lg font-semibold'>Tuyển dụng</h3>

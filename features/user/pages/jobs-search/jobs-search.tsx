@@ -1,10 +1,11 @@
 'use client';
+
 import { AdvancedFilters } from '@/features/user/pages/jobs-search/components/advanced-filters';
-import { JobType, JobStatus, Job } from '@/interfaces/job';
+import { Job } from '@/interfaces/job';
 import SearchInput from '@/features/user/components/common/search-input';
 import JobListing from '@/features/user/components/common/job-listing';
 import { useSearchParams } from 'next/navigation';
-import { useGetPaginated } from '@/hooks/useQueries';
+import { useGetPaginatedPublic } from '@/hooks';
 import { useEffect } from 'react';
 import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
 
@@ -21,7 +22,7 @@ export default function JobsSearch() {
 
   const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
 
-  const { data: JobsData } = useGetPaginated<Job>(
+  const { data: JobsData } = useGetPaginatedPublic<Job>(
     'jobs',
     currentPage,
     pageSize,

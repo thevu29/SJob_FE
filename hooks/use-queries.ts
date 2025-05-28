@@ -17,7 +17,8 @@ import {
   patch,
   patchFormData,
   postFormData,
-  getPublic
+  getPublic,
+  getPaginatedPublic
 } from '@/lib/api';
 import type { ApiResponse, PaginatedResponse } from '@/interfaces';
 
@@ -71,6 +72,31 @@ export function useGetPaginated<T>(
   return useQuery({
     queryKey: [...queryKey, page.toString(), pageSize.toString()],
     queryFn: () => getPaginated<T>(queryUrl, config),
+    staleTime: 1000 * 60 * 5,
+    ...options
+  });
+}
+
+export function useGetPaginatedPublic<T>(
+  url: string,
+  page: number,
+  pageSize: number,
+  queryKey: string[],
+  config?: AxiosRequestConfig,
+  options?: Partial<
+    UseQueryOptions<
+      PaginatedResponse<T>,
+      AxiosError,
+      PaginatedResponse<T>,
+      string[]
+    >
+  >
+) {
+  const queryUrl = `${url}?page=${page}&limit=${pageSize}`;
+
+  return useQuery({
+    queryKey: [...queryKey, page.toString(), pageSize.toString()],
+    queryFn: () => getPaginatedPublic<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options
   });

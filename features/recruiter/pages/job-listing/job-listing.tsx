@@ -1,11 +1,14 @@
 'use client';
+
 import { useSearchParams } from 'next/navigation';
-import { useGetPaginated } from '@/hooks/use-queries';
+
 import { Job } from '@/interfaces/job';
+import { useGetPaginated } from '@/hooks/use-queries';
 import { DataTable as JobTable } from '@/components/ui/table/data-table';
+
 import { columns } from './components/tables/columns';
+
 export default function JobListingPage() {
-  const id = '68144e36647b71355acf11d1';
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get('page') || '1');
@@ -38,7 +41,6 @@ export default function JobListingPage() {
     data?.data.map((job) => ({
       ...job
     })) || [];
-  console.log('formattedData', formattedData);
 
   return (
     <JobTable

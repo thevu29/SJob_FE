@@ -77,6 +77,7 @@ api.interceptors.response.use(
     if (
       response.status === 401 &&
       config &&
+      !config.isPublic &&
       !config.url?.includes('auth/refresh-token')
     ) {
       const refreshToken = getCookie(REFRESH_TOKEN_COOKIE_KEY);

@@ -10,12 +10,12 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useJobParams } from '@/features/user/hooks/useJobParams';
-import { useGet } from '@/hooks/useQueries';
+import { useGetPublic } from '@/hooks';
 import { FieldDetail } from '@/interfaces/field';
 
 export function FieldFilter() {
   const { fieldDetailIds, setFieldDetailIds } = useJobParams();
-  const { data, isLoading } = useGet<FieldDetail[]>('field-details', [
+  const { data, isLoading } = useGetPublic<FieldDetail[]>('field-details', [
     'field-details'
   ]);
 
