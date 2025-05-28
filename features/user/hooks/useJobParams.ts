@@ -1,5 +1,5 @@
 import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
-import { useTransition } from 'react';
+import { useCallback, useTransition } from 'react';
 
 export function useJobParams() {
   const [isPending, startTransition] = useTransition();
@@ -25,6 +25,52 @@ export function useJobParams() {
       .withDefault(10)
   );
 
+  const [experience, setExperiece] = useQueryState(
+    'experience',
+    parseAsString
+      .withOptions({ shallow: false, history: 'push', startTransition })
+      .withDefault('')
+  );
+
+  const [salary, setSalary] = useQueryState(
+    'salary',
+    parseAsString
+      .withOptions({ shallow: false, history: 'push', startTransition })
+      .withDefault('')
+  );
+
+  const [fieldDetailIds, setFieldDetailIds] = useQueryState(
+    'fieldDetailIds',
+    parseAsString
+      .withOptions({ shallow: false, history: 'push', startTransition })
+      .withDefault('')
+  );
+
+  const [type, setType] = useQueryState(
+    'type',
+    parseAsString
+      .withOptions({ shallow: false, history: 'push', startTransition })
+      .withDefault('')
+  );
+
+  const resetFilters = useCallback(() => {
+    setQuery(null);
+    setCurrentPage(1);
+    setPageSize(10);
+    setExperiece(null);
+    setSalary(null);
+    setType(null);
+    setFieldDetailIds(null);
+  }, [
+    setQuery,
+    setCurrentPage,
+    setPageSize,
+    setExperiece,
+    setSalary,
+    setType,
+    setFieldDetailIds
+  ]);
+
   return {
     query,
     setQuery,
@@ -32,6 +78,15 @@ export function useJobParams() {
     setCurrentPage,
     pageSize,
     setPageSize,
+    experience,
+    setExperiece,
+    salary,
+    setSalary,
+    type,
+    setType,
+    fieldDetailIds,
+    setFieldDetailIds,
+    resetFilters,
     isPending
   };
 }

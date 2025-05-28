@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { formatCurrency } from '@/lib/utils';
+import { useJobParams } from '@/features/user/hooks/useJobParams';
 
 type SalaryOption = {
   label: string;
@@ -14,65 +15,66 @@ type SalaryOption = {
 };
 
 const salaryOptions: SalaryOption[] = [
-  { label: 'Tất cả', value: 'all', id: 'salary-all' },
-  { label: 'Dưới 10 triệu', value: '<10', id: 'salary-under-10' },
+  { label: 'Tất cả', value: '', id: 'salary-all' },
+  { label: 'Dưới 10 triệu', value: '<=10', id: 'salary-under-10' },
   { label: '10 - 15 triệu', value: '10-15', id: 'salary-10-15' },
   { label: '15 - 20 triệu', value: '15-20', id: 'salary-15-20' },
   { label: '20 - 25 triệu', value: '20-25', id: 'salary-20-25' },
   { label: '25 - 30 triệu', value: '25-30', id: 'salary-25-30' },
   { label: '30 - 50 triệu', value: '30-50', id: 'salary-30-50' },
-  { label: 'Trên 50 triệu', value: '>50', id: 'salary-over-50' },
+  { label: 'Ít nhất 50 triệu', value: '>=50', id: 'salary-over-50' },
   { label: 'Thoả thuận', value: 'negotiable', id: 'salary-negotiable' },
   { label: 'Khác', value: 'custom', id: 'salary-custom' }
 ];
 
-interface SalaryFilterProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-export function SalaryFilter({ value, onChange }: SalaryFilterProps) {
-  const [customRange, setCustomRange] = useState<number[]>([0, 100]);
+export function SalaryFilter() {
+  const { salary, setSalary } = useJobParams();
+  const [customRange, setCustomRange] = useState<number[]>([0, 10]);
   const [showCustomRange, setShowCustomRange] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string>('all');
+  const [selectedOption, setSelectedOption] = useState<string>('');
 
-  // Update showCustomRange only when the selected option changes
   useEffect(() => {
-    // Initialize the selected option based on the initial value
-    if (value === 'custom' || value.includes('-')) {
+    const isCustomValue =
+      salary &&
+      !salaryOptions.some(
+        (opt) => opt.value === salary && opt.value !== 'custom'
+      );
+
+    if (isCustomValue) {
       setSelectedOption('custom');
       setShowCustomRange(true);
 
-      // If value is a range (contains "-"), parse it to set the slider
-      if (value.includes('-')) {
-        const [min, max] = value.split('-').map(Number);
+      if (salary.includes('-')) {
+        const [min, max] = salary.split('-').map(Number);
         if (!isNaN(min) && !isNaN(max)) {
           setCustomRange([min, max]);
         }
       }
     } else {
-      setSelectedOption(value);
-      setShowCustomRange(value === 'custom');
+      setSelectedOption(salary);
+      setShowCustomRange(false);
+      setCustomRange([0, 10]);
     }
-  }, []);
+  }, [salary]);
 
   const handleValueChange = (newValue: string) => {
     setSelectedOption(newValue);
-    setShowCustomRange(newValue === 'custom');
 
     if (newValue === 'custom') {
-      // When selecting "custom", use the current slider range
-      onChange(`${customRange[0]}-${customRange[1]}`);
+      setShowCustomRange(true);
+      setSalary(`${customRange[0]}-${customRange[1]}`);
     } else {
-      // For other options, pass the option value directly
-      onChange(newValue);
+      setShowCustomRange(false);
+      setSalary(newValue);
+      setCustomRange([0, 10]);
     }
   };
 
   const handleSliderChange = (newValues: number[]) => {
     setCustomRange(newValues);
-    // When slider changes, we're still in "custom" mode
-    onChange(`${newValues[0]}-${newValues[1]}`);
+    if (selectedOption === 'custom') {
+      setSalary(`${newValues[0]}-${newValues[1]}`);
+    }
   };
 
   return (
@@ -81,7 +83,7 @@ export function SalaryFilter({ value, onChange }: SalaryFilterProps) {
       <RadioGroup
         value={selectedOption}
         onValueChange={handleValueChange}
-        className='space-y-2'
+        className='grid grid-cols-2 gap-x-2 gap-y-4'
       >
         {salaryOptions.map((option) => (
           <div key={option.id} className='flex items-center space-x-2'>

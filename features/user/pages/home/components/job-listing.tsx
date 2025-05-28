@@ -64,7 +64,7 @@ export default function JobListings({
   //   desktopPage * itemsPerPage,
   //   (desktopPage + 1) * itemsPerPage
   // );
-  const currentDesktopItems = jobs.slice(
+  const currentDesktopItems = jobs?.slice(
     desktopPage * itemsPerPage,
     (desktopPage + 1) * itemsPerPage
   );

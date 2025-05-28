@@ -1,37 +1,15 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useJobParams } from '@/features/user/hooks/useJobParams';
 import { ExperienceFilter } from '@/features/user/pages/jobs-search/components/experience-filter';
 import { FieldFilter } from '@/features/user/pages/jobs-search/components/field-filter';
 import { JobTypeFilter } from '@/features/user/pages/jobs-search/components/job-type-filter';
 import { SalaryFilter } from '@/features/user/pages/jobs-search/components/salary-filter';
 import { RefreshCw, Filter } from 'lucide-react';
 
-export interface FilterValues {
-  experience: string;
-  salary: string;
-  field: string;
-  jobType: string;
-}
-
-interface AdvancedFiltersProps {
-  filters: FilterValues;
-  onChange: (filters: FilterValues) => void;
-  onReset: () => void;
-}
-
-export function AdvancedFilters({
-  filters,
-  onChange,
-  onReset
-}: AdvancedFiltersProps) {
-  const updateFilter = (key: keyof FilterValues, value: string) => {
-    onChange({
-      ...filters,
-      [key]: value
-    });
-  };
-
+export function AdvancedFilters() {
+  const { resetFilters } = useJobParams();
   return (
     <div className=''>
       <div className='mb-4 flex items-center justify-between'>
@@ -45,38 +23,26 @@ export function AdvancedFilters({
           variant='ghost'
           size='sm'
           className='h-8 px-2 text-xs'
-          onClick={onReset}
+          onClick={resetFilters}
         >
           Xóa lọc
         </Button>
       </div>
 
       <div className='space-y-6'>
-        <ExperienceFilter
-          value={filters.experience}
-          onChange={(value) => updateFilter('experience', value)}
-        />
+        <ExperienceFilter />
 
         <Separator />
 
-        <SalaryFilter
-          value={filters.salary}
-          onChange={(value) => updateFilter('salary', value)}
-        />
+        <SalaryFilter />
 
         <Separator />
 
-        <FieldFilter
-          value={filters.field}
-          onChange={(value) => updateFilter('field', value)}
-        />
+        <FieldFilter />
 
         <Separator />
 
-        <JobTypeFilter
-          value={filters.jobType}
-          onChange={(value) => updateFilter('jobType', value)}
-        />
+        <JobTypeFilter />
       </div>
     </div>
   );

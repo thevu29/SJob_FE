@@ -23,7 +23,7 @@ export function MyAccount() {
               <div className='grid grid-cols-1 gap-2 md:grid-cols-3 md:gap-4'>
                 <div className='font-medium'>Địa chỉ email</div>
                 <div className='col-span-1 break-words md:col-span-2'>
-                  wanaham816@fundapk.com
+                  hoangnt19.weebpal@gmail.com
                 </div>
               </div>
 
@@ -69,9 +69,7 @@ export function MyAccount() {
         <div className='grid grid-cols-1 items-center gap-2 md:grid-cols-3 md:gap-4'>
           <div className='font-medium'>Sjob email</div>
           <div className='col-span-1 flex items-center gap-2 break-words md:col-span-2'>
-            <span className='break-all'>
-              ndmW398451@service.vietnamworks.com
-            </span>
+            <span className='break-all'>ndmW398451@service.sjob.com</span>
             {/* <Button
               variant='ghost'
               size='icon'

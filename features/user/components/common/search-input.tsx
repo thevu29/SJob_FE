@@ -49,7 +49,7 @@ export default function SearchInput({ redirectTo }: SearchInputProps) {
       <div className='flex items-center gap-2'>
         <Button
           onClick={handleSearch}
-          className='h-12 bg-orange-500 text-white hover:bg-orange-600'
+          className='bg-color-5 hover:bg-color-5/80 h-12 text-white'
         >
           Tìm kiếm
         </Button>

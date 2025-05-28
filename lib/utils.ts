@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { formatDistanceToNow } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,11 +57,6 @@ export const getValueOfKeyFromEnum = <T extends Record<string, string>>(
   key: string
 ): string => {
   return enums[key as keyof T] || key;
-};
-
-export const formatSalary = (salary: number) => {
-  const salaryInTrillions = salary / 1000000;
-  return `${salaryInTrillions}tr ₫/tháng`;
 };
 
 export const getExpirationMessage = (expirationDateStr: string) => {
@@ -120,3 +117,38 @@ export function formatCurrency(amount: number): string {
     maximumFractionDigits: 0
   }).format(amount);
 }
+
+export const formatSalary = (salary: number) => {
+  // const salaryInTrillions = formatCurrency(salary * 1000000);
+  return `${salary}tr ₫/tháng`;
+};
+
+export function formatExperience(exp: string) {
+  const trimmed = exp.trim();
+
+  if (/^=\d+$/.test(trimmed)) {
+    const years = trimmed.slice(1);
+    return `${years} năm kinh nghiệm`;
+  }
+
+  if (/^>=\d+$/.test(trimmed)) {
+    const years = trimmed.slice(2);
+    return `ít nhất ${years} năm kinh nghiệm`;
+  }
+
+  if (/^<=\d+$/.test(trimmed)) {
+    const years = trimmed.slice(2);
+    return `dưới ${years} năm kinh nghiệm`;
+  }
+
+  if (/^\d+-\d+$/.test(trimmed)) {
+    return `${trimmed} năm kinh nghiệm`;
+  }
+
+  return 'Không có kinh nghiệm';
+}
+
+export const formatRelativeDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return 'Đăng ' + formatDistanceToNow(date, { addSuffix: true, locale: vi });
+};
