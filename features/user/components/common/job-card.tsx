@@ -59,7 +59,7 @@ export function JobCard({ job }: JobCardProps) {
             <div className='col-span-12 flex flex-col justify-between p-4 md:col-span-3'>
               <div className='flex items-center justify-items-start md:justify-end'>
                 <p className='text-color-5 font-bold'>
-                  {job.salary ? formatSalary(job.salary) : 'Thỏa thuận'}
+                  {job.salary && formatSalary(job.salary)}
                 </p>
               </div>
               <div className='mt-auto flex justify-end gap-2'>

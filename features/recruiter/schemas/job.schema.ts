@@ -9,12 +9,7 @@ export const CreateJobSchema = z.object({
     .string()
     .min(1, 'Vui lòng nhập mô tả công việc')
     .max(5000, 'Mô tả công việc không được vượt quá 5000 ký tự'),
-  salary: z
-    .number({
-      required_error: 'Vui lòng nhập mức lương',
-      invalid_type_error: 'Mức lương phải là số'
-    })
-    .min(0, 'Mức lương không được âm'),
+  salary: z.string().min(1, 'Vui lòng nhập mức lương'),
   requirement: z
     .string()
     .min(1, 'Vui lòng nhập yêu cầu công việc')
@@ -54,13 +49,7 @@ export const UpdateJobSchema = z.object({
     .min(1, 'Vui lòng nhập mô tả công việc')
     .max(5000, 'Mô tả công việc không được vượt quá 5000 ký tự')
     .optional(),
-  salary: z
-    .number({
-      required_error: 'Vui lòng nhập mức lương',
-      invalid_type_error: 'Mức lương phải là số'
-    })
-    .min(0, 'Mức lương không được âm')
-    .optional(),
+  salary: z.string().min(1, 'Vui lòng nhập mức lương').optional(),
   requirement: z
     .string()
     .min(1, 'Vui lòng nhập yêu cầu công việc')

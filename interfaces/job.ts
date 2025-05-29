@@ -5,7 +5,7 @@ export interface Job {
   recruiterImage: string;
   name: string;
   description: string;
-  salary: number;
+  salary: string;
   requirement: string;
   benefit: string;
   deadline: string;

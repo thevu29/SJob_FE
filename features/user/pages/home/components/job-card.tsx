@@ -50,7 +50,7 @@ export function JobCard({ job }: JobCardProps) {
               {job.recruiterName}
             </p>
             <p className='text-color-5 mt-1 text-sm'>
-              {job.salary ? formatSalary(job.salary) : 'Thỏa thuận'}
+              {job.salary && formatSalary(job.salary)}
             </p>
             {/* <p className='text-muted-foreground mt-1 line-clamp-1 text-sm'>
               {job.location}
