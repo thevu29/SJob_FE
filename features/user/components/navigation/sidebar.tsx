@@ -233,12 +233,12 @@ export function Sidebar() {
                       <ul className='mt-1 ml-8 space-y-1'>
                         <li>
                           <Link
-                            href='/jobs/saved'
+                            href={ROUTES.JOBSEEKER.JOBS.SAVED}
                             className={cn(
                               'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
                               {
                                 'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === '/jobs/saved'
+                                  pathname === ROUTES.JOBSEEKER.JOBS.SAVED
                               }
                             )}
                           >
@@ -248,17 +248,17 @@ export function Sidebar() {
                         </li>
                         <li>
                           <Link
-                            href='/jobs/applied'
+                            href={ROUTES.JOBSEEKER.JOBS.VIEWED}
                             className={cn(
                               'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
                               {
                                 'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === '/jobs/applied'
+                                  pathname === ROUTES.JOBSEEKER.JOBS.VIEWED
                               }
                             )}
                           >
                             <History className='h-4 w-4' />
-                            <span>Việc Làm Đã Ứng Tuyển</span>
+                            <span>Việc Làm Đã Xem</span>
                           </Link>
                         </li>
                         <li>

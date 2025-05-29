@@ -30,3 +30,9 @@ export enum JobStatus {
   CLOSED = 'Đã đóng',
   EXPIRED = 'Hết hạn'
 }
+
+export interface SavedJob {
+  id: string;
+  job: Job;
+  jobSeekerId: string;
+}

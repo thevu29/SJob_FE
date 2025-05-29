@@ -1,9 +1,9 @@
 'use client';
 import { Card, CardContent } from '@/components/ui/card';
-import SavedJobsListing from '@/features/user/pages/saved-jobs/components/saved-jobs-listing';
+import ViewedJobsListing from '@/features/user/pages/viewed-jobs/components/viewed-jobs-listing';
 import { useGetCurrentUser } from '@/hooks';
 
-export default function SavedJobs() {
+export default function ViewedJobs() {
   const { data: user } = useGetCurrentUser();
 
   return (
@@ -16,8 +16,8 @@ export default function SavedJobs() {
       <Card className='lg:col-span-3'>
         <CardContent>
           <div className='space-y-2'>
-            <h3 className='text-lg font-semibold'>Việc làm đã lưu</h3>
-            {user && user.data && <SavedJobsListing user={user.data} />}
+            <h3 className='text-lg font-semibold'>Việc làm đã xem</h3>
+            {user && user.data && <ViewedJobsListing user={user.data} />}
           </div>
         </CardContent>
       </Card>

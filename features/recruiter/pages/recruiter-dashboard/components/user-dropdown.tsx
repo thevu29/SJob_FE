@@ -22,7 +22,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger asChild>
         <button className='focus:outline-none'>
           <Avatar className='h-8 w-8 cursor-pointer'>
