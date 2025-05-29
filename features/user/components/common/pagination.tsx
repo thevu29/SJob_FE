@@ -67,62 +67,64 @@ export default function Pagination({
   const nextPage = currentPage + 1;
 
   return (
-    <PaginationComponent>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            href={`?page=${prevPage}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handlePageChange(prevPage);
-            }}
-            className={
-              currentPage === 1
-                ? 'pointer-events-none opacity-50'
-                : 'cursor-pointer'
-            }
-            aria-disabled={currentPage === 1}
-          />
-        </PaginationItem>
+    <div className='mt-4'>
+      <PaginationComponent>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href={`?page=${prevPage}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(prevPage);
+              }}
+              className={
+                currentPage === 1
+                  ? 'pointer-events-none opacity-50'
+                  : 'cursor-pointer'
+              }
+              aria-disabled={currentPage === 1}
+            />
+          </PaginationItem>
 
-        {pages.map((pageNumber, i) =>
-          pageNumber === 'ellipsis' ? (
-            <PaginationItem key={`ellipsis-${i}`}>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : (
-            <PaginationItem key={pageNumber}>
-              <PaginationLink
-                href={`?page=${pageNumber}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handlePageChange(Number(pageNumber));
-                }}
-                isActive={currentPage === pageNumber}
-                className='cursor-pointer'
-              >
-                {pageNumber}
-              </PaginationLink>
-            </PaginationItem>
-          )
-        )}
+          {pages.map((pageNumber, i) =>
+            pageNumber === 'ellipsis' ? (
+              <PaginationItem key={`ellipsis-${i}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={pageNumber}>
+                <PaginationLink
+                  href={`?page=${pageNumber}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePageChange(Number(pageNumber));
+                  }}
+                  isActive={currentPage === pageNumber}
+                  className='cursor-pointer'
+                >
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
 
-        <PaginationItem>
-          <PaginationNext
-            href={`?page=${nextPage}`}
-            onClick={(e) => {
-              e.preventDefault();
-              handlePageChange(nextPage);
-            }}
-            className={
-              currentPage === totalPages
-                ? 'pointer-events-none opacity-50'
-                : 'cursor-pointer'
-            }
-            aria-disabled={currentPage === totalPages}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </PaginationComponent>
+          <PaginationItem>
+            <PaginationNext
+              href={`?page=${nextPage}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(nextPage);
+              }}
+              className={
+                currentPage === totalPages
+                  ? 'pointer-events-none opacity-50'
+                  : 'cursor-pointer'
+              }
+              aria-disabled={currentPage === totalPages}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </PaginationComponent>
+    </div>
   );
 }

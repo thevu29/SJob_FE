@@ -5,6 +5,7 @@ import FieldListings from '@/features/user/pages/home/components/field-listing';
 import Hotline from '@/features/user/pages/home/components/hotline';
 import HomePageJobs from '@/features/user/pages/home/components/home-page-jobs';
 import HomePageSuggestedJobs from '@/features/user/pages/home/components/home-page-suggested-jobs';
+import RecruiterListings from '@/features/user/pages/home/components/recruiter-listing';
 
 export default function HomePage() {
   return (
@@ -12,7 +13,8 @@ export default function HomePage() {
       {/* Hero Banner */}
       <HeroBanner />
 
-      {/* <RecruiterListings recruiters={[]} /> */}
+      {/* Recruiters Listing  */}
+      <RecruiterListings />
 
       {/* Home Page Jobs Listing  */}
       <HomePageJobs />

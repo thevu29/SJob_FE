@@ -7,6 +7,7 @@ import { FieldDetailCount } from '@/interfaces/field';
 import { fieldDetailIcons } from '@/constants/field-detail-icon';
 import { useGetPublic } from '@/hooks';
 import FieldListingSkeleton from '@/features/user/pages/home/components/field-listing-skeleton';
+import Link from 'next/link';
 
 export default function FieldListings() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,7 @@ export default function FieldListings() {
       <Card className='border-border border'>
         <CardHeader className='pb-0'>
           <CardTitle className='text-2xl font-bold'>
-            Ngành Nghề Hiện Có
+            Ngành nghề hiện có
           </CardTitle>
         </CardHeader>
         <CardContent className='pt-6'>
@@ -63,19 +64,24 @@ export default function FieldListings() {
                       key={fieldDetail.id}
                       className='border-border w-48 flex-shrink-0 border transition-shadow duration-300 hover:shadow-md'
                     >
-                      <CardContent className='flex flex-col items-center p-4'>
-                        <div className='bg-secondary mb-4 flex h-16 w-16 items-center justify-center rounded-full'>
-                          {/* <category.icon className='text-color-5 h-8 w-8' /> */}
-                          <div className='text-color-5 flex h-8 w-8 items-center justify-center'>
-                            {fieldDetailIcons[fieldDetail.name]}
+                      <CardContent>
+                        <Link
+                          href={`/job?fieldDetailIds=${fieldDetail.id}`}
+                          className='flex flex-col items-center p-4'
+                        >
+                          <div className='bg-secondary mb-4 flex h-16 w-16 items-center justify-center rounded-full'>
+                            {/* <category.icon className='text-color-5 h-8 w-8' /> */}
+                            <div className='text-color-5 flex h-8 w-8 items-center justify-center'>
+                              {fieldDetailIcons[fieldDetail.name]}
+                            </div>
                           </div>
-                        </div>
-                        <h3 className='mb-1 text-center text-sm font-medium'>
-                          {fieldDetail.name}
-                        </h3>
-                        <p className='text-muted-foreground text-sm'>
-                          {fieldDetail.count} Việc Làm
-                        </p>
+                          <h3 className='mb-1 text-center text-sm font-medium'>
+                            {fieldDetail.name}
+                          </h3>
+                          <p className='text-muted-foreground text-sm'>
+                            {fieldDetail.count} Việc Làm
+                          </p>
+                        </Link>
                       </CardContent>
                     </Card>
                   ))}

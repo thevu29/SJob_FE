@@ -25,7 +25,9 @@ export default function JobListing({
           Không có công việc nào được tìm thấy.
         </p>
       )}
-      <Pagination currentPage={currentPage} totalPages={totalPages} />
+      {jobs && jobs.length > 0 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} />
+      )}
     </div>
   );
 }
