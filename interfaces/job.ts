@@ -36,3 +36,9 @@ export interface SavedJob {
   job: Job;
   jobSeekerId: string;
 }
+
+export interface ViewedJob {
+  id: string;
+  jobSeekerId: string;
+  job: Job;
+}

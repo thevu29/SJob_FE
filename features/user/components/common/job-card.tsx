@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Job } from '@/interfaces/job';
+import { Job, ViewedJob } from '@/interfaces/job';
 import placeholder from '@/public/placeholder.jpg';
 import {
   formatExperience,
@@ -13,15 +13,35 @@ import {
 } from '@/lib/utils';
 import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
+import { useGetCurrentUser, usePost } from '@/hooks';
+import { AxiosError } from 'axios';
 
 interface JobCardProps {
   job: Job;
 }
 
 export function JobCard({ job }: JobCardProps) {
+  const { data: user } = useGetCurrentUser();
+  const createViewJobMutation = usePost<ViewedJob>('viewed-jobs', {
+    onError: (error: AxiosError) => {
+      console.error('Failed to create view job:', error);
+    }
+  });
+
+  const onClickViewJob = async () => {
+    if (!user?.data.id) return;
+    const payload = {
+      jobSeekerId: user.data.id,
+      jobId: job.id
+    };
+    await createViewJobMutation.mutateAsync(payload);
+  };
   return (
     <Link href={ROUTES.JOBSEEKER.JOBS.DETAIL(job.id)}>
-      <Card className='border-border mt-4 cursor-pointer overflow-hidden border transition-shadow duration-300 hover:shadow-md'>
+      <Card
+        className='border-border mt-4 cursor-pointer overflow-hidden border transition-shadow duration-300 hover:shadow-md'
+        onClick={onClickViewJob}
+      >
         <CardContent className='p-0'>
           <div className='grid grid-cols-12 gap-4'>
             <div className='col-span-12 p-4 md:col-span-9'>
