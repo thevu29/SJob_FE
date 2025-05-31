@@ -1,6 +1,16 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+'use client';
+
+import {
+  Pagination as PaginationComponent,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious
+} from '@/components/ui/pagination';
 import { useJobParams } from '@/features/user/hooks/useJobParams';
+import { useRouter } from 'next/navigation';
 
 interface PaginationProps {
   currentPage: number;
@@ -12,10 +22,12 @@ export default function Pagination({
   totalPages
 }: PaginationProps) {
   const { setCurrentPage } = useJobParams();
+  const router = useRouter();
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setCurrentPage(newPage);
+    router.push(`?page=${newPage}`);
   };
 
   const generatePagination = () => {
@@ -51,50 +63,68 @@ export default function Pagination({
   };
 
   const pages = generatePagination();
+  const prevPage = currentPage - 1;
+  const nextPage = currentPage + 1;
 
   return (
-    <div className='flex items-center justify-center space-x-2'>
-      <Button
-        variant='outline'
-        size='icon'
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        aria-label='Previous page'
-      >
-        <ChevronLeft className='h-4 w-4' />
-      </Button>
+    <div className='mt-4'>
+      <PaginationComponent>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href={`?page=${prevPage}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(prevPage);
+              }}
+              className={
+                currentPage === 1
+                  ? 'pointer-events-none opacity-50'
+                  : 'cursor-pointer'
+              }
+              aria-disabled={currentPage === 1}
+            />
+          </PaginationItem>
 
-      {pages.map((pageNumber, i) =>
-        pageNumber === 'ellipsis' ? (
-          <Button
-            key={`ellipsis-${i}`}
-            variant='ghost'
-            disabled
-            className='cursor-default'
-          >
-            <MoreHorizontal className='h-4 w-4' />
-          </Button>
-        ) : (
-          <Button
-            key={pageNumber}
-            variant={currentPage === pageNumber ? 'default' : 'outline'}
-            onClick={() => handlePageChange(Number(pageNumber))}
-            className={currentPage === pageNumber ? 'pointer-events-none' : ''}
-          >
-            {pageNumber}
-          </Button>
-        )
-      )}
+          {pages.map((pageNumber, i) =>
+            pageNumber === 'ellipsis' ? (
+              <PaginationItem key={`ellipsis-${i}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={pageNumber}>
+                <PaginationLink
+                  href={`?page=${pageNumber}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePageChange(Number(pageNumber));
+                  }}
+                  isActive={currentPage === pageNumber}
+                  className='cursor-pointer'
+                >
+                  {pageNumber}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
 
-      <Button
-        variant='outline'
-        size='icon'
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        aria-label='Next page'
-      >
-        <ChevronRight className='h-4 w-4' />
-      </Button>
+          <PaginationItem>
+            <PaginationNext
+              href={`?page=${nextPage}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handlePageChange(nextPage);
+              }}
+              className={
+                currentPage === totalPages
+                  ? 'pointer-events-none opacity-50'
+                  : 'cursor-pointer'
+              }
+              aria-disabled={currentPage === totalPages}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </PaginationComponent>
     </div>
   );
 }

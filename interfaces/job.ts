@@ -5,7 +5,7 @@ export interface Job {
   recruiterImage: string;
   name: string;
   description: string;
-  salary: number;
+  salary: string;
   requirement: string;
   benefit: string;
   deadline: string;
@@ -29,4 +29,16 @@ export enum JobStatus {
   OPEN = 'Đang tuyển',
   CLOSED = 'Đã đóng',
   EXPIRED = 'Hết hạn'
+}
+
+export interface SavedJob {
+  id: string;
+  job: Job;
+  jobSeekerId: string;
+}
+
+export interface ViewedJob {
+  id: string;
+  jobSeekerId: string;
+  job: Job;
 }

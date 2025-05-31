@@ -63,74 +63,8 @@ export function RecruiterDetailSkeleton() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Jobs Section Skeleton */}
-          <Card className='lg:col-span-3'>
-            <CardContent className='space-y-6'>
-              <div className='space-y-4'>
-                <Skeleton className='h-6 w-32' />
-
-                {/* Search Input Skeleton */}
-                <Skeleton className='h-10 w-full rounded-md' />
-
-                {/* Job Listings Skeleton */}
-                <div className='space-y-4'>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <JobCardSkeleton key={index} />
-                  ))}
-                </div>
-
-                {/* Pagination Skeleton */}
-                <div className='flex items-center justify-center gap-2 pt-4'>
-                  <Skeleton className='h-9 w-20' />
-                  <Skeleton className='h-9 w-9' />
-                  <Skeleton className='h-9 w-9' />
-                  <Skeleton className='h-9 w-9' />
-                  <Skeleton className='h-9 w-20' />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>
-  );
-}
-
-function JobCardSkeleton() {
-  return (
-    <Card className='w-full'>
-      <CardContent className='p-4 sm:p-6'>
-        <div className='flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between'>
-          <div className='flex flex-col gap-3 sm:flex-row sm:gap-4'>
-            {/* Company Logo Skeleton */}
-            <Skeleton className='h-12 w-12 rounded-lg sm:h-16 sm:w-16' />
-
-            <div className='flex-1 space-y-2'>
-              {/* Job Title */}
-              <Skeleton className='h-5 w-48 sm:h-6 sm:w-64' />
-
-              {/* Company Name */}
-              <Skeleton className='h-4 w-32 sm:w-40' />
-
-              {/* Job Details */}
-              <div className='flex flex-wrap gap-2'>
-                <Skeleton className='h-4 w-20' />
-                <Skeleton className='h-4 w-24' />
-                <Skeleton className='h-4 w-16' />
-              </div>
-            </div>
-          </div>
-
-          <div className='flex flex-col items-start gap-2 sm:items-end'>
-            {/* Salary */}
-            <Skeleton className='h-5 w-24 sm:w-32' />
-
-            {/* Posted Date */}
-            <Skeleton className='h-4 w-20' />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
   );
 }

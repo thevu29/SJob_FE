@@ -3,7 +3,7 @@ import CompanyInfo from '@/features/user/pages/job-detail/components/company-inf
 import SimilarJobs from '@/features/user/pages/job-detail/components/similar-jobs';
 import { useParams } from 'next/navigation';
 import { Job } from '@/interfaces/job';
-import { useGet } from '@/hooks/use-queries';
+import { useGetPublic } from '@/hooks/use-queries';
 import JobInfo from '@/features/user/pages/job-detail/components/job-info';
 import { Recruiter } from '@/interfaces';
 
@@ -11,9 +11,10 @@ export default function JobDetailPage() {
   const params = useParams();
   const jobId = params.jobId as string;
 
-  const { data: jobData } = useGet<Job>('jobs/' + jobId, ['jobs', jobId]);
+  const { data: jobData } = useGetPublic<Job>('jobs/' + jobId, ['jobs', jobId]);
   const job = (jobData?.data as Job) || {};
-  const { data: recruiterData } = useGet<Recruiter>(
+
+  const { data: recruiterData } = useGetPublic<Recruiter>(
     'recruiters/' + job?.recruiterId,
     ['recruiters', job?.recruiterId],
     undefined,
@@ -27,7 +28,7 @@ export default function JobDetailPage() {
       <div className='container mx-auto px-4 py-6 md:py-8 lg:max-w-6xl'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
           <div className='space-y-6 lg:col-span-2'>
-            <JobInfo job={job} recruiter={recruiter} />
+            <JobInfo job={job} />
           </div>
           <div className='lg:col-span-1'>
             <div className='space-y-6'>

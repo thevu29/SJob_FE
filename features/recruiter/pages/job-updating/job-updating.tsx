@@ -57,7 +57,7 @@ export default function JobUpdatingForm() {
     values: {
       name: job?.name || '',
       description: job?.description || '',
-      salary: Number(job?.salary) || 0,
+      salary: job?.salary || '',
       requirement: job?.requirement || '',
       benefit: job?.benefit || '',
       deadline: job?.deadline || new Date().toISOString().split('T')[0], // 2015-03-25

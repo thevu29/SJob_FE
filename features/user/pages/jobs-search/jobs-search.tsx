@@ -20,9 +20,9 @@ export default function JobsSearch() {
   const type = searchParams.get('type') || '';
   const fieldDetailIds = searchParams.get('fieldDetailIds') || '';
 
-  const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
+  const isBrowser = () => typeof window !== 'undefined';
 
-  const { data: JobsData } = useGetPaginatedPublic<Job>(
+  const { data: JobsData, isLoading } = useGetPaginatedPublic<Job>(
     'jobs',
     currentPage,
     pageSize,
@@ -38,7 +38,6 @@ export default function JobsSearch() {
     }
   );
 
-  // Scroll to top when currentPage changes
   useEffect(() => {
     if (!isBrowser()) return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -52,23 +51,24 @@ export default function JobsSearch() {
 
       <div className='grid grid-cols-1 gap-6 lg:grid-cols-4'>
         <div className='lg:col-span-1'>
-          <div className='sticky top-24 space-y-6'>
+          <div className='space-y-6 py-4'>
             <AdvancedFilters />
           </div>
         </div>
 
-        <div className='space-y-4 lg:col-span-3'>
-          {JobsData && JobsData.data && JobsData.data.length > 0 ? (
-            <JobListing
-              jobs={JobsData.data}
-              currentPage={currentPage}
-              totalPages={JobsData?.meta.totalPages as number}
-            />
-          ) : (
-            Array(3)
-              .fill(0)
-              .map((_, index) => <JobCardSkeleton key={index} />)
-          )}
+        <div className='min-h-[600px] space-y-4 lg:col-span-3'>
+          {isLoading
+            ? Array(10)
+                .fill(0)
+                .map((_, index) => <JobCardSkeleton key={index} />)
+            : JobsData &&
+              JobsData.data && (
+                <JobListing
+                  jobs={JobsData.data}
+                  currentPage={currentPage}
+                  totalPages={JobsData.meta.totalPages as number}
+                />
+              )}
         </div>
       </div>
     </div>

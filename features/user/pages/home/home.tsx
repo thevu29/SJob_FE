@@ -1,76 +1,30 @@
 'use client';
-
 import HeroBanner from '@/components/common/hero-banner';
-import JobListings from '@/features/user/pages/home/components/job-listing';
 import React from 'react';
-import { Job } from '@/interfaces/job';
 import FieldListings from '@/features/user/pages/home/components/field-listing';
-import { FieldDetailCount } from '@/interfaces/field';
 import Hotline from '@/features/user/pages/home/components/hotline';
-import { useQueries } from '@tanstack/react-query';
-import { getPaginatedPublic, getPublic } from '@/lib/api';
-import { LoadingPage } from '@/components/common/loading';
-import { ROUTES } from '@/constants/routes';
+import HomePageJobs from '@/features/user/pages/home/components/home-page-jobs';
+import HomePageSuggestedJobs from '@/features/user/pages/home/components/home-page-suggested-jobs';
+import RecruiterListings from '@/features/user/pages/home/components/recruiter-listing';
 
 export default function HomePage() {
-  // Gọi API song song
-  const queries = useQueries({
-    queries: [
-      {
-        queryKey: ['jobs'],
-        queryFn: () => getPaginatedPublic<Job>('jobs')
-      },
-      {
-        queryKey: ['field-details/counts'],
-        queryFn: () => getPublic<FieldDetailCount[]>('field-details/counts')
-      }
-      // {
-      //   queryKey: ['recruiters/all'],
-      //   queryFn: () => get<Recruiter[]>('recruiters/all')
-      // }
-    ]
-  });
-
-  const jobResponse = queries[0].data;
-  const fieldDetailCounts = queries[1].data;
-  // const recruiters = queries[2].data?.data as unknown as Recruiter[];
-
-  const isLoading = queries.some((query) => query.isLoading);
-
-  if (isLoading) {
-    return <LoadingPage />;
-  }
   return (
     <div>
       {/* Hero Banner */}
       <HeroBanner />
 
-      {/* <RecruiterListings recruiters={[]} /> */}
+      {/* Recruiters Listing  */}
+      <RecruiterListings />
 
-      {/* Job Listing  */}
-      {jobResponse && jobResponse.data && jobResponse.data.length > 0 && (
-        <JobListings
-          title='Việc làm mới nhất'
-          jobs={jobResponse.data}
-          viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
-        />
-      )}
+      {/* Home Page Jobs Listing  */}
+      <HomePageJobs />
 
       {/* Field Listing  */}
-      {fieldDetailCounts &&
-        fieldDetailCounts.data &&
-        fieldDetailCounts.data.length > 0 && (
-          <FieldListings fieldDetailCounts={fieldDetailCounts.data} />
-        )}
 
-      {/* Job Listing  */}
-      {jobResponse && jobResponse.data && jobResponse.data.length > 0 && (
-        <JobListings
-          title='Việc làm gợi ý'
-          jobs={jobResponse.data}
-          viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
-        />
-      )}
+      <FieldListings />
+
+      {/* Home Page Suggested Jobs Listing  */}
+      <HomePageSuggestedJobs />
 
       {/* Hotline*/}
       <Hotline />

@@ -30,7 +30,7 @@ export function Footer() {
               </li>
               <li className='flex items-center'>
                 <Mail className='mr-2 h-4 w-4' />
-                <span>Jobsupport@vietnamworks.com</span>
+                <span>Jobsupport@sjob.com</span>
               </li>
             </ul>
           </div>
@@ -122,13 +122,6 @@ export function Footer() {
               </Link>
             </div>
           </div>
-        </div>
-        <div className='mt-8 text-center text-sm'>
-          <p>Bản Quyền © Công Ty Cổ Phần Navigos Group Việt Nam</p>
-          <p className='mt-1'>
-            Tầng 20, tòa nhà E.Town Central, 11 Đoàn Văn Bơ, Phường 13, Quận 4,
-            TP.HCM, Việt Nam
-          </p>
         </div>
       </div>
     </footer>

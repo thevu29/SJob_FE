@@ -1,4 +1,5 @@
 import { JobType, JobStatus, Job } from '@/interfaces/job';
+import { formatSalary } from '@/lib/utils';
 import {
   Calendar,
   Clock,
@@ -15,16 +16,6 @@ import {
   User,
   BadgeCheck
 } from 'lucide-react';
-
-// Format salary for display
-export const formatSalary = (salary: number) => {
-  if (salary >= 1000000) {
-    return `${(salary / 1000000).toFixed(0)}tr đ/tháng`;
-  } else if (salary >= 1000) {
-    return `${(salary / 1000).toFixed(0)}k đ/tháng`;
-  }
-  return `${salary} đ/tháng`;
-};
 
 // Map job type to icon and display text
 export const getJobTypeInfo = (type: string) => {

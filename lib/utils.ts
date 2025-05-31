@@ -118,8 +118,8 @@ export function formatCurrency(amount: number): string {
   }).format(amount);
 }
 
-export const formatSalary = (salary: number) => {
-  // const salaryInTrillions = formatCurrency(salary * 1000000);
+export const formatSalary = (salary: string) => {
+  if (salary === '0') return 'Thỏa thuận';
   return `${salary}tr ₫/tháng`;
 };
 

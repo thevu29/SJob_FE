@@ -249,11 +249,9 @@ export function JobDescriptionSection({
             </FormLabel>
             <div className='grid grid-cols-1 items-center gap-4'>
               <Input
-                type='number'
+                type='text'
                 placeholder='8.000.000'
-                onChange={(e) =>
-                  field.onChange(Number.parseInt(e.target.value))
-                }
+                onChange={(e) => field.onChange(e.target.value)}
               />
               {/* <div className='flex items-center gap-2'>
                 <Input type='number' placeholder='1500' />

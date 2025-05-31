@@ -46,7 +46,7 @@ export default function JobPostingForm() {
     defaultValues: {
       name: '',
       description: '',
-      salary: 0,
+      salary: '',
       requirement: '',
       benefit: '',
       deadline: new Date().toISOString().split('T')[0], // 2015-03-25

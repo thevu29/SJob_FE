@@ -9,10 +9,9 @@ import DOMPurify from 'isomorphic-dompurify';
 
 interface JobInfoProps {
   job: Job;
-  recruiter: Recruiter;
 }
 
-export default function JobInfo({ job, recruiter }: JobInfoProps) {
+export default function JobInfo({ job }: JobInfoProps) {
   const details = generateJobDetails(job);
 
   return (
@@ -97,12 +96,6 @@ export default function JobInfo({ job, recruiter }: JobInfoProps) {
               </div>
             </div>
           ))}
-        </div>
-
-        <h3 className='pt-4 text-lg font-semibold'>Địa điểm làm việc</h3>
-        <div className='flex items-start gap-3'>
-          <MapPin className='text-muted-foreground mt-0.5 h-5 w-5' />
-          <p>{recruiter.address}</p>
         </div>
       </CardContent>
     </Card>

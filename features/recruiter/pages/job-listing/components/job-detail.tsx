@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogClose
 } from '@/components/ui/dialog';
-import { formatDate } from '@/lib/utils';
+import { formatDate, formatSalary } from '@/lib/utils';
 import type { Job } from '@/interfaces/job';
 import { JobStatus, JobType } from '@/interfaces/job';
 import { Badge } from '@/components/ui/badge';
@@ -32,15 +32,6 @@ interface JobDetailModalProps {
 }
 
 export function JobDetail({ isOpen, onClose, job }: JobDetailModalProps) {
-  // Function to format salary
-  const formatSalary = (salary: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      maximumFractionDigits: 0
-    }).format(salary);
-  };
-
   // Function to determine status badge
   const getStatusBadge = (status: JobStatus) => {
     const formatedStatus =

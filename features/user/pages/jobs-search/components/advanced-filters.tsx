@@ -1,17 +1,18 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useJobParams } from '@/features/user/hooks/useJobParams';
 import { ExperienceFilter } from '@/features/user/pages/jobs-search/components/experience-filter';
 import { FieldFilter } from '@/features/user/pages/jobs-search/components/field-filter';
 import { JobTypeFilter } from '@/features/user/pages/jobs-search/components/job-type-filter';
 import { SalaryFilter } from '@/features/user/pages/jobs-search/components/salary-filter';
-import { RefreshCw, Filter } from 'lucide-react';
+import { Filter } from 'lucide-react';
 
 export function AdvancedFilters() {
   const { resetFilters } = useJobParams();
   return (
-    <div className=''>
+    <ScrollArea className='h-[550px] rounded-md border p-4'>
       <div className='mb-4 flex items-center justify-between'>
         <h3 className='flex items-center gap-2 text-lg font-semibold'>
           <span className='text-primary'>
@@ -44,6 +45,6 @@ export function AdvancedFilters() {
 
         <JobTypeFilter />
       </div>
-    </div>
+    </ScrollArea>
   );
 }

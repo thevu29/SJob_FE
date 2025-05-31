@@ -1,8 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { ROUTES } from '@/constants/routes';
-import { Job } from '@/interfaces/job';
+import { useGetCurrentUser, usePost } from '@/hooks';
+import { Job, ViewedJob } from '@/interfaces/job';
 import { formatSalary } from '@/lib/utils';
-import { Badge } from 'lucide-react';
+import { AxiosError } from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -11,8 +12,26 @@ interface JobCardProps {
 }
 
 export function JobCard({ job }: JobCardProps) {
+  const { data: user } = useGetCurrentUser();
+  const createViewJobMutation = usePost<ViewedJob>('viewed-jobs', {
+    onError: (error: AxiosError) => {
+      console.error('Failed to create view job:', error);
+    }
+  });
+
+  const onClickViewJob = async () => {
+    if (!user?.data.id) return;
+    const payload = {
+      jobSeekerId: user.data.id,
+      jobId: job.id
+    };
+    await createViewJobMutation.mutateAsync(payload);
+  };
   return (
-    <Card className='overflow-hidden border transition-shadow duration-300 hover:shadow-md'>
+    <Card
+      className='overflow-hidden border transition-shadow duration-300 hover:shadow-md'
+      onClick={onClickViewJob}
+    >
       <CardContent className='p-4'>
         <Link
           href={ROUTES.JOBSEEKER.JOBS.DETAIL(job.id)}
@@ -50,7 +69,7 @@ export function JobCard({ job }: JobCardProps) {
               {job.recruiterName}
             </p>
             <p className='text-color-5 mt-1 text-sm'>
-              {job.salary ? formatSalary(job.salary) : 'Thỏa thuận'}
+              {job.salary && formatSalary(job.salary)}
             </p>
             {/* <p className='text-muted-foreground mt-1 line-clamp-1 text-sm'>
               {job.location}
