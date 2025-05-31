@@ -69,8 +69,13 @@ export function useGetPaginated<T>(
 ) {
   const queryUrl = `${url}?page=${page}&limit=${pageSize}`;
 
+  const params = config?.params || {};
+  const paramValues = Object.values(params)
+    .filter(value => value !== undefined && value !== '')
+    .map(value => String(value));
+
   return useQuery({
-    queryKey: [...queryKey, page.toString(), pageSize.toString()],
+    queryKey: [...queryKey, page.toString(), pageSize.toString(), ...paramValues],
     queryFn: () => getPaginated<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options
@@ -94,8 +99,13 @@ export function useGetPaginatedPublic<T>(
 ) {
   const queryUrl = `${url}?page=${page}&limit=${pageSize}`;
 
+  const params = config?.params || {};
+  const paramValues = Object.values(params)
+    .filter(value => value !== undefined && value !== '')
+    .map(value => String(value));
+
   return useQuery({
-    queryKey: [...queryKey, page.toString(), pageSize.toString()],
+    queryKey: [...queryKey, page.toString(), pageSize.toString(), ...paramValues],
     queryFn: () => getPaginatedPublic<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options

@@ -1,9 +1,10 @@
+import React from 'react';
+
+import { Job } from '@/interfaces/job';
 import { ROUTES } from '@/constants/routes';
+import { useGetPaginatedPublic } from '@/hooks';
 import JobListings from '@/features/user/pages/home/components/job-listing';
 import JobListingSkeleton from '@/features/user/pages/home/components/job-listing-skeleton';
-import { useGetPaginatedPublic } from '@/hooks';
-import { Job } from '@/interfaces/job';
-import React from 'react';
 
 export default function HomePageJobs() {
   const currentPage = 1;
@@ -15,6 +16,7 @@ export default function HomePageJobs() {
     pageSize,
     ['home-page-jobs']
   );
+
   if (isLoading) {
     return <JobListingSkeleton />;
   }
