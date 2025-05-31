@@ -11,6 +11,10 @@ export interface ILoginData {
   password: string;
 }
 
+export interface IGoogleLoginData {
+  code: string;
+}
+
 export interface ICustomJwtPayload extends JwtPayload {
   email: string;
   realm_access: {

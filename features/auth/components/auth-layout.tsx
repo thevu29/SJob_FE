@@ -38,7 +38,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
       </div>
       <div className='bg-primary relative hidden items-center justify-center lg:flex'>
         <Image
-          src='/auth-banner.jpg'
+          src='/auth-banner.png'
           alt='Authentication and security illustration'
           fill
           className='object-contain'

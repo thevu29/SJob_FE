@@ -20,15 +20,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         }
       })
   );
-
   return (
-    <>
-      <ThemeProvider attribute='class' defaultTheme='light' enableSystem>
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </ThemeProvider>
-    </>
+    <ThemeProvider attribute='class' defaultTheme='light' enableSystem>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
