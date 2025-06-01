@@ -9,6 +9,7 @@ export interface FieldDetail {
   fieldId: string;
   name: string;
 }
+
 export interface FieldDetailCount {
   id: string;
   name: string;
