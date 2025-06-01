@@ -71,11 +71,16 @@ export function useGetPaginated<T>(
 
   const params = config?.params || {};
   const paramValues = Object.values(params)
-    .filter(value => value !== undefined && value !== '')
-    .map(value => String(value));
+    .filter((value) => value !== undefined && value !== '')
+    .map((value) => String(value));
 
   return useQuery({
-    queryKey: [...queryKey, page.toString(), pageSize.toString(), ...paramValues],
+    queryKey: [
+      ...queryKey,
+      page.toString(),
+      pageSize.toString(),
+      ...paramValues
+    ],
     queryFn: () => getPaginated<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options
@@ -101,11 +106,16 @@ export function useGetPaginatedPublic<T>(
 
   const params = config?.params || {};
   const paramValues = Object.values(params)
-    .filter(value => value !== undefined && value !== '')
-    .map(value => String(value));
+    .filter((value) => value !== undefined && value !== '')
+    .map((value) => String(value));
 
   return useQuery({
-    queryKey: [...queryKey, page.toString(), pageSize.toString(), ...paramValues],
+    queryKey: [
+      ...queryKey,
+      page.toString(),
+      pageSize.toString(),
+      ...paramValues
+    ],
     queryFn: () => getPaginatedPublic<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options
@@ -208,7 +218,7 @@ export function usePut<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
@@ -225,9 +235,12 @@ export function usePut<T, D = unknown>(
   delete restOptions.onError;
 
   return useMutation({
-    mutationFn: (data: D & { id: string | number }) => {
+    mutationFn: (data: D & { id?: string | number }) => {
       const { id, ...rest } = data;
-      return put<T, D>(`${url}/${id}`, rest as D, config);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return put<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
@@ -257,7 +270,7 @@ export function usePatch<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
@@ -274,9 +287,12 @@ export function usePatch<T, D = unknown>(
   delete restOptions.onError;
 
   return useMutation({
-    mutationFn: (data: D & { id: string | number }) => {
+    mutationFn: (data: D & { id?: string | number }) => {
       const { id, ...rest } = data;
-      return patch<T, D>(`${url}/${id}`, rest as D, config);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return patch<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
@@ -306,7 +322,7 @@ export function usePutFormData<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
@@ -325,12 +341,15 @@ export function usePutFormData<T, D = unknown>(
   return useMutation<
     ApiResponse<T>,
     AxiosError,
-    D & { id: string | number },
+    D & { id?: string | number },
     unknown
   >({
     mutationFn: (data) => {
       const { id, ...rest } = data;
-      return putFormData<T, D>(`${url}/${id}`, rest as D, config);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return putFormData<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
@@ -358,7 +377,7 @@ export function usePatchFormData<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
@@ -377,12 +396,15 @@ export function usePatchFormData<T, D = unknown>(
   return useMutation<
     ApiResponse<T>,
     AxiosError,
-    D & { id: string | number },
+    D & { id?: string | number },
     unknown
   >({
     mutationFn: (data) => {
       const { id, ...rest } = data;
-      return patchFormData<T, D>(`${url}/${id}`, rest as D, config);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return patchFormData<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
