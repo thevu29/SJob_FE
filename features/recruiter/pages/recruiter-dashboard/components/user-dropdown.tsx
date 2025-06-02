@@ -45,7 +45,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
             navUserItems.map((navItem, index) => (
               <DropdownMenuItem
                 key={index}
-                className='focus:bg-sidebar-accent text-sidebar-foreground mt-2 flex items-center border-b p-3'
+                className='focus:bg-sidebar-accent text-sidebar-foreground flex items-center border-b p-3'
               >
                 {navItem.icon}
                 <Link

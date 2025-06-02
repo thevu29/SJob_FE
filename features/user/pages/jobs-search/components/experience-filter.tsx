@@ -10,19 +10,18 @@ import { useJobParams } from '@/features/user/hooks/useJobParams';
 type ExperienceOption = {
   label: string;
   value: string;
-  id: string;
 };
 
 const experienceOptions: ExperienceOption[] = [
-  { label: 'Tất cả', value: '', id: 'exp-all' },
-  { label: 'Thực tập sinh', value: '<=1', id: 'exp-intern' },
-  { label: 'Fresher', value: '1', id: 'exp-fresher' },
-  { label: 'Junior', value: '1-2', id: 'exp-junior' },
-  { label: 'Middle', value: '2-4', id: 'exp-middle' },
-  { label: 'Senior', value: '4-6', id: 'exp-senior' },
-  { label: 'Lead', value: '>=6', id: 'exp-lead' },
+  { label: 'Tất cả', value: '' },
+  { label: 'Dưới 1 năm', value: '<=1' },
+  { label: '1 năm', value: '1' },
+  { label: '2 năm', value: '2' },
+  { label: '3 năm', value: '3' },
+  { label: '4 năm', value: '4' },
+  { label: 'Ít nhất 5 năm', value: '>=5' },
   // { label: 'Expert', value: '>8', id: 'exp-expert' },
-  { label: 'Khác', value: 'custom', id: 'exp-custom' }
+  { label: 'Khác', value: 'custom' }
 ];
 
 export function ExperienceFilter() {
@@ -83,14 +82,14 @@ export function ExperienceFilter() {
         onValueChange={handleValueChange}
         className='grid grid-cols-2 gap-x-2 gap-y-4'
       >
-        {experienceOptions.map((option) => (
-          <div key={option.id} className='flex items-center space-x-2'>
+        {experienceOptions.map((option, index) => (
+          <div key={index} className='flex items-center space-x-2'>
             <RadioGroupItem
               value={option.value}
-              id={option.id}
+              // id={index}
               className='border-color-5 text-color-5 checked:bg-color-5'
             />
-            <Label htmlFor={option.id}>{option.label}</Label>
+            <Label>{option.label}</Label>
           </div>
         ))}
       </RadioGroup>

@@ -23,7 +23,6 @@ const salaryOptions: SalaryOption[] = [
   { label: '25 - 30 triệu', value: '25-30', id: 'salary-25-30' },
   { label: '30 - 50 triệu', value: '30-50', id: 'salary-30-50' },
   { label: 'Ít nhất 50 triệu', value: '>=50', id: 'salary-over-50' },
-  { label: 'Thoả thuận', value: 'negotiable', id: 'salary-negotiable' },
   { label: 'Khác', value: 'custom', id: 'salary-custom' }
 ];
 
