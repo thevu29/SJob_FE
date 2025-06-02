@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { MapPin, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Recruiter } from '@/interfaces';
 import { formatEmployeeCount } from '@/lib/utils';
 import placeholder from '@/public/placeholder.jpg';
+import Link from 'next/link';
 
 interface CompanyInfoProps {
   recruiter: Recruiter;
@@ -24,7 +24,9 @@ export default function CompanyInfo({ recruiter }: CompanyInfoProps) {
               className='object-contain'
             />
           </div>
-          <h2 className='text-xl font-bold'>{recruiter.name}</h2>
+          <Link href={`/recruiter/${recruiter.id}`} className='w-full'>
+            <h2 className='text-xl font-bold'>{recruiter.name}</h2>
+          </Link>
 
           <div className='mt-4 w-full space-y-3'>
             <div className='flex items-start gap-2 text-sm'>
@@ -38,13 +40,6 @@ export default function CompanyInfo({ recruiter }: CompanyInfoProps) {
               <Users className='h-4 w-4 shrink-0' />
               <span>{formatEmployeeCount(recruiter.members)}</span>
             </div>
-
-            {/* <div className='flex items-center gap-2 text-sm'>
-              <span className='bg-primary/10 flex h-4 w-4 shrink-0 items-center justify-center rounded text-xs'>
-                HR
-              </span>
-              <span>Hr Department</span>
-            </div> */}
           </div>
         </div>
       </CardContent>
