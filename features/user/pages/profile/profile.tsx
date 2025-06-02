@@ -2,6 +2,7 @@
 
 import { Loading, LoadingPage } from '@/components/common/loading';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { ProfileSkeleton } from '@/features/user/components/skeleton/profile-skeleton';
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
 import { CertificationCard } from '@/features/user/pages/profile/components/certification-card';
 import { EducationCard } from '@/features/user/pages/profile/components/education-card';
@@ -133,7 +134,7 @@ export function Profile() {
   };
 
   if (isLoading) {
-    return <LoadingPage />;
+    return <ProfileSkeleton />;
   }
 
   return (

@@ -2,16 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import {
-  Briefcase,
-  Settings,
-  FileText,
-  ChevronDown,
-  BookmarkCheck,
-  History,
-  Star,
-  Send
-} from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProfileCompletionCircle } from '@/features/user/pages/profile/components/profile-completion-circle';
@@ -19,11 +9,6 @@ import {
   calculateProfileCompletion,
   isProfileCompleteEnough
 } from '@/features/user/pages/profile/utils/profile-completion';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible';
 
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
 import { usePatchFormData } from '@/hooks/use-queries';
@@ -31,19 +16,18 @@ import { JobSeeker } from '@/interfaces';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useDebounce } from '@/hooks/use-debounce';
-import { ROUTES } from '@/constants/routes';
 import Image from 'next/image';
 import placeholder from '@/public/placeholder.jpg';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { navUserItems } from '@/constants/navigation';
+import { SidebarSkeleton } from '@/features/user/components/skeleton/sidebar-skeleton';
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { data, isLoading, isError, error } = useJobSeekerContext();
+  const { data, isLoading } = useJobSeekerContext();
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
-  const [isJobsOpen, setIsJobsOpen] = useState(false);
 
   const debouncedIsSeeking = useDebounce(isSeeking, 1000);
   const {
@@ -83,18 +67,6 @@ export function Sidebar() {
     setIsSeeking(jobSeeker.seeking);
   }, [jobSeeker, experiences, educations, skills, resumes, certifications]);
 
-  // Check if any of the job-related paths are active
-  // useEffect(() => {
-  //   const jobRelatedPaths = [
-  //     '/jobs/saved',
-  //     '/jobs/applied',
-  //     '/jobs/recommended'
-  //   ];
-  //   if (jobRelatedPaths.some((path) => pathname.includes(path))) {
-  //     setIsJobsOpen(true);
-  //   }
-  // }, [pathname]);
-
   const isProfileComplete = isProfileCompleteEnough(profileCompletion);
 
   const updateSeekingStatus = async (newSeeking: boolean) => {
@@ -114,7 +86,9 @@ export function Sidebar() {
   useEffect(() => {
     updateSeekingStatus(debouncedIsSeeking);
   }, [debouncedIsSeeking]);
-
+  if (isLoading) {
+    return <SidebarSkeleton />;
+  }
   return (
     <aside className='bg-background border-border w-full border-r p-4 md:w-100'>
       <div className='flex h-full flex-col space-y-4'>
