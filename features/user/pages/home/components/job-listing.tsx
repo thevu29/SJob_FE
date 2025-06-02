@@ -18,7 +18,7 @@ interface JobListingsProps {
 
 export default function JobListings({
   title,
-  viewAllLink = '#',
+  viewAllLink,
   jobs
 }: JobListingsProps) {
   const [activeSlide, setActiveSlide] = useState(0);
@@ -59,11 +59,6 @@ export default function JobListings({
     }
   };
 
-  // Get current desktop page items
-  // const currentDesktopItems = displayJobs.slice(
-  //   desktopPage * itemsPerPage,
-  //   (desktopPage + 1) * itemsPerPage
-  // );
   const currentDesktopItems = jobs?.slice(
     desktopPage * itemsPerPage,
     (desktopPage + 1) * itemsPerPage
@@ -83,12 +78,14 @@ export default function JobListings({
                 <div className='mr-2 h-12 w-3 rounded-sm bg-gradient-to-b from-orange-500 to-blue-500'></div>
                 <h2 className='text-xl font-bold md:text-2xl'>{title}</h2>
               </div>
-              <Link
-                href={viewAllLink}
-                className='text-primary-foreground font-medium uppercase hover:underline'
-              >
-                Xem tất cả
-              </Link>
+              {viewAllLink && viewAllLink != null && (
+                <Link
+                  href={viewAllLink}
+                  className='text-primary-foreground font-medium uppercase hover:underline'
+                >
+                  Xem tất cả
+                </Link>
+              )}
             </div>
 
             {/* Desktop view - Grid layout */}
@@ -156,45 +153,47 @@ export default function JobListings({
             </div>
 
             {/* Desktop pagination dots */}
-            <div className='mt-8 hidden items-center justify-center lg:flex'>
-              <Button
-                variant='ghost'
-                size='icon'
-                className='h-8 w-8'
-                onClick={() => goToDesktopPage(desktopPage - 1)}
-                disabled={desktopPage === 0 || totalDesktopPages <= 1}
-              >
-                <ChevronLeft className='h-4 w-4' />
-              </Button>
+            {totalDesktopPages && totalDesktopPages > 1 && (
+              <div className='mt-8 hidden items-center justify-center lg:flex'>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='h-8 w-8'
+                  onClick={() => goToDesktopPage(desktopPage - 1)}
+                  disabled={desktopPage === 0 || totalDesktopPages <= 1}
+                >
+                  <ChevronLeft className='h-4 w-4' />
+                </Button>
 
-              {Array.from({ length: Math.max(totalDesktopPages, 1) }).map(
-                (_, i) => (
-                  <Button
-                    key={i}
-                    variant='ghost'
-                    size='icon'
-                    className={cn(
-                      'mx-1 h-2 w-2 rounded-full p-0 transition-colors duration-200',
-                      desktopPage === i ? 'bg-primary' : 'bg-muted'
-                    )}
-                    onClick={() => goToDesktopPage(i)}
-                  />
-                )
-              )}
+                {Array.from({ length: Math.max(totalDesktopPages, 1) }).map(
+                  (_, i) => (
+                    <Button
+                      key={i}
+                      variant='ghost'
+                      size='icon'
+                      className={cn(
+                        'mx-1 h-2 w-2 rounded-full p-0 transition-colors duration-200',
+                        desktopPage === i ? 'bg-primary' : 'bg-muted'
+                      )}
+                      onClick={() => goToDesktopPage(i)}
+                    />
+                  )
+                )}
 
-              <Button
-                variant='ghost'
-                size='icon'
-                className='h-8 w-8'
-                onClick={() => goToDesktopPage(desktopPage + 1)}
-                disabled={
-                  desktopPage === totalDesktopPages - 1 ||
-                  totalDesktopPages <= 1
-                }
-              >
-                <ChevronRight className='h-4 w-4' />
-              </Button>
-            </div>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='h-8 w-8'
+                  onClick={() => goToDesktopPage(desktopPage + 1)}
+                  disabled={
+                    desktopPage === totalDesktopPages - 1 ||
+                    totalDesktopPages <= 1
+                  }
+                >
+                  <ChevronRight className='h-4 w-4' />
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
