@@ -9,7 +9,8 @@ import {
   ChevronDown,
   BookmarkCheck,
   History,
-  Star
+  Star,
+  Send
 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,6 +36,7 @@ import Image from 'next/image';
 import placeholder from '@/public/placeholder.jpg';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { navUserItems } from '@/constants/navigation';
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -186,115 +188,24 @@ export function Sidebar() {
           <CardContent className='p-2'>
             <nav>
               <ul className='space-y-1'>
-                <li>
-                  <Link
-                    href={ROUTES.JOBSEEKER.PROFILE}
-                    className={cn(
-                      'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-3 rounded-md p-3',
-                      {
-                        'bg-sidebar-accent text-sidebar-accent-foreground':
-                          pathname === ROUTES.JOBSEEKER.PROFILE
-                      }
-                    )}
-                  >
-                    <FileText className='h-5 w-5' />
-                    <span>Hồ Sơ Của Tôi</span>
-                  </Link>
-                </li>
-                <li>
-                  <Collapsible
-                    open={isJobsOpen}
-                    onOpenChange={setIsJobsOpen}
-                    className='w-full'
-                  >
-                    <CollapsibleTrigger
-                      className={cn(
-                        'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex w-full items-center justify-between rounded-md p-3'
-                        // {
-                        //   'bg-sidebar-accent text-sidebar-accent-foreground':
-                        //     pathname.includes('/jobs') || isJobsOpen
-                        // }
-                      )}
-                    >
-                      <div className='flex items-center gap-3'>
-                        <Briefcase className='h-5 w-5' />
-                        <span>Việc Làm Của Tôi</span>
-                      </div>
-                      <ChevronDown
+                {navUserItems &&
+                  navUserItems.map((navItem, index) => (
+                    <li key={index}>
+                      <Link
+                        href={navItem.url}
                         className={cn(
-                          'h-4 w-4 transition-transform duration-200',
+                          'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-3 rounded-md p-3',
                           {
-                            'rotate-180': isJobsOpen
+                            'bg-sidebar-accent text-sidebar-accent-foreground':
+                              pathname === navItem.url
                           }
                         )}
-                      />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className='animate-accordion-down'>
-                      <ul className='mt-1 ml-8 space-y-1'>
-                        <li>
-                          <Link
-                            href={ROUTES.JOBSEEKER.JOBS.SAVED}
-                            className={cn(
-                              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
-                              {
-                                'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === ROUTES.JOBSEEKER.JOBS.SAVED
-                              }
-                            )}
-                          >
-                            <BookmarkCheck className='h-4 w-4' />
-                            <span>Việc Làm Đã Lưu</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href={ROUTES.JOBSEEKER.JOBS.VIEWED}
-                            className={cn(
-                              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
-                              {
-                                'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === ROUTES.JOBSEEKER.JOBS.VIEWED
-                              }
-                            )}
-                          >
-                            <History className='h-4 w-4' />
-                            <span>Việc Làm Đã Xem</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href='/jobs/recommended'
-                            className={cn(
-                              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
-                              {
-                                'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === '/jobs/recommended'
-                              }
-                            )}
-                          >
-                            <Star className='h-4 w-4' />
-                            <span>Việc Làm Gợi Ý</span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </li>
-                <li>
-                  <Link
-                    href={ROUTES.JOBSEEKER.SETTINGS}
-                    className={cn(
-                      'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-3 rounded-md p-3',
-                      {
-                        'bg-sidebar-accent text-sidebar-accent-foreground':
-                          pathname === ROUTES.JOBSEEKER.SETTINGS
-                      }
-                    )}
-                  >
-                    <Settings className='h-5 w-5' />
-                    <span>Quản Lý Tài Khoản</span>
-                  </Link>
-                </li>
+                      >
+                        {navItem.icon}
+                        <span>{navItem.title}</span>
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </nav>
           </CardContent>

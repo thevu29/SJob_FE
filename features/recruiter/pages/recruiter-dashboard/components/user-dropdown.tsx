@@ -45,10 +45,14 @@ export function UserDropdown({ user }: UserDropdownProps) {
             navUserItems.map((navItem, index) => (
               <DropdownMenuItem
                 key={index}
-                className='focus:bg-secondary/40 mt-2 flex items-center border-b p-3'
+                className='focus:bg-sidebar-accent text-sidebar-foreground mt-2 flex items-center border-b p-3'
               >
                 {navItem.icon}
-                <Link href={navItem.url} className='w-full'>
+                <Link
+                  href={navItem.url}
+                  className='w-full'
+                  onClick={() => setOpen(false)}
+                >
                   {navItem.title}
                 </Link>
               </DropdownMenuItem>

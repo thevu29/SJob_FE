@@ -93,7 +93,7 @@ export function NotificationBell() {
   ).length;
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>

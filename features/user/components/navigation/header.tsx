@@ -30,26 +30,6 @@ export function Header() {
           <Link href='/' className='mr-6 flex items-center'>
             <Image src={Logo} alt='Logo' width={30} height={30} />
           </Link>
-          <nav className='hidden md:flex'>
-            <ul className='flex'>
-              <li>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Link
-                      href='#'
-                      className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
-                    >
-                      Việc làm <ChevronDown className='ml-1 h-4 w-4' />
-                    </Link>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className='w-48'>
-                    <DropdownMenuItem>Việc làm đã lưu</DropdownMenuItem>
-                    <DropdownMenuItem>Việc làm đã ứng tuyển</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </li>
-            </ul>
-          </nav>
         </div>
         <div className='flex items-center'>
           <div className='flex items-center space-x-4'>
