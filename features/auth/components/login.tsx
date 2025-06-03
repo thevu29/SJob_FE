@@ -9,19 +9,11 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'nextjs-toploader/app';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQueryClient } from '@tanstack/react-query';
 
-import type {
-  User,
-  Recruiter,
-  JobSeeker,
-  IAuthResponse,
-  ICustomJwtPayload,
-} from '@/interfaces';
-import { get } from '@/lib/api';
 import { getRole } from '@/lib/helpers';
 import { usePost, useAuthToken } from '@/hooks';
 import { QueryKeys, UserRole } from '@/constants/enums';
+import type { IAuthResponse, ICustomJwtPayload } from '@/interfaces';
 import {
   Form,
   FormField,
@@ -34,6 +26,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { PasswordInput } from '@/components/common/password-input';
 
+import { GoogleLoginButton } from './google-login-button';
+
 const loginSchema = z.object({
   email: z.string().email({ message: 'Email không hợp lệ' }),
   password: z.string().nonempty({ message: 'Mật khẩu là bắt buộc' })
@@ -43,7 +37,6 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   const { getAccessToken, setTokens } = useAuthToken();
   const accessToken = getAccessToken();
@@ -57,16 +50,6 @@ export function LoginForm() {
     mode: 'onChange'
   });
 
-  const handleGetCurrentUser = async () => {
-    await queryClient.prefetchQuery({
-      queryKey: [QueryKeys.CURRENT_USER],
-      queryFn: async () => {
-        const res = await get<User | JobSeeker | Recruiter>('/auth/me');
-        return res.data;
-      }
-    });
-  };
-
   const { mutate: login, isPending } = usePost<IAuthResponse, LoginFormData>(
     '/auth/login',
     {
@@ -78,8 +61,6 @@ export function LoginForm() {
           setTokens(access_token, refresh_token);
 
           const decodedToken = jwtDecode<ICustomJwtPayload>(access_token);
-
-          await handleGetCurrentUser();
 
           const role = getRole(decodedToken.realm_access.roles);
 
@@ -95,6 +76,10 @@ export function LoginForm() {
       onError: (error) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
+    },
+    [QueryKeys.CURRENT_USER],
+    {
+      isPublic: true
     }
   );
 
@@ -142,7 +127,7 @@ export function LoginForm() {
                 <div className='flex items-center'>
                   <FormLabel>Mật khẩu</FormLabel>
                   <Link
-                    href='/forgot-password'
+                    href='/send-otp'
                     className='text-primary ml-auto text-sm underline-offset-4 hover:underline'
                   >
                     Quên mật khẩu?
@@ -164,26 +149,20 @@ export function LoginForm() {
             className='w-full cursor-pointer'
             disabled={isPending}
           >
-            {isPending ? (
-              <>
-                <Loader2 className='animate-spin' />
-                Đăng nhập
-              </>
-            ) : (
-              'Đăng nhập'
-            )}
-          </Button>
+            {isPending && <Loader2 className='animate-spin' />}
+            Đăng nhập
+          </Button>{' '}
           <div className='after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t'>
             <span className='bg-background text-muted-foreground relative z-10 px-2'>
               Hoặc
             </span>
           </div>
-          {/* <GoogleLoginButton setTokens={setTokens} /> */}
+          <GoogleLoginButton />
         </div>
         <div className='text-center text-sm'>
           Chưa có tài khoản?{' '}
           <Link
-            href='/signup'
+            href='/sign-up'
             className='text-primary underline underline-offset-4'
           >
             Đăng ký ngay

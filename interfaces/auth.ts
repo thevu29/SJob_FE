@@ -11,6 +11,10 @@ export interface ILoginData {
   password: string;
 }
 
+export interface IGoogleLoginData {
+  code: string;
+}
+
 export interface ICustomJwtPayload extends JwtPayload {
   email: string;
   realm_access: {
@@ -20,4 +24,31 @@ export interface ICustomJwtPayload extends JwtPayload {
 
 export interface IRefreshTokenData {
   refreshToken: string;
+}
+
+export interface IJobSeekerSignUpData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface IRecruiterSignUpData extends IJobSeekerSignUpData {
+  address: string;
+  fieldId: string;
+  phone: string;
+  website?: string;
+}
+
+export interface ISendOtpData {
+  email: string;
+}
+
+export interface IVerifyOtpData {
+  email: string;
+  otp: string;
+}
+
+export interface IResetPasswordData {
+  email: string;
+  password: string;
 }

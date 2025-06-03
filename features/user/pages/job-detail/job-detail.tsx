@@ -1,4 +1,5 @@
 'use client';
+
 import CompanyInfo from '@/features/user/pages/job-detail/components/company-info';
 import SimilarJobs from '@/features/user/pages/job-detail/components/similar-jobs';
 import { useParams } from 'next/navigation';

@@ -1,9 +1,13 @@
+import { toast } from 'sonner';
 import { useRouter } from 'nextjs-toploader/app';
 import { useQueryClient } from '@tanstack/react-query';
 import { deleteCookie, getCookie, setCookie } from 'cookies-next/client';
 
-import { QueryKeys } from '@/constants/enums';
+import type { IRefreshTokenData } from '@/interfaces';
 import { ACCESS_TOKEN_COOKIE_KEY, REFRESH_TOKEN_COOKIE_KEY } from '@/constants';
+
+import { usePost } from './use-queries';
+import { useLogoutState } from './use-logout-state';
 
 export function useAuthToken() {
   const setTokens = (accessToken: string, refreshToken: string) => {
@@ -38,14 +42,39 @@ export function useAuthToken() {
 export function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { setLoggingOut } = useLogoutState();
 
-  const logout = () => {
+  const handleLogoutSuccess = () => {
+    queryClient.clear();
     deleteCookie(ACCESS_TOKEN_COOKIE_KEY);
     deleteCookie(REFRESH_TOKEN_COOKIE_KEY);
-
-    queryClient.removeQueries({ queryKey: [QueryKeys.CURRENT_USER] });
+    setLoggingOut(false);
     router.push('/');
   };
 
-  return logout;
+  const { mutate, isPending } = usePost<void, IRefreshTokenData>('/auth/logout', {
+    onSuccess: handleLogoutSuccess,
+    onError: (_error) => {
+      handleLogoutSuccess();
+      toast.error('Đăng xuất không thành công. Vui lòng thử lại');
+    }
+  });
+
+  const logout = () => {
+    const refreshToken = getCookie(REFRESH_TOKEN_COOKIE_KEY);
+
+    setLoggingOut(true);
+
+    if (refreshToken) {
+      deleteCookie(ACCESS_TOKEN_COOKIE_KEY);
+      deleteCookie(REFRESH_TOKEN_COOKIE_KEY);
+      queryClient.clear();
+
+      mutate({ refreshToken });
+    } else {
+      handleLogoutSuccess();
+    }
+  };
+
+  return { logout, isLoading: isPending };
 }

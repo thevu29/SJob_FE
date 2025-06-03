@@ -1,20 +1,21 @@
 'use client';
 
+import Link from 'next/link';
 import { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { Recruiter } from '@/interfaces';
 import Image from 'next/image';
 import placeholder from '@/public/placeholder.jpg';
-import { useGetPaginated, useGetPaginatedPublic } from '@/hooks/use-queries';
+import { Recruiter } from '@/interfaces';
+import { useGetPaginated } from '@/hooks/use-queries';
 import RecruiterListingSkeleton from '@/features/user/pages/home/components/recruiter-listing-skeleton';
-import Link from 'next/link';
 
 export default function RecruiterListings() {
   const currentPage = 1;
   const pageSize = 50;
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const { data, isLoading } = useGetPaginated<Recruiter>(
     `recruiters`,
     currentPage,

@@ -5,13 +5,15 @@ import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
 
 import Logo from '@/public/icon.png';
+import { useAuthToken, useGetCurrentUser } from '@/hooks';
+import { useLogoutState } from '@/hooks/use-logout-state';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
-import { useAuthToken, useGetCurrentUser } from '@/hooks';
+import { LoadingSpinner, LoadingPage } from '@/components/common/loading';
 import { NotificationBell } from '@/features/notification/notification';
 import { MobileNav } from '@/features/user/components/navigation/mobile-nav';
 import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/components/user-dropdown';
@@ -19,8 +21,18 @@ import { UserDropdown } from '@/features/recruiter/pages/recruiter-dashboard/com
 export function Header() {
   const { getAccessToken } = useAuthToken();
   const accessToken = getAccessToken();
+  const { isLoggingOut } = useLogoutState();
 
-  const { data: user } = useGetCurrentUser();
+  const { data: user, isLoading, error } = useGetCurrentUser();
+
+  if (isLoggingOut) {
+    return <LoadingPage text="Đang đăng xuất..." />;
+  }
+
+  const hasValidToken = !!accessToken;
+  const hasUserData = !!(user && user.data);
+  const showUserDropdown = hasValidToken && hasUserData && !error;
+  const isAuthenticating = hasValidToken && (isLoading || (!hasUserData && !error));
 
   return (
     <header className='bg-secondary text-foreground sticky top-0 z-50 w-full'>
@@ -33,11 +45,13 @@ export function Header() {
         </div>
         <div className='flex items-center'>
           <div className='flex items-center space-x-4'>
-            {accessToken && user && user.data ? (
+            {showUserDropdown ? (
               <>
                 <NotificationBell />
                 <UserDropdown user={user.data} />
               </>
+            ) : isAuthenticating ? (
+              <LoadingSpinner size='sm' variant='primary' className='h-8 w-8' />
             ) : (
               <Link
                 href='/login'

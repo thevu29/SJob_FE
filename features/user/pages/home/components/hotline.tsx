@@ -19,8 +19,8 @@ export default function Hotline() {
                   Tìm việc khó <span className='text-color-5'>đã có SJob</span>
                 </h3>
 
-                <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
-                  <div className='bg-color-5 flex items-center gap-2 rounded-full px-6 py-3 text-white'>
+                <div className='mb-6 flex flex-col items-center gap-4 sm:flex-row'>
+                  <div className='bg-color-5 flex items-center gap-2 rounded-full py-3'>
                     <Phone className='h-5 w-5' />
                     <span className='font-bold'>(024) 6680 5588</span>
                   </div>

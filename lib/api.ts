@@ -47,8 +47,8 @@ const processQueue = (error: Error | null, token: string | null = null) => {
 const handleBackToLogin = () => {
   deleteCookie(ACCESS_TOKEN_COOKIE_KEY);
   deleteCookie(REFRESH_TOKEN_COOKIE_KEY);
-  window.location.href = '/login';
   toast.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+  window.location.href = '/login';
 };
 
 api.interceptors.request.use(

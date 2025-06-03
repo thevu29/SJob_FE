@@ -69,8 +69,18 @@ export function useGetPaginated<T>(
 ) {
   const queryUrl = `${url}?page=${page}&limit=${pageSize}`;
 
+  const params = config?.params || {};
+  const paramValues = Object.values(params)
+    .filter((value) => value !== undefined && value !== '')
+    .map((value) => String(value));
+
   return useQuery({
-    queryKey: [...queryKey, page.toString(), pageSize.toString()],
+    queryKey: [
+      ...queryKey,
+      page.toString(),
+      pageSize.toString(),
+      ...paramValues
+    ],
     queryFn: () => getPaginated<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options
@@ -94,8 +104,18 @@ export function useGetPaginatedPublic<T>(
 ) {
   const queryUrl = `${url}?page=${page}&limit=${pageSize}`;
 
+  const params = config?.params || {};
+  const paramValues = Object.values(params)
+    .filter((value) => value !== undefined && value !== '')
+    .map((value) => String(value));
+
   return useQuery({
-    queryKey: [...queryKey, page.toString(), pageSize.toString()],
+    queryKey: [
+      ...queryKey,
+      page.toString(),
+      pageSize.toString(),
+      ...paramValues
+    ],
     queryFn: () => getPaginatedPublic<T>(queryUrl, config),
     staleTime: 1000 * 60 * 5,
     ...options
@@ -105,7 +125,8 @@ export function useGetPaginatedPublic<T>(
 export function usePost<T, D = unknown>(
   url: string,
   options?: UseMutationOptions<ApiResponse<T>, AxiosError, D, unknown>,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -117,7 +138,7 @@ export function usePost<T, D = unknown>(
   delete restOptions.onError;
 
   return useMutation({
-    mutationFn: (data: D) => post<T, D>(url, data),
+    mutationFn: (data: D) => post<T, D>(url, data, config),
     onSuccess: async (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
         queryKeys.forEach((key) => {
@@ -125,8 +146,6 @@ export function usePost<T, D = unknown>(
             queryKey: typeof key === 'string' ? [key] : key
           });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
 
       if (userOnSuccess) {
@@ -152,7 +171,8 @@ export function usePostFormData<T, D = unknown>(
       unknown
     >
   >,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -170,16 +190,15 @@ export function usePostFormData<T, D = unknown>(
     unknown
   >({
     mutationFn: (data) => {
-      return postFormData<T, D>(url, data);
+      return postFormData<T, D>(url, data, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
         queryKeys.forEach((key) => {
           queryClient.invalidateQueries({ queryKey: [key] });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
+
       if (userOnSuccess) {
         userOnSuccess(data, variables, context);
       }
@@ -199,11 +218,12 @@ export function usePut<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -215,9 +235,12 @@ export function usePut<T, D = unknown>(
   delete restOptions.onError;
 
   return useMutation({
-    mutationFn: (data: D & { id: string | number }) => {
+    mutationFn: (data: D & { id?: string | number }) => {
       const { id, ...rest } = data;
-      return put<T, D>(`${url}/${id}`, rest as D);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return put<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
@@ -226,8 +249,6 @@ export function usePut<T, D = unknown>(
             queryKey: typeof key === 'string' ? [key] : key
           });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
 
       if (userOnSuccess) {
@@ -249,11 +270,12 @@ export function usePatch<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -265,9 +287,12 @@ export function usePatch<T, D = unknown>(
   delete restOptions.onError;
 
   return useMutation({
-    mutationFn: (data: D & { id: string | number }) => {
+    mutationFn: (data: D & { id?: string | number }) => {
       const { id, ...rest } = data;
-      return patch<T, D>(`${url}/${id}`, rest as D);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return patch<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
@@ -276,8 +301,6 @@ export function usePatch<T, D = unknown>(
             queryKey: typeof key === 'string' ? [key] : key
           });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
 
       if (userOnSuccess) {
@@ -299,11 +322,12 @@ export function usePutFormData<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -317,21 +341,23 @@ export function usePutFormData<T, D = unknown>(
   return useMutation<
     ApiResponse<T>,
     AxiosError,
-    D & { id: string | number },
+    D & { id?: string | number },
     unknown
   >({
     mutationFn: (data) => {
       const { id, ...rest } = data;
-      return putFormData<T, D>(`${url}/${id}`, rest as D);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return putFormData<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
         queryKeys.forEach((key) => {
           queryClient.invalidateQueries({ queryKey: [key] });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
+
       if (userOnSuccess) {
         userOnSuccess(data, variables, context);
       }
@@ -351,11 +377,12 @@ export function usePatchFormData<T, D = unknown>(
     UseMutationOptions<
       ApiResponse<T>,
       AxiosError,
-      D & { id: string | number },
+      D & { id?: string | number },
       unknown
     >
   >,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -369,21 +396,23 @@ export function usePatchFormData<T, D = unknown>(
   return useMutation<
     ApiResponse<T>,
     AxiosError,
-    D & { id: string | number },
+    D & { id?: string | number },
     unknown
   >({
     mutationFn: (data) => {
       const { id, ...rest } = data;
-      return patchFormData<T, D>(`${url}/${id}`, rest as D);
+
+      const finalUrl = id ? `${url}/${id}` : url;
+
+      return patchFormData<T, D>(finalUrl, rest as D, config);
     },
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
         queryKeys.forEach((key) => {
           queryClient.invalidateQueries({ queryKey: [key] });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
+
       if (userOnSuccess) {
         userOnSuccess(data, variables, context);
       }
@@ -402,7 +431,8 @@ export function useDelete<T = void>(
   options?: Partial<
     UseMutationOptions<ApiResponse<T>, AxiosError, string | number, unknown>
   >,
-  queryKeys?: string[]
+  queryKeys?: string[],
+  config?: AxiosRequestConfig
 ) {
   const queryClient = useQueryClient();
 
@@ -414,7 +444,7 @@ export function useDelete<T = void>(
   delete restOptions.onError;
 
   return useMutation({
-    mutationFn: (id: string | number) => del<T>(`${url}/${id}`),
+    mutationFn: (id: string | number) => del<T>(`${url}/${id}`, config),
     onSuccess: (data, variables, context) => {
       if (queryKeys && queryKeys.length > 0) {
         queryKeys.forEach((key) => {
@@ -422,8 +452,6 @@ export function useDelete<T = void>(
             queryKey: typeof key === 'string' ? [key] : key
           });
         });
-      } else {
-        queryClient.invalidateQueries({ queryKey: [url] });
       }
 
       if (userOnSuccess) {
