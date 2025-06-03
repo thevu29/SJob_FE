@@ -22,6 +22,7 @@ interface JobCardProps {
 
 export function JobCard({ job }: JobCardProps) {
   const { data: user } = useGetCurrentUser();
+
   const createViewJobMutation = usePost<ViewedJob>('viewed-jobs', {
     onError: (error: AxiosError) => {
       console.error('Failed to create view job:', error);
@@ -30,12 +31,15 @@ export function JobCard({ job }: JobCardProps) {
 
   const onClickViewJob = async () => {
     if (!user?.data.id) return;
+
     const payload = {
       jobSeekerId: user.data.id,
       jobId: job.id
     };
+
     await createViewJobMutation.mutateAsync(payload);
   };
+
   return (
     <Link href={ROUTES.JOBSEEKER.JOBS.DETAIL(job.id)}>
       <Card
@@ -70,8 +74,6 @@ export function JobCard({ job }: JobCardProps) {
                   </div>
                   <div className='text-muted-foreground flex items-center text-sm'>
                     <span>{formatRelativeDate(job.date)}</span>
-                    {/* <span className='mx-2'>•</span>
-                  <span>Đã xem</span> */}
                   </div>
                 </div>
               </div>
@@ -90,9 +92,9 @@ export function JobCard({ job }: JobCardProps) {
                   variant='ghost'
                   size='icon'
                   className='h-8 w-8 rounded-full'
+                  title='Lưu công việc này'
                 >
                   <Heart className='h-5 w-5' />
-                  <span className='sr-only'>Add to favorites</span>
                 </Button>
               </div>
             </div>

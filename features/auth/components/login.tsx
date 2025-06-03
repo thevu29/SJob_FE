@@ -65,7 +65,7 @@ export function LoginForm() {
           const role = getRole(decodedToken.realm_access.roles);
 
           if (role === UserRole.ADMIN) {
-            router.push('/admin');
+            router.push('/dashboard');
           } else {
             router.push('/');
           }
@@ -92,7 +92,7 @@ export function LoginForm() {
       const role = getRole(decodedToken.realm_access.roles);
 
       if (role === UserRole.ADMIN) {
-        router.push('/admin');
+        router.push('/dashboard');
       } else {
         router.push('/');
       }

@@ -1,50 +1,64 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { shortenName } from '@/lib/utils';
+import { useGetCurrentUser, useLogout } from '@/hooks';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { LoadingPage } from '@/components/common/loading';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export function UserProfileMenu() {
+  const { data: user } = useGetCurrentUser();
+
+  const { logout, isLoading: isLoggingOut } = useLogout();
+
+  if (isLoggingOut) {
+    return <LoadingPage text='Đang đăng xuất...' />;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
           <Avatar className='h-8 w-8'>
-            <AvatarImage src={''} alt={''} />
-            <AvatarFallback>{}</AvatarFallback>
+            <AvatarImage
+              src={
+                user
+                  ? 'image' in user.data
+                    ? user.data.image
+                    : undefined
+                  : '/placeholder.svg?height=40&width=40'
+              }
+              alt='Avatar'
+            />
+            <AvatarFallback className='bg-white text-[#001c40]'>
+              {user
+                ? shortenName(
+                    'name' in user.data ? user.data.name : user.data.email
+                  )
+                : 'A'}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end' forceMount>
-        <DropdownMenuLabel className='font-normal'>
-          <div className='flex flex-col space-y-1'>
-            <p className='text-sm leading-none font-medium'>{}</p>
-            <p className='text-muted-foreground text-xs leading-none'>{}</p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            Profile
+            Tài khoản
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
+        <DropdownMenuItem onClick={logout}>
+          Đăng xuất
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

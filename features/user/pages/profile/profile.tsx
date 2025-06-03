@@ -1,6 +1,6 @@
 'use client';
 
-import { Loading, LoadingPage } from '@/components/common/loading';
+import { LoadingPage } from '@/components/common/loading';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
 import { CertificationCard } from '@/features/user/pages/profile/components/certification-card';
@@ -25,18 +25,14 @@ import { calculateProfileCompletion } from '@/features/user/pages/profile/utils/
 import { JobSeeker } from '@/interfaces';
 import { Certification } from '@/interfaces/certification';
 import { Education } from '@/interfaces/education';
-import {
-  Experience,
-  LocationType,
-  EmployeeType
-} from '@/interfaces/experience';
+import { Experience } from '@/interfaces/experience';
 import { Resume } from '@/interfaces/resume';
 import { Skill } from '@/interfaces/skill';
 import { useState, useEffect } from 'react';
 
 export function Profile() {
   const jobSeekerId = '35a7eaf6-a6d4-4332-a489-77c4fd4074f4';
-  const { data, isLoading, isError, error } = useJobSeekerContext(); //useJobSeekerProfile(jobSeekerId);
+  const { data, isLoading } = useJobSeekerContext(); //useJobSeekerProfile(jobSeekerId);
 
   const {
     jobSeeker,

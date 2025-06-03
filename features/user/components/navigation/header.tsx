@@ -26,13 +26,14 @@ export function Header() {
   const { data: user, isLoading, error } = useGetCurrentUser();
 
   if (isLoggingOut) {
-    return <LoadingPage text="Đang đăng xuất..." />;
+    return <LoadingPage text='Đang đăng xuất...' />;
   }
 
   const hasValidToken = !!accessToken;
   const hasUserData = !!(user && user.data);
   const showUserDropdown = hasValidToken && hasUserData && !error;
-  const isAuthenticating = hasValidToken && (isLoading || (!hasUserData && !error));
+  const isAuthenticating =
+    hasValidToken && (isLoading || (!hasUserData && !error));
 
   return (
     <header className='bg-secondary text-foreground sticky top-0 z-50 w-full'>

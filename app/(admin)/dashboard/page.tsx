@@ -1,5 +1,16 @@
-import { redirect } from 'next/navigation';
+import type { Metadata } from 'next';
 
-export default async function Dashboard() {
-  redirect('/dashboard/overview');
+import PageContainer from '@/components/layout/page-layout';
+import { DashboardForm } from '@/features/dashboard/components/dash-board-form';
+
+export const metadata: Metadata = {
+  title: 'Dashboard'
+};
+
+export default function DashboardPage() {
+  return (
+    <PageContainer>
+      <DashboardForm />
+    </PageContainer>
+  );
 }

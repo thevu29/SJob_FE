@@ -1,5 +1,4 @@
 import { JobCard } from '@/features/user/components/common/job-card';
-import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
 import Pagination from '@/features/user/components/common/pagination';
 
 import { Job, SavedJob } from '@/interfaces/job';
