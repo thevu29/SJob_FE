@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { JobApplicationModal } from '@/features/user/components/common/job-application';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { IHasAppliedJobData } from '@/interfaces/application';
 
 interface JobCardProps {
   job: Job;
@@ -44,13 +45,34 @@ export function JobCard({ job }: JobCardProps) {
     await createViewJobMutation.mutateAsync(payload);
   };
 
-  const handleApplyJob = () => {
+  const { mutateAsync: hasAppliedJobMutation, isPending } = usePost<
+    Boolean,
+    IHasAppliedJobData
+  >('applications/check-apply', {
+    onError: (error: AxiosError) => {
+      toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+      console.error('Failed to check applied job:', error);
+    }
+  });
+
+  const handleApplyJob = async () => {
     if (!user?.data?.id) {
       toast.warning('Vui lòng đăng nhập để ứng tuyển công việc này.');
       // router.push(`/login?redirect=/jobs/${job.id}`);
       router.push(`/login`);
       return;
     }
+    if (isPending) return;
+    const payload: IHasAppliedJobData = {
+      jobId: job.id,
+      jobSeekerId: user.data.id
+    };
+    const hasApplied = await hasAppliedJobMutation(payload);
+    if (hasApplied) {
+      toast.error('Bạn đã ứng tuyển việc làm này!');
+      return;
+    }
+
     setIsModalOpen(true);
   };
   return (

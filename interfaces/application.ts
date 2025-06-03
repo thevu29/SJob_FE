@@ -10,3 +10,8 @@ export interface Application {
   message: string;
   job: Job;
 }
+
+export interface IHasAppliedJobData {
+  jobId: string;
+  jobSeekerId: string;
+}
