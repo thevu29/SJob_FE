@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { generateJobDetails } from '@/features/user/pages/job-detail/utils/generate-job-details';
 import { Job } from '@/interfaces/job';
-import { formatSalary, getExpirationMessage } from '@/lib/utils';
+import { formatSalary, getExpirationMessage, isExpired } from '@/lib/utils';
 import { Clock } from 'lucide-react';
 import DOMPurify from 'isomorphic-dompurify';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import { JobApplicationModal } from '@/features/user/components/common/job-appli
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useGetCurrentUser } from '@/hooks';
+import { Badge } from '@/components/ui/badge';
 
 interface JobInfoProps {
   job: Job;
@@ -51,12 +52,19 @@ export default function JobInfo({ job }: JobInfoProps) {
             </div>
 
             <div className='mt-4 flex w-full gap-2 sm:w-auto'>
-              <Button
-                className='bg-primary hover:bg-primary/80 flex-1 text-white sm:flex-none'
-                onClick={handleApplyJob}
-              >
-                Ứng tuyển
-              </Button>
+              {isExpired(job.deadline) ? (
+                <Badge variant='outline' className='text-red-500'>
+                  Đã hết hạn
+                </Badge>
+              ) : (
+                <Button
+                  className='bg-primary hover:bg-primary/80 flex-1 text-white sm:flex-none'
+                  onClick={handleApplyJob}
+                >
+                  Ứng tuyển
+                </Button>
+              )}
+
               <Button
                 variant='outline'
                 className='flex-1 sm:flex-none'

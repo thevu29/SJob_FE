@@ -9,7 +9,8 @@ import placeholder from '@/public/placeholder.jpg';
 import {
   formatExperience,
   formatRelativeDate,
-  formatSalary
+  formatSalary,
+  isExpired
 } from '@/lib/utils';
 import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
@@ -105,9 +106,16 @@ export function JobCard({ job }: JobCardProps) {
         </Card>
       </Link>
       <div className='col-span-12 mt-[-60px] flex justify-end gap-2 p-4 md:col-span-3'>
-        <Button size='sm' variant='outline' onClick={handleApplyJob}>
-          Ứng tuyển
-        </Button>
+        {isExpired(job.deadline) ? (
+          <Badge variant='outline' className='text-red-500'>
+            Đã hết hạn
+          </Badge>
+        ) : (
+          <Button size='sm' variant='outline' onClick={handleApplyJob}>
+            Ứng tuyển
+          </Button>
+        )}
+
         <Button variant='ghost' size='icon' className='h-8 w-8 rounded-full'>
           <Heart className='h-5 w-5' />
           <span className='sr-only'>Add to favorites</span>
