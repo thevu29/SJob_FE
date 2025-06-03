@@ -27,7 +27,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
   const { logout, isLoading: isLoggingOut } = useLogout();
 
   if (isLoggingOut) {
-    return <LoadingPage text="Đang đăng xuất..." />;
+    return <LoadingPage text='Đang đăng xuất...' />;
   }
 
   return (
@@ -52,7 +52,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
         <div className='p-1'>
           {navUserItems &&
             navUserItems.map((navItem, index) => (
-              <Link
+              <DropdownMenuItem
                 key={index}
                 className='focus:bg-sidebar-accent text-sidebar-foreground flex items-center border-b p-3'
               >
@@ -63,11 +63,11 @@ export function UserDropdown({ user }: UserDropdownProps) {
                   onClick={() => setOpen(false)}
                 >
                   {navItem.title}
-                </DropdownMenuItem>
-              </Link>
+                </Link>
+              </DropdownMenuItem>
             ))}
           <DropdownMenuItem
-            className='focus:bg-secondary/40 mt-2 flex cursor-pointer items-center border-b p-3'
+            className='focus:bg-sidebar-accent text-sidebar-foreground flex cursor-pointer items-center border-b p-3'
             onClick={logout}
           >
             <LogOut className='mr-2 h-5 w-5 text-gray-500' />
