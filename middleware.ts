@@ -18,6 +18,7 @@ const AUTH_PATHS = [
 const ADMIN_PATHS = ['/dashboard'];
 const RECRUITER_PATHS = ['/recruiter-dashboard'];
 const USER_PATHS = ['/user'];
+const PUBLIC_PATHS = ['/', '/job', '/recruiter'];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(ACCESS_TOKEN_COOKIE_KEY)?.value;
@@ -34,8 +35,11 @@ export function middleware(request: NextRequest) {
   const isRecruiterPath = RECRUITER_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
-
   const isUserPath = USER_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`)
+  );
+
+  const isPublicPath = PUBLIC_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
 
@@ -50,7 +54,9 @@ export function middleware(request: NextRequest) {
         if (role === UserRole.ADMIN) {
           return NextResponse.redirect(new URL('/dashboard', request.url));
         } else if (role === UserRole.RECRUITER) {
-          return NextResponse.redirect(new URL('/recruiter-dashboard', request.url));
+          return NextResponse.redirect(
+            new URL('/recruiter-dashboard', request.url)
+          );
         } else if (role === UserRole.JOB_SEEKER) {
           return NextResponse.redirect(new URL('/', request.url));
         }
@@ -60,8 +66,7 @@ export function middleware(request: NextRequest) {
     }
     return NextResponse.next();
   }
-
-  if (!isProtectedPath) {
+  if (!isProtectedPath && !isPublicPath) {
     return NextResponse.next();
   }
 
@@ -70,7 +75,6 @@ export function middleware(request: NextRequest) {
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
   }
-
   try {
     const decoded = jwtDecode<ICustomJwtPayload>(token);
     const role = getRole(decoded.realm_access.roles || []);
@@ -84,21 +88,22 @@ export function middleware(request: NextRequest) {
     }
 
     if (role === UserRole.RECRUITER) {
+      console.log(' recruiter');
       if (isRecruiterPath) {
         return NextResponse.next();
-      } else if (isAdminPath || isUserPath) {
-        return NextResponse.redirect(new URL('/recruiter-dashboard', request.url));
+      } else {
+        return NextResponse.redirect(
+          new URL('/recruiter-dashboard', request.url)
+        );
       }
-      return NextResponse.next();
     }
 
     if (role === UserRole.JOB_SEEKER) {
-      if (isUserPath) {
+      if (isUserPath || isPublicPath) {
         return NextResponse.next();
-      } else if (isAdminPath || isRecruiterPath) {
+      } else {
         return NextResponse.redirect(new URL('/', request.url));
       }
-      return NextResponse.next();
     }
 
     return NextResponse.redirect(new URL('/login', request.url));
@@ -114,6 +119,9 @@ export const config = {
     '/dashboard/:path*',
     '/recruiter-dashboard/:path*',
     '/user/:path*',
+    '/',
+    '/job/:path*',
+    '/recruiter/:path*',
     '/login',
     '/sign-up/:path*',
     '/oauth/:path*',

@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { LayoutDashboard, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 import { useAuthToken, useLogout } from '@/hooks';
 import { shortenName } from '@/lib/utils';
-import { NavItem, navUserItems } from '@/constants/navigation';
+import { NavItem } from '@/constants/navigation';
 import type {
   ICustomJwtPayload,
   JobSeeker,
@@ -83,14 +83,6 @@ export function UserDropdown({ user, navItems }: UserDropdownProps) {
                 </Link>
               </DropdownMenuItem>
             ))}
-          {role === UserRole.RECRUITER && (
-            <Link href='/recruiter-dashboard'>
-              <DropdownMenuItem className='focus:bg-sidebar-accent text-sidebar-foreground flex cursor-pointer items-center border-b p-3'>
-                <LayoutDashboard />
-                Dashboard
-              </DropdownMenuItem>
-            </Link>
-          )}
           <DropdownMenuItem
             className='focus:bg-sidebar-accent text-sidebar-foreground flex cursor-pointer items-center border-b p-3'
             onClick={logout}
