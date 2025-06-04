@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -21,19 +20,14 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { JobSeeker } from '@/interfaces';
-import { usePutFormData } from '@/hooks/use-queries';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
 import {
   TUpdateJobSeekerSchema,
   UpdateJobSeekerSchema
 } from '@/features/user/schemas/job-seeker.schema';
 import { useState } from 'react';
-import placeholder from '@/public/placeholder.jpg';
 
 interface EditGeneralInfoFormProps {
   jobSeeker: JobSeeker;
@@ -59,8 +53,6 @@ export function EditGeneralInfoForm({
       gender: jobSeeker.gender || false,
       address: jobSeeker.address || '',
       about: jobSeeker.about || '',
-      // seeking: jobSeeker.seeking || false,
-      email: jobSeeker.email || ''
     }
   });
 
@@ -73,7 +65,6 @@ export function EditGeneralInfoForm({
       updatedAt: new Date().toISOString(),
       ...(file && { imageFile: file })
     };
-    // console.log('Form submitted:', payload);
 
     onSubmit(payload);
     setFile(null);
@@ -95,7 +86,7 @@ export function EditGeneralInfoForm({
               control={form.control}
               name='image'
               render={({ field }) => (
-                <FormItem>
+                <FormItem className='w-full'>
                   <Avatar className='h-20 w-20'>
                     <AvatarImage src={previewImage} alt='Profile' />
                     <AvatarFallback>
@@ -138,7 +129,7 @@ export function EditGeneralInfoForm({
             />
           </div>
 
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+          <div className='grid grid-cols-1 gap-4'>
             <FormField
               control={form.control}
               name='name'
@@ -147,23 +138,6 @@ export function EditGeneralInfoForm({
                   <FormLabel>Họ và tên</FormLabel>
                   <FormControl>
                     <Input placeholder='Nhập họ và tên của bạn' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='email'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder='Nhập địa chỉ email của bạn'
-                      {...field}
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -220,10 +194,10 @@ export function EditGeneralInfoForm({
             name='field'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Vị trí ứng tuyển</FormLabel>
+                <FormLabel>Ngành nghề</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='Nhập vị trí ứng tuyển của bạn'
+                    placeholder='Nhập ngành nghề của bạn'
                     {...field}
                   />
                 </FormControl>

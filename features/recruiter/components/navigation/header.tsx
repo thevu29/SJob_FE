@@ -40,16 +40,8 @@ export function Header() {
             <ul className='flex'>
               <li>
                 <Link
-                  href={ROUTES.RECRUITER.DASHBOARD}
-                  className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
                   href={ROUTES.RECRUITER.JOBS.LIST}
-                  className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
+                  className='hover:opacity-90 flex items-center px-4 py-1'
                 >
                   Việc Làm
                 </Link>
@@ -57,7 +49,7 @@ export function Header() {
               <li>
                 <Link
                   href={ROUTES.RECRUITER.JOBSEEKER.INVITATION_LISTING}
-                  className='hover:text-primary-foreground/80 flex items-center px-4 py-1'
+                  className='hover:opacity-90 flex items-center px-4 py-1'
                 >
                   Ứng viên
                 </Link>

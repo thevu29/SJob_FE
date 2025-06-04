@@ -22,6 +22,7 @@ import { TCreateJob } from '@/features/recruiter/schemas/job.schema';
 import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
+import { Combobox } from '@/components/common/combobox';
 
 interface JobDescriptionSectionProps {
   form: UseFormReturn<TCreateJob>;
@@ -32,7 +33,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
     'field-details'
   ]);
 
-  const fieldDetails = fieldDetailsData?.data || [];
   return (
     <div className='space-y-6 p-2'>
       <FormField
@@ -218,22 +218,17 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
             <FormLabel className='text-base font-medium'>
               Ngành nghề chi tiết<span className='text-destructive'>*</span>
             </FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Cung cấp phần lực' />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {fieldDetails.map((fieldDetail) => (
-                  <SelectItem key={fieldDetail.id} value={fieldDetail.id}>
-                    {fieldDetail.name}
-                  </SelectItem>
-                ))}
-
-                <SelectItem value='testing'>Kiểm thử</SelectItem>
-              </SelectContent>
-            </Select>
+            <Combobox
+              options={
+                fieldDetailsData?.data?.map((fieldDetail) => ({
+                  value: fieldDetail.id,
+                  label: fieldDetail.name
+                })) ?? []
+              }
+              field={field}
+              placeholder='Chọn ngành nghề chi tiết việc làm'
+              className='col-span-5 sm:col-span-4 sm:!h-9 sm:text-sm'
+            />
             <FormMessage />
           </FormItem>
         )}

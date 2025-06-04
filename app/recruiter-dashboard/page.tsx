@@ -1,5 +1,5 @@
-import { RecruiterDashboardPage } from '@/features/recruiter/pages/recruiter-dashboard/recruiter-dashboard';
+import { redirect } from 'next/navigation';
 
 export default async function page() {
-  return <RecruiterDashboardPage />;
+  return redirect('/recruiter-dashboard/job');
 }

@@ -23,6 +23,7 @@ import { TUpdateJob } from '@/features/recruiter/schemas/job.schema';
 import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
+import { Combobox } from '@/components/common/combobox';
 
 interface JobDescriptionSectionProps {
   form: UseFormReturn<TUpdateJob>;
@@ -33,7 +34,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
     'field-details'
   ]);
 
-  const fieldDetails = fieldDetailsData?.data || [];
   return (
     <div className='space-y-6 p-2'>
       <FormField
@@ -171,12 +171,7 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
                 Hạn nộp hồ sơ<span className='text-destructive'>*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  type='date'
-                  {...field}
-                  // min={new Date().toISOString().split('T')[0]} // Set min date to today
-                  className='w-full'
-                />
+                <Input type='date' {...field} className='w-full' />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -222,22 +217,17 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
             <FormLabel className='text-base font-medium'>
               Ngành nghề chi tiết<span className='text-destructive'>*</span>
             </FormLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <FormControl>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Cung cấp phần lực' />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {fieldDetails.map((fieldDetail) => (
-                  <SelectItem key={fieldDetail.id} value={fieldDetail.id}>
-                    {fieldDetail.name}
-                  </SelectItem>
-                ))}
-
-                <SelectItem value='testing'>Kiểm thử</SelectItem>
-              </SelectContent>
-            </Select>
+            <Combobox
+              options={
+                fieldDetailsData?.data?.map((fieldDetail) => ({
+                  value: fieldDetail.id,
+                  label: fieldDetail.name
+                })) ?? []
+              }
+              field={field}
+              placeholder='Chọn ngành nghề chi tiết việc làm'
+              className='col-span-5 sm:col-span-4 sm:!h-9 sm:text-sm'
+            />
             <FormMessage />
           </FormItem>
         )}
@@ -259,26 +249,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
                 value={field.value}
                 onChange={(e) => field.onChange(e.target.value)}
               />
-              {/* <div className='flex items-center gap-2'>
-                <Input type='number' placeholder='1500' />
-                <FormField
-                  control={form.control}
-                  name='showSalary'
-                  render={({ field }) => (
-                    <FormItem className='flex items-center space-y-0 space-x-2'>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className='text-muted-foreground text-xs'>
-                        Hiển thị cho Ứng Viên
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              </div> */}
             </div>
             <FormMessage />
           </FormItem>
@@ -298,8 +268,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
                 value={field.value || ''}
                 onChange={field.onChange}
                 placeholder='- Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm'
-                //                 initialContent={`- Viết test case và thực hiện test manual hoặc automation theo chức năng phần mềm của Tập đoàn
-                // - Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm`}
               />
             </FormControl>
             <FormMessage />
@@ -320,9 +288,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
                 value={field.value || ''}
                 onChange={field.onChange}
                 placeholder='- Có kinh nghiệm ít nhất 2 năm với vị trí Tester'
-                //                 initialContent={`- Tốt nghiệp các chuyên ngành có liên quan
-                // - Có kinh nghiệm ít nhất 2 năm với vị trí Tester
-                // - Có thể giao tiếp tiếng Anh cơ bản`}
               />
             </FormControl>
             <FormMessage />
@@ -343,9 +308,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
                 value={field.value || ''}
                 onChange={field.onChange}
                 placeholder='- Được đóng BHXH, BHYT, BHTN theo quy định'
-                //                 initialContent={`- Mức lương cạnh tranh, review định kỳ 2 lần/năm
-                // - Thưởng hiệu suất và các dịp lễ tết trong năm
-                // - Được đóng BHXH, BHYT, BHTN theo quy định`}
               />
             </FormControl>
             <FormMessage />

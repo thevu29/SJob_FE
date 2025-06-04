@@ -1,4 +1,5 @@
 'use client';
+
 import { Card, CardContent } from '@/components/ui/card';
 import ViewedJobsListing from '@/features/user/pages/viewed-jobs/components/viewed-jobs-listing';
 import { useGetCurrentUser } from '@/hooks';

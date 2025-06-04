@@ -18,7 +18,6 @@ export default function SavedJobsListing({ user }: SavedJobsListingProps) {
   const pageSize = Number(searchParams.get('limit') || '10');
 
   const jobSeekerId = user ? user.id : '';
-  console.log(jobSeekerId);
 
   const { data, isLoading } = useGetPaginated<SavedJob>(
     'saved-jobs',
@@ -31,6 +30,7 @@ export default function SavedJobsListing({ user }: SavedJobsListingProps) {
       }
     }
   );
+
   return isLoading
     ? Array(3)
         .fill(0)

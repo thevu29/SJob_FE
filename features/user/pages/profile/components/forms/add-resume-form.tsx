@@ -65,7 +65,6 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
       name: fileName,
       jobSeekerId: jobSeekerId
     };
-    console.log('payload', payload);
     await createResumeMutation.mutateAsync(payload as any);
     setFile(null);
     onClose();

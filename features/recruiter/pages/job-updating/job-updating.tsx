@@ -29,10 +29,12 @@ export default function JobUpdatingForm() {
   const [openJobDescription, setOpenJobDescription] = useState(true);
 
   const { data: jobData } = useGet<Job>('jobs/' + jobId, ['jobs', jobId]);
+
   const { data: fieldDetailData } = useGet<FieldDetail[]>(
     '/field-details/jobs/' + jobId,
     ['field-details', jobId]
   );
+
   const job = jobData?.data as Job;
   const fieldDetails = fieldDetailData?.data[0] as FieldDetail;
 

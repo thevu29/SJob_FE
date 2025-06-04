@@ -59,7 +59,6 @@ export function ChangePassword({ open, onOpenChange }: ChangePasswordProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     onOpenChange(false);
     form.reset();
   }
@@ -186,12 +185,7 @@ export function ChangePassword({ open, onOpenChange }: ChangePasswordProps) {
               >
                 Hủy
               </Button>
-              <Button
-                type='submit'
-                className='bg-color-5 hover:bg-color-5/80 font-semibold text-white'
-              >
-                Thay đổi
-              </Button>
+              <Button type='submit'>Lưu</Button>
             </div>
           </form>
         </Form>

@@ -14,11 +14,15 @@ interface JobCardProps {
 export function JobCard({ job }: JobCardProps) {
   const { data: user } = useGetCurrentUser();
 
-  const createViewJobMutation = usePost<ViewedJob>('viewed-jobs', {
-    onError: (error: AxiosError) => {
-      console.error('Failed to create view job:', error);
-    }
-  });
+  const createViewJobMutation = usePost<ViewedJob>(
+    'viewed-jobs',
+    {
+      onError: (error: AxiosError) => {
+        console.error('Failed to create view job:', error);
+      }
+    },
+    ['viewed-jobs']
+  );
 
   const onClickViewJob = async () => {
     if (!user?.data.id) return;

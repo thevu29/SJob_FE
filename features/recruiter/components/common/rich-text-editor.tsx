@@ -26,8 +26,6 @@ export function RichTextEditor({
     setContent(e.target.value);
     onChange(e.target.value);
   };
-  console.log('content', content);
-  console.log('value', value);
 
   useEffect(() => {
     setContent(value || '');

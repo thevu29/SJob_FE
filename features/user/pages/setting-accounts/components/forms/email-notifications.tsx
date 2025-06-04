@@ -58,7 +58,6 @@ export function EmailNotifications({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     onOpenChange(false);
   }
 

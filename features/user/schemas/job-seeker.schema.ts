@@ -23,8 +23,6 @@ export const UpdateJobSeekerSchema = z.object({
   gender: z.union([z.boolean(), z.string()]),
   address: z.string().min(1, { message: 'Địa chỉ không được để trống' }),
   about: z.string().optional(),
-  // seeking: z.boolean(),
-  email: z.string().email({ message: 'Email không hợp lệ' })
 });
 
 export type TUpdateJobSeekerSchema = z.infer<typeof UpdateJobSeekerSchema>;

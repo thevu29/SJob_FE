@@ -1,9 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { File, Building2, LayoutDashboard } from 'lucide-react';
-import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
 import { ChangePassword } from '@/features/user/pages/setting-accounts/components/forms/change-password';
 import { EmailNotifications } from '@/features/user/pages/setting-accounts/components/forms/email-notifications';
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
@@ -12,18 +9,17 @@ export function SettingAccounts() {
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
   const [isEmailNotificationsOpen, setIsEmailNotificationsOpen] =
     useState(false);
+
   const { data } = useJobSeekerContext();
   const { jobSeeker } = data;
 
   return (
     <div className='flex min-h-screen flex-col md:flex-row'>
-      {/* Main content */}
       <div className='flex-1 p-6'>
         <div className='space-y-8'>
           <div className='bg-card space-y-6 rounded-xl border p-6'>
             <h1 className='text-3xl font-bold'>Quản Lý Tài Khoản</h1>
           </div>
-          {/* Email and Password Section */}
           <div className='bg-card space-y-6 rounded-xl border p-6'>
             <h2 className='text-xl font-semibold'>
               Email đăng nhập & mật khẩu
@@ -45,7 +41,6 @@ export function SettingAccounts() {
             </div>
           </div>
 
-          {/* Email Notifications Section */}
           <div className='bg-card space-y-6 rounded-xl border p-6'>
             <div className='flex flex-col justify-between gap-4 md:flex-row md:items-center'>
               <h2 className='text-xl font-semibold'>
@@ -68,7 +63,6 @@ export function SettingAccounts() {
         </div>
       </div>
 
-      {/* Dialogs */}
       <ChangePassword
         open={isChangePasswordOpen}
         onOpenChange={setIsChangePasswordOpen}

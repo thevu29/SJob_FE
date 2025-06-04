@@ -54,7 +54,6 @@ export function PasswordChangeForm({ onCancel }: PasswordChangeFormProps) {
 
     // Simulate API call
     setTimeout(() => {
-      console.log(values);
       setIsSubmitting(false);
       onCancel(); // Close form after successful submission
     }, 1000);

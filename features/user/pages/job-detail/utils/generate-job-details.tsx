@@ -40,7 +40,6 @@ export const getJobTypeInfo = (type: string) => {
 
 export const generateJobDetails = (job: Job, fieldDetails: FieldDetail[]) => {
   const jobTypeInfo = getJobTypeInfo(job.type);
-  console.log('fieldDetails', fieldDetails);
 
   return [
     {

@@ -2,12 +2,17 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { LogOut } from 'lucide-react';
+import { LayoutDashboard, LogOut } from 'lucide-react';
 
-import { useLogout } from '@/hooks';
+import { useAuthToken, useLogout } from '@/hooks';
 import { shortenName } from '@/lib/utils';
 import { NavItem, navUserItems } from '@/constants/navigation';
-import type { JobSeeker, Recruiter, User } from '@/interfaces';
+import type {
+  ICustomJwtPayload,
+  JobSeeker,
+  Recruiter,
+  User
+} from '@/interfaces';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +21,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { LoadingPage } from '@/components/common/loading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { jwtDecode } from 'jwt-decode';
+import { getRole } from '@/lib/helpers';
+import { UserRole } from '@/constants/enums';
 
 interface UserDropdownProps {
   user: User | JobSeeker | Recruiter;
@@ -23,6 +31,13 @@ interface UserDropdownProps {
 }
 
 export function UserDropdown({ user, navItems }: UserDropdownProps) {
+  const { getAccessToken } = useAuthToken();
+  const accessToken = getAccessToken();
+
+  const decodedToken = jwtDecode<ICustomJwtPayload>(accessToken as string);
+
+  const role = getRole(decodedToken.realm_access.roles);
+
   const [open, setOpen] = useState(false);
 
   const { logout, isLoading: isLoggingOut } = useLogout();
@@ -51,7 +66,8 @@ export function UserDropdown({ user, navItems }: UserDropdownProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-[300px] p-0' align='end'>
         <div className='p-1'>
-          {navItems &&
+          {role === UserRole.JOB_SEEKER &&
+            navItems &&
             navItems.map((navItem, index) => (
               <DropdownMenuItem
                 key={index}
@@ -67,6 +83,14 @@ export function UserDropdown({ user, navItems }: UserDropdownProps) {
                 </Link>
               </DropdownMenuItem>
             ))}
+          {role === UserRole.RECRUITER && (
+            <Link href='/recruiter-dashboard'>
+              <DropdownMenuItem className='focus:bg-sidebar-accent text-sidebar-foreground flex cursor-pointer items-center border-b p-3'>
+                <LayoutDashboard />
+                Dashboard
+              </DropdownMenuItem>
+            </Link>
+          )}
           <DropdownMenuItem
             className='focus:bg-sidebar-accent text-sidebar-foreground flex cursor-pointer items-center border-b p-3'
             onClick={logout}

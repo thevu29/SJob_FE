@@ -18,7 +18,6 @@ export default function AppliedJobsListing({ user }: AppliedJobsListingProps) {
   const pageSize = Number(searchParams.get('limit') || '10');
 
   const jobSeekerId = user ? user.id : '';
-  console.log(jobSeekerId);
 
   const { data, isLoading } = useGetPaginated<SavedJob>(
     'applications',

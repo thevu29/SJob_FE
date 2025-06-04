@@ -66,6 +66,8 @@ export function LoginForm() {
 
           if (role === UserRole.ADMIN) {
             router.push('/dashboard');
+          } else if (role === UserRole.RECRUITER) {
+            router.push('/recruiter-dashboard');
           } else {
             router.push('/');
           }

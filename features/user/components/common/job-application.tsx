@@ -112,7 +112,6 @@ export function JobApplicationModal({
     form.setValue('resumeId', resumeId);
     form.setValue('resumeType', 'existing');
     form.clearErrors('resumeType');
-    console.log(form.getValues());
   };
 
   return (

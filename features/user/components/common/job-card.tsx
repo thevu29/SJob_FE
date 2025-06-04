@@ -14,13 +14,19 @@ import {
 } from '@/lib/utils';
 import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
-import { useAuthToken, useDelete, useGet, useGetCurrentUser, usePost } from '@/hooks';
+import {
+  useAuthToken,
+  useDelete,
+  useGet,
+  useGetCurrentUser,
+  usePost
+} from '@/hooks';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { JobApplicationModal } from '@/features/user/components/common/job-application';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { IHasAppliedJobData } from '@/interfaces/application';
+import { Application, IHasAppliedJobData } from '@/interfaces/application';
 
 interface JobCardProps {
   job: Job;
@@ -35,11 +41,30 @@ export function JobCard({ job }: JobCardProps) {
   const { data: user } = useGetCurrentUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const createViewJobMutation = usePost<ViewedJob>('viewed-jobs', {
-    onError: (error: AxiosError) => {
-      console.error('Failed to create view job:', error);
-    }
-  });
+  const createViewJobMutation = usePost<ViewedJob>(
+    'viewed-jobs',
+    {
+      onError: (error: AxiosError) => {
+        console.error('Failed to create view job:', error);
+      }
+    },
+    ['viewed-jobs']
+  );
+
+  const { data: application, refetch: refetchGetApplication } =
+    useGet<Application>(
+      'applications/job/job-seeker',
+      ['application/job/job-seeker', job.id, user?.data?.id ?? ''],
+      {
+        params: {
+          jobId: job.id,
+          jobSeekerId: user?.data?.id
+        }
+      },
+      {
+        enabled: !!accessToken && !!user?.data?.id
+      }
+    );
 
   const { mutateAsync: hasAppliedJobMutation, isPending: isHasAppliedPending } =
     usePost<boolean, IHasAppliedJobData>('applications/check-apply', {
@@ -48,14 +73,15 @@ export function JobCard({ job }: JobCardProps) {
         console.error('Failed to check applied job:', error);
       }
     });
+
   const { data: savedJob, refetch } = useGet<SavedJob>(
     `saved-jobs/job/job-seeker`,
-    [`saved-jobs/job/job-seeker`],
+    [`saved-jobs/job/job-seeker`, job.id, user?.data?.id ?? ''],
     {
       params: {
         jobId: job.id,
         jobSeekerId: user?.data?.id
-      },
+      }
     },
     {
       enabled: !!accessToken && !!user?.data?.id
@@ -65,15 +91,19 @@ export function JobCard({ job }: JobCardProps) {
   const { mutateAsync: savedJobMutation, isPending: isSavedPending } = usePost<
     SavedJob,
     ISavedJobData
-  >('saved-jobs', {
-    onSuccess: () => {
-      toast.success('Lưu việc làm thành công');
+  >(
+    'saved-jobs',
+    {
+      onSuccess: () => {
+        toast.success('Lưu việc làm thành công');
+      },
+      onError: (error: AxiosError) => {
+        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+        console.error('Failed to saved job:', error);
+      }
     },
-    onError: (error: AxiosError) => {
-      toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-      console.error('Failed to saved job:', error);
-    }
-  });
+    ['saved-jobs', job.id]
+  );
 
   const { mutateAsync: unSavedJobMutation, isPending: isUnSavedPending } =
     useDelete(
@@ -86,8 +116,8 @@ export function JobCard({ job }: JobCardProps) {
           toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
           console.error('Failed to unSaved job:', error);
         }
-      }
-      // ['']
+      },
+      ['saved-jobs', job.id]
     );
 
   const handleSaveJob = async () => {
@@ -105,6 +135,7 @@ export function JobCard({ job }: JobCardProps) {
     };
 
     await savedJobMutation(payload);
+    refetch();
   };
 
   const handleUnSaveJob = async (id: string) => {
@@ -116,33 +147,32 @@ export function JobCard({ job }: JobCardProps) {
 
   const handleViewJob = async () => {
     if (!user?.data?.id) return;
+
     const payload = {
       jobSeekerId: user.data.id,
       jobId: job.id
     };
-    await createViewJobMutation.mutateAsync(payload);
+
+    createViewJobMutation.mutate(payload);
   };
 
   const handleApplyJob = async () => {
     if (!user?.data?.id) {
       toast.warning('Vui lòng đăng nhập để ứng tuyển công việc này.');
-      // router.push(`/login?redirect=/jobs/${job.id}`);
       router.push(`/login`);
       return;
     }
+
     if (isHasAppliedPending) return;
-    const payload: IHasAppliedJobData = {
-      jobId: job.id,
-      jobSeekerId: user.data.id
-    };
-    const result = await hasAppliedJobMutation(payload);
-    if (result.data) {
+
+    if (application && application.data) {
       toast.error('Bạn đã ứng tuyển việc làm này!');
       return;
     }
 
     setIsModalOpen(true);
   };
+
   return (
     <div>
       <Link href={ROUTES.JOBSEEKER.JOBS.DETAIL(job.id)}>
@@ -178,8 +208,6 @@ export function JobCard({ job }: JobCardProps) {
                     </div>
                     <div className='text-muted-foreground flex items-center text-sm'>
                       <span>{formatRelativeDate(job.date)}</span>
-                      {/* <span className='mx-2'>•</span>
-                      <span>Đã xem</span> */}
                     </div>
                   </div>
                 </div>
@@ -196,15 +224,26 @@ export function JobCard({ job }: JobCardProps) {
         </Card>
       </Link>
       <div className='col-span-12 mt-[-60px] flex justify-end gap-2 p-4 md:col-span-3'>
-        {isExpired(job.deadline) ? (
+        {application ? (
+          <Button
+            className='bg-primary hover:bg-primary/80 flex-1 text-white sm:flex-none'
+            disabled
+          >
+            Đã ứng tuyển
+          </Button>
+        ) : isExpired(job.deadline) ? (
           <Badge variant='outline' className='text-red-500'>
             Đã hết hạn
           </Badge>
         ) : (
-          <Button size='sm' variant='outline' onClick={handleApplyJob}>
+          <Button
+            className='bg-primary hover:bg-primary/80 flex-1 text-white sm:flex-none'
+            onClick={handleApplyJob}
+          >
             Ứng tuyển
           </Button>
         )}
+
         {savedJob && savedJob.data ? (
           <Button
             variant='ghost'

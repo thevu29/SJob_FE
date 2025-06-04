@@ -11,6 +11,7 @@ import { usePatchFormData, usePutFormData } from '@/hooks/use-queries';
 import { TUpdateJobSeekerSchema } from '@/features/user/schemas/job-seeker.schema';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface GeneralInfoCardProps {
   jobSeeker?: JobSeeker;
@@ -92,11 +93,13 @@ export function GeneralInfoCard({ jobSeeker }: GeneralInfoCardProps) {
         {jobSeeker && (
           <Dialog open={isEditProfileOpen} onOpenChange={setIsEditProfileOpen}>
             <DialogContent className='sm:max-w-[600px]'>
-              <EditGeneralInfoForm
-                jobSeeker={jobSeeker}
-                onSubmit={handleProfileUpdate}
-                onCancel={() => setIsEditProfileOpen(false)}
-              />
+              <ScrollArea className='max-h-[80vh] px-4'>
+                <EditGeneralInfoForm
+                  jobSeeker={jobSeeker}
+                  onSubmit={handleProfileUpdate}
+                  onCancel={() => setIsEditProfileOpen(false)}
+                />
+              </ScrollArea>
             </DialogContent>
           </Dialog>
         )}
