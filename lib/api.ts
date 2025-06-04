@@ -48,7 +48,7 @@ const handleBackToLogin = () => {
   deleteCookie(ACCESS_TOKEN_COOKIE_KEY);
   deleteCookie(REFRESH_TOKEN_COOKIE_KEY);
   toast.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
-  window.location.href = '/login';
+  // window.location.href = '/login';
 };
 
 api.interceptors.request.use(

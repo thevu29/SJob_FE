@@ -7,7 +7,6 @@ import { UserRole } from './constants/enums';
 import { ACCESS_TOKEN_COOKIE_KEY } from './constants';
 import type { ICustomJwtPayload } from './interfaces';
 
-const PUBLIC_PATHS = ['/'];
 const AUTH_PATHS = [
   '/login',
   '/sign-up',
@@ -23,10 +22,6 @@ const USER_PATHS = ['/user'];
 export function middleware(request: NextRequest) {
   const token = request.cookies.get(ACCESS_TOKEN_COOKIE_KEY)?.value;
   const { pathname } = request.nextUrl;
-
-  const isPublicPath = PUBLIC_PATHS.some(
-    (path) => pathname === path || pathname.startsWith(`${path}/`)
-  );
 
   const isAuthPath = AUTH_PATHS.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`)
@@ -44,31 +39,29 @@ export function middleware(request: NextRequest) {
     (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
 
-  if (isPublicPath || isAuthPath) {
+  const isProtectedPath = isAdminPath || isRecruiterPath || isUserPath;
+
+  if (isAuthPath) {
     if (token) {
       try {
         const decoded = jwtDecode<ICustomJwtPayload>(token);
         const role = getRole(decoded.realm_access.roles || []);
 
         if (role === UserRole.ADMIN) {
-          if (isAuthPath) {
-            return NextResponse.redirect(new URL('/dashboard', request.url));
-          } else if (isPublicPath) {
-            return NextResponse.redirect(new URL('/dashboard', request.url));
-          }
+          return NextResponse.redirect(new URL('/dashboard', request.url));
         } else if (role === UserRole.RECRUITER) {
-          if (isAuthPath) {
-            return NextResponse.redirect(new URL('/recruiter-dashboard', request.url));
-          }
+          return NextResponse.redirect(new URL('/recruiter-dashboard', request.url));
         } else if (role === UserRole.JOB_SEEKER) {
-          if (isAuthPath) {
-            return NextResponse.redirect(new URL('/', request.url));
-          }
+          return NextResponse.redirect(new URL('/', request.url));
         }
       } catch (error) {
         console.error('Token decoding error:', error);
       }
     }
+    return NextResponse.next();
+  }
+
+  if (!isProtectedPath) {
     return NextResponse.next();
   }
 
@@ -118,7 +111,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/',
     '/dashboard/:path*',
     '/recruiter-dashboard/:path*',
     '/user/:path*',

@@ -22,10 +22,13 @@ export default function RecruiterDetailInfo({
     'recruiters',
     recruiterId
   ]);
+
   const recruiter = data && data.data;
+
   if (isLoading) {
     return <RecruiterDetailSkeleton />;
   }
+
   return (
     recruiter && (
       <div>

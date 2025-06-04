@@ -7,6 +7,7 @@ import { useAuthToken } from './use-auth';
 export function useGetCurrentUser() {
   const { getAccessToken } = useAuthToken();
   const accessToken = getAccessToken();
+
   return useGet<User | JobSeeker | Recruiter>(
     'auth/me',
     [QueryKeys.CURRENT_USER],

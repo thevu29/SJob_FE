@@ -81,7 +81,7 @@ export default function JobListings({
               {viewAllLink && viewAllLink != null && (
                 <Link
                   href={viewAllLink}
-                  className='text-primary-foreground font-medium uppercase hover:underline'
+                  className='font-medium uppercase hover:underline'
                 >
                   Xem tất cả
                 </Link>
