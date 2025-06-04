@@ -152,3 +152,9 @@ export const formatRelativeDate = (dateString: string) => {
   const date = new Date(dateString);
   return 'Đăng ' + formatDistanceToNow(date, { addSuffix: true, locale: vi });
 };
+
+export const isExpired = (date: string) => {
+  const currentDate = new Date();
+  const deadline = new Date(date);
+  return deadline < currentDate;
+};

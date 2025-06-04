@@ -1,20 +1,23 @@
 import { ROUTES } from '@/constants/routes';
 import JobListings from '@/features/user/pages/home/components/job-listing';
 import JobListingSkeleton from '@/features/user/pages/home/components/job-listing-skeleton';
-import { useGetPaginatedPublic } from '@/hooks';
+import { useGet, useGetCurrentUser } from '@/hooks';
 import { Job } from '@/interfaces/job';
 import React from 'react';
 
 export default function HomePageSuggestedJobs() {
-  const currentPage = 1;
-  const pageSize = 50;
+  const { data: user } = useGetCurrentUser();
+  const jobSeekerId = user?.data?.id;
 
-  const { data, isLoading } = useGetPaginatedPublic<Job>(
-    'jobs',
-    currentPage,
-    pageSize,
-    ['home-page-suggested-jobs']
+  const { data, isLoading } = useGet<Job[]>(
+    `jobs/suggest-jobs/${jobSeekerId}`,
+    ['jobs/suggest-jobs', jobSeekerId ?? ''],
+    undefined,
+    {
+      enabled: !!jobSeekerId
+    }
   );
+
   if (isLoading) {
     return <JobListingSkeleton />;
   }
@@ -23,11 +26,7 @@ export default function HomePageSuggestedJobs() {
     data &&
     data.data &&
     data.data.length > 0 && (
-      <JobListings
-        title='Việc làm gợi ý'
-        jobs={data.data}
-        viewAllLink={ROUTES.JOBSEEKER.JOBS.SEARCH}
-      />
+      <JobListings title='Việc làm gợi ý' jobs={data.data} />
     )
   );
 }

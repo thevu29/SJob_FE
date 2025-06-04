@@ -1,5 +1,13 @@
 import { JSX } from 'react';
-import { FileText, Briefcase, Settings } from 'lucide-react';
+import {
+  FileText,
+  Briefcase,
+  Settings,
+  BookmarkCheck,
+  History,
+  Send
+} from 'lucide-react';
+import { ROUTES } from '@/constants/routes';
 
 export interface NavItem {
   title: string;
@@ -11,17 +19,27 @@ export interface NavItem {
 export const navUserItems: NavItem[] = [
   {
     title: 'Hồ sơ của tôi',
-    url: '/user/profile',
+    url: ROUTES.JOBSEEKER.PROFILE,
     icon: <FileText className='mr-2 h-5 w-5 text-gray-500' />
   },
   {
-    title: 'Việc làm của tôi',
-    url: '#',
-    icon: <Briefcase className='mr-2 h-5 w-5 text-gray-500' />
+    title: 'Việc làm đã lưu',
+    url: ROUTES.JOBSEEKER.JOBS.SAVED,
+    icon: <BookmarkCheck className='mr-2 h-5 w-5 text-gray-500' />
+  },
+  {
+    title: 'Việc làm đã xem',
+    url: ROUTES.JOBSEEKER.JOBS.VIEWED,
+    icon: <History className='mr-2 h-5 w-5 text-gray-500' />
+  },
+  {
+    title: 'Việc làm đã ứng tuyển',
+    url: ROUTES.JOBSEEKER.JOBS.APPLIED,
+    icon: <Send className='mr-2 h-5 w-5 text-gray-500' />
   },
   {
     title: 'Quản lý tài khoản',
-    url: '/user/setting-accounts',
+    url: ROUTES.JOBSEEKER.SETTINGS,
     icon: <Settings className='mr-2 h-5 w-5 text-gray-500' />
   }
 ];
@@ -29,12 +47,12 @@ export const navUserItems: NavItem[] = [
 export const navRecruiterItems: NavItem[] = [
   {
     title: 'Thông tin công ty',
-    url: '/recruiter/company-general',
+    url: ROUTES.RECRUITER.SETTINGS.COMPANY_GENERAL,
     icon: <FileText className='mr-2 h-5 w-5 text-gray-500' />
   },
   {
     title: 'Quản lý tài khoản',
-    url: '/recruiter/my-account',
+    url: ROUTES.RECRUITER.SETTINGS.MY_ACCOUNT,
     icon: <Briefcase className='mr-2 h-5 w-5 text-gray-500' />
   }
 ];

@@ -2,15 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import {
-  Briefcase,
-  Settings,
-  FileText,
-  ChevronDown,
-  BookmarkCheck,
-  History,
-  Star
-} from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Card, CardContent } from '@/components/ui/card';
 import { ProfileCompletionCircle } from '@/features/user/pages/profile/components/profile-completion-circle';
@@ -18,11 +9,6 @@ import {
   calculateProfileCompletion,
   isProfileCompleteEnough
 } from '@/features/user/pages/profile/utils/profile-completion';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible';
 
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
 import { usePatchFormData } from '@/hooks/use-queries';
@@ -30,27 +16,27 @@ import { JobSeeker } from '@/interfaces';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useDebounce } from '@/hooks/use-debounce';
-import { ROUTES } from '@/constants/routes';
 import Image from 'next/image';
 import placeholder from '@/public/placeholder.jpg';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { navUserItems } from '@/constants/navigation';
+import { SidebarSkeleton } from '@/features/user/components/skeleton/sidebar-skeleton';
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { data, isLoading, isError, error } = useJobSeekerContext();
+  const { data, isLoading } = useJobSeekerContext();
   const [profileCompletion, setProfileCompletion] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
-  const [isJobsOpen, setIsJobsOpen] = useState(false);
 
   const debouncedIsSeeking = useDebounce(isSeeking, 1000);
   const {
     jobSeeker,
-    educations = [],
-    skills = [],
-    experiences = [],
-    certifications = [],
-    resumes = []
+    educations,
+    skills,
+    experiences,
+    certifications,
+    resumes
   } = data;
   const updateJobSeekerMutation = usePatchFormData<JobSeeker>(
     'job-seekers',
@@ -67,7 +53,6 @@ export function Sidebar() {
   );
 
   useEffect(() => {
-    if (!jobSeeker) return;
     // Calculate profile completion
     const completion = calculateProfileCompletion(
       jobSeeker,
@@ -78,20 +63,8 @@ export function Sidebar() {
       certifications
     );
     setProfileCompletion(completion);
-    setIsSeeking(jobSeeker.seeking);
+    setIsSeeking(jobSeeker?.seeking ?? false);
   }, [jobSeeker, experiences, educations, skills, resumes, certifications]);
-
-  // Check if any of the job-related paths are active
-  // useEffect(() => {
-  //   const jobRelatedPaths = [
-  //     '/jobs/saved',
-  //     '/jobs/applied',
-  //     '/jobs/recommended'
-  //   ];
-  //   if (jobRelatedPaths.some((path) => pathname.includes(path))) {
-  //     setIsJobsOpen(true);
-  //   }
-  // }, [pathname]);
 
   const isProfileComplete = isProfileCompleteEnough(profileCompletion);
 
@@ -112,7 +85,9 @@ export function Sidebar() {
   useEffect(() => {
     updateSeekingStatus(debouncedIsSeeking);
   }, [debouncedIsSeeking]);
-
+  if (isLoading) {
+    return <SidebarSkeleton />;
+  }
   return (
     <aside className='bg-background border-border w-full border-r p-4 md:w-100'>
       <div className='flex h-full flex-col space-y-4'>
@@ -186,115 +161,24 @@ export function Sidebar() {
           <CardContent className='p-2'>
             <nav>
               <ul className='space-y-1'>
-                <li>
-                  <Link
-                    href={ROUTES.JOBSEEKER.PROFILE}
-                    className={cn(
-                      'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-3 rounded-md p-3',
-                      {
-                        'bg-sidebar-accent text-sidebar-accent-foreground':
-                          pathname === ROUTES.JOBSEEKER.PROFILE
-                      }
-                    )}
-                  >
-                    <FileText className='h-5 w-5' />
-                    <span>Hồ Sơ Của Tôi</span>
-                  </Link>
-                </li>
-                <li>
-                  <Collapsible
-                    open={isJobsOpen}
-                    onOpenChange={setIsJobsOpen}
-                    className='w-full'
-                  >
-                    <CollapsibleTrigger
-                      className={cn(
-                        'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex w-full items-center justify-between rounded-md p-3'
-                        // {
-                        //   'bg-sidebar-accent text-sidebar-accent-foreground':
-                        //     pathname.includes('/jobs') || isJobsOpen
-                        // }
-                      )}
-                    >
-                      <div className='flex items-center gap-3'>
-                        <Briefcase className='h-5 w-5' />
-                        <span>Việc Làm Của Tôi</span>
-                      </div>
-                      <ChevronDown
+                {navUserItems &&
+                  navUserItems.map((navItem, index) => (
+                    <li key={index}>
+                      <Link
+                        href={navItem.url}
                         className={cn(
-                          'h-4 w-4 transition-transform duration-200',
+                          'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-3 rounded-md p-3',
                           {
-                            'rotate-180': isJobsOpen
+                            'bg-sidebar-accent text-sidebar-accent-foreground':
+                              pathname === navItem.url
                           }
                         )}
-                      />
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className='animate-accordion-down'>
-                      <ul className='mt-1 ml-8 space-y-1'>
-                        <li>
-                          <Link
-                            href={ROUTES.JOBSEEKER.JOBS.SAVED}
-                            className={cn(
-                              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
-                              {
-                                'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === ROUTES.JOBSEEKER.JOBS.SAVED
-                              }
-                            )}
-                          >
-                            <BookmarkCheck className='h-4 w-4' />
-                            <span>Việc Làm Đã Lưu</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href={ROUTES.JOBSEEKER.JOBS.VIEWED}
-                            className={cn(
-                              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
-                              {
-                                'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === ROUTES.JOBSEEKER.JOBS.VIEWED
-                              }
-                            )}
-                          >
-                            <History className='h-4 w-4' />
-                            <span>Việc Làm Đã Xem</span>
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href='/jobs/recommended'
-                            className={cn(
-                              'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-2 rounded-md p-2 text-sm',
-                              {
-                                'bg-sidebar-accent text-sidebar-accent-foreground':
-                                  pathname === '/jobs/recommended'
-                              }
-                            )}
-                          >
-                            <Star className='h-4 w-4' />
-                            <span>Việc Làm Gợi Ý</span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </CollapsibleContent>
-                  </Collapsible>
-                </li>
-                <li>
-                  <Link
-                    href={ROUTES.JOBSEEKER.SETTINGS}
-                    className={cn(
-                      'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground flex items-center gap-3 rounded-md p-3',
-                      {
-                        'bg-sidebar-accent text-sidebar-accent-foreground':
-                          pathname === ROUTES.JOBSEEKER.SETTINGS
-                      }
-                    )}
-                  >
-                    <Settings className='h-5 w-5' />
-                    <span>Quản Lý Tài Khoản</span>
-                  </Link>
-                </li>
+                      >
+                        {navItem.icon}
+                        <span>{navItem.title}</span>
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </nav>
           </CardContent>

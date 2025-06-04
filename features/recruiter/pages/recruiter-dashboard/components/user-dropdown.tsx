@@ -6,7 +6,7 @@ import { LogOut } from 'lucide-react';
 
 import { useLogout } from '@/hooks';
 import { shortenName } from '@/lib/utils';
-import { navUserItems } from '@/constants/navigation';
+import { NavItem, navUserItems } from '@/constants/navigation';
 import type { JobSeeker, Recruiter, User } from '@/interfaces';
 import {
   DropdownMenu,
@@ -19,15 +19,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface UserDropdownProps {
   user: User | JobSeeker | Recruiter;
+  navItems: NavItem[];
 }
 
-export function UserDropdown({ user }: UserDropdownProps) {
+export function UserDropdown({ user, navItems }: UserDropdownProps) {
   const [open, setOpen] = useState(false);
 
   const { logout, isLoading: isLoggingOut } = useLogout();
 
   if (isLoggingOut) {
-    return <LoadingPage text="Đang đăng xuất..." />;
+    return <LoadingPage text='Đang đăng xuất...' />;
   }
 
   return (
@@ -50,24 +51,24 @@ export function UserDropdown({ user }: UserDropdownProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-[300px] p-0' align='end'>
         <div className='p-1'>
-          {navUserItems &&
-            navUserItems.map((navItem, index) => (
-              <Link
+          {navItems &&
+            navItems.map((navItem, index) => (
+              <DropdownMenuItem
                 key={index}
-                href={navItem.url}
-                className='w-full cursor-pointer'
+                className='focus:bg-sidebar-accent text-sidebar-foreground flex items-center border-b p-3'
               >
-                <DropdownMenuItem
-                  key={index}
-                  className='focus:bg-secondary/40 mt-2 flex cursor-pointer items-center border-b p-3'
+                {navItem.icon}
+                <Link
+                  href={navItem.url}
+                  className='w-full'
+                  onClick={() => setOpen(false)}
                 >
-                  {navItem.icon}
                   {navItem.title}
-                </DropdownMenuItem>
-              </Link>
+                </Link>
+              </DropdownMenuItem>
             ))}
           <DropdownMenuItem
-            className='focus:bg-secondary/40 mt-2 flex cursor-pointer items-center border-b p-3'
+            className='focus:bg-sidebar-accent text-sidebar-foreground flex cursor-pointer items-center border-b p-3'
             onClick={logout}
           >
             <LogOut className='mr-2 h-5 w-5 text-gray-500' />

@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 interface GeneralInfoCardProps {
-  jobSeeker: JobSeeker;
+  jobSeeker?: JobSeeker;
 }
 
 export function GeneralInfoCard({ jobSeeker }: GeneralInfoCardProps) {
@@ -33,7 +33,7 @@ export function GeneralInfoCard({ jobSeeker }: GeneralInfoCardProps) {
         console.error(error);
       }
     },
-    ['job-seekers', jobSeeker?.id]
+    ['job-seekers', jobSeeker?.id ?? '']
   );
 
   const handleEditProfile = () => {
@@ -61,35 +61,45 @@ export function GeneralInfoCard({ jobSeeker }: GeneralInfoCardProps) {
         <div className='flex flex-col items-start gap-6 md:flex-row'>
           <div className='flex-1'>
             <h1 className='text-2xl font-bold'>{jobSeeker?.name}</h1>
-            <p className='text-muted-foreground'>{jobSeeker?.field}</p>
+            {jobSeeker && jobSeeker.field && (
+              <p className='text-muted-foreground'>{jobSeeker.field}</p>
+            )}
 
             <div className='mt-4 space-y-2'>
               <div className='flex items-center gap-2 text-sm'>
                 <Mail className='text-muted-foreground h-4 w-4' />
                 <span>{jobSeeker?.email}</span>
               </div>
-              <div className='flex items-center gap-2 text-sm'>
-                <MapPin className='text-muted-foreground h-4 w-4' />
-                <span>{jobSeeker?.address}</span>
-              </div>
-              <div className='flex items-center gap-2 text-sm'>
-                <Phone className='text-muted-foreground h-4 w-4' />
-                <span>{jobSeeker?.phone}</span>
-              </div>
+
+              {jobSeeker && jobSeeker.address && (
+                <div className='flex items-center gap-2 text-sm'>
+                  <MapPin className='text-muted-foreground h-4 w-4' />
+                  <span>{jobSeeker.address}</span>
+                </div>
+              )}
+
+              {jobSeeker && jobSeeker.phone && (
+                <div className='flex items-center gap-2 text-sm'>
+                  <Phone className='text-muted-foreground h-4 w-4' />
+                  <span>{jobSeeker.phone}</span>{' '}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Edit Profile Modal */}
-        <Dialog open={isEditProfileOpen} onOpenChange={setIsEditProfileOpen}>
-          <DialogContent className='sm:max-w-[600px]'>
-            <EditGeneralInfoForm
-              jobSeeker={jobSeeker}
-              onSubmit={handleProfileUpdate}
-              onCancel={() => setIsEditProfileOpen(false)}
-            />
-          </DialogContent>
-        </Dialog>
+        {jobSeeker && (
+          <Dialog open={isEditProfileOpen} onOpenChange={setIsEditProfileOpen}>
+            <DialogContent className='sm:max-w-[600px]'>
+              <EditGeneralInfoForm
+                jobSeeker={jobSeeker}
+                onSubmit={handleProfileUpdate}
+                onCancel={() => setIsEditProfileOpen(false)}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
       </CardContent>
     </Card>
   );

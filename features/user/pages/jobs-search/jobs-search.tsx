@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import { useGetPaginatedPublic } from '@/hooks';
 import { useEffect } from 'react';
 import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
+import qs from 'qs';
 
 export default function JobsSearch() {
   const searchParams = useSearchParams();
@@ -18,23 +19,27 @@ export default function JobsSearch() {
   const experience = searchParams.get('experience') || '';
   const salary = searchParams.get('salary') || '';
   const type = searchParams.get('type') || '';
-  const fieldDetailIds = searchParams.get('fieldDetailIds') || '';
-
+  const originalFieldDetailIds = searchParams.get('fieldDetailIds') || '';
+  const fieldDetailIds = originalFieldDetailIds
+    ? originalFieldDetailIds.split(',').filter((id) => id.trim() !== '')
+    : [];
   const isBrowser = () => typeof window !== 'undefined';
 
   const { data: JobsData, isLoading } = useGetPaginatedPublic<Job>(
     'jobs',
     currentPage,
     pageSize,
-    ['jobs', query, experience, salary, type, fieldDetailIds],
+    ['jobs', query, experience, salary, type, ...fieldDetailIds],
     {
       params: {
         ...(query && { query }),
         ...(experience && { experience }),
         ...(salary && { salary }),
         ...(type && { type }),
-        ...(fieldDetailIds && { fieldDetailIds })
-      }
+        ...(fieldDetailIds.length > 0 && { fieldDetailIds })
+      },
+      paramsSerializer: (params) =>
+        qs.stringify(params, { arrayFormat: 'repeat' })
     }
   );
 
@@ -49,14 +54,14 @@ export default function JobsSearch() {
         <SearchInput />
       </div>
 
-      <div className='grid grid-cols-1 gap-6 lg:grid-cols-4'>
-        <div className='lg:col-span-1'>
-          <div className='space-y-6 py-4'>
+      <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
+        <div className='w-full lg:col-span-4'>
+          <div className='w-full space-y-6 py-4'>
             <AdvancedFilters />
           </div>
         </div>
 
-        <div className='min-h-[600px] space-y-4 lg:col-span-3'>
+        <div className='min-h-[600px] space-y-4 lg:col-span-8'>
           {isLoading
             ? Array(10)
                 .fill(0)

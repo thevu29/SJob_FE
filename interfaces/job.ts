@@ -3,6 +3,8 @@ export interface Job {
   recruiterId: string;
   recruiterName: string;
   recruiterImage: string;
+  recruiterAddress: string;
+  recruiterMembers: number;
   name: string;
   description: string;
   salary: string;
@@ -41,4 +43,17 @@ export interface ViewedJob {
   id: string;
   jobSeekerId: string;
   job: Job;
+}
+
+export interface IHasSavedJobData {
+  jobId: string;
+  jobSeekerId: string;
+}
+
+export interface ISavedJobData {
+  jobId: string;
+  jobSeekerId: string;
+}
+export interface IUnSavedJobData {
+  id: string;
 }

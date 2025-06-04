@@ -25,8 +25,8 @@ import { getValueOfKeyFromEnum } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 
 interface ExperienceCardProps {
-  experiences: Experience[];
-  jobSeekerId: string;
+  experiences?: Experience[];
+  jobSeekerId?: string;
   onAdd: () => void;
   onEdit: (experience: Experience) => void;
 }
@@ -51,7 +51,7 @@ export function ExperienceCard({
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
     },
-    ['experiences/job-seeker', jobSeekerId]
+    ['experiences/job-seeker', jobSeekerId ?? '']
   );
 
   const handleDeleteClick = (experience: Experience) => {
@@ -88,7 +88,7 @@ export function ExperienceCard({
       </CardHeader>
 
       <CardContent>
-        {experiences.length > 0 ? (
+        {experiences && experiences.length > 0 ? (
           <div className='space-y-6'>
             {experiences.map((experience) => (
               <div key={experience.id} className='group relative flex gap-4'>

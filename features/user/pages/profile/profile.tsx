@@ -2,6 +2,7 @@
 
 import { LoadingPage } from '@/components/common/loading';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { ProfileSkeleton } from '@/features/user/components/skeleton/profile-skeleton';
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
 import { CertificationCard } from '@/features/user/pages/profile/components/certification-card';
 import { EducationCard } from '@/features/user/pages/profile/components/education-card';
@@ -31,16 +32,15 @@ import { Skill } from '@/interfaces/skill';
 import { useState, useEffect } from 'react';
 
 export function Profile() {
-  const jobSeekerId = '35a7eaf6-a6d4-4332-a489-77c4fd4074f4';
   const { data, isLoading } = useJobSeekerContext(); //useJobSeekerProfile(jobSeekerId);
 
   const {
     jobSeeker,
-    educations = [],
-    skills = [],
-    experiences = [],
-    certifications = [],
-    resumes = []
+    educations,
+    skills,
+    experiences,
+    certifications,
+    resumes
   } = data;
 
   // Modal states
@@ -70,7 +70,6 @@ export function Profile() {
 
   // Calculate profile completion on component mount and when data changes
   useEffect(() => {
-    if (!jobSeeker) return;
     const completion = calculateProfileCompletion(
       jobSeeker,
       experiences,
@@ -129,13 +128,13 @@ export function Profile() {
   };
 
   if (isLoading) {
-    return <LoadingPage />;
+    return <ProfileSkeleton />;
   }
 
   return (
     <div className='container mx-auto space-y-6'>
-      <GeneralInfoCard jobSeeker={jobSeeker as JobSeeker} />
-      <IntroduceCard about={jobSeeker?.about as string} />
+      <GeneralInfoCard jobSeeker={jobSeeker} />
+      <IntroduceCard about={jobSeeker?.about} />
 
       {/* Profile Completion Card */}
       <ProfileCompletionCard
@@ -146,167 +145,189 @@ export function Profile() {
             jobSeeker?.phone &&
             jobSeeker?.field
         )}
-        experience={experiences.length > 0}
-        education={educations.length > 0}
-        skills={skills.length > 0}
-        resumes={resumes.length > 0}
-        certifications={certifications.length > 0}
+        experience={(experiences && experiences.length > 0) ?? false}
+        education={(educations && educations.length > 0) ?? false}
+        skills={(skills && skills.length > 0) ?? false}
+        resumes={(resumes && resumes.length > 0) ?? false}
+        certifications={(certifications && certifications.length > 0) ?? false}
         profilePicture={Boolean(jobSeeker?.image)}
       />
 
       <ExperienceCard
         experiences={experiences}
-        jobSeekerId={jobSeekerId}
+        jobSeekerId={jobSeeker?.id}
         onAdd={handleAddExperience}
         onEdit={handleEditExperience}
       />
 
       <EducationCard
         educations={educations}
-        jobSeekerId={jobSeekerId}
+        jobSeekerId={jobSeeker?.id}
         onAdd={handleAddEducation}
         onEdit={handleEditEducation}
       />
 
       <CertificationCard
         certifications={certifications}
-        jobSeekerId={jobSeekerId}
+        jobSeekerId={jobSeeker?.id}
         onAdd={handleAddCertification}
         onEdit={handleEditCertification}
       />
 
       <SkillCard
         skills={skills}
-        jobSeekerId={jobSeekerId}
+        jobSeekerId={jobSeeker?.id}
         onAdd={handleAddSkill}
         onEdit={handleEditSkill}
       />
 
       <ResumeCard
         resumes={resumes}
-        jobSeekerId={jobSeekerId}
+        jobSeekerId={jobSeeker?.id}
         onAdd={handleAddResume}
         onEdit={handleEditResume}
       />
 
       {/* Experience Modals */}
-      <Dialog open={isAddExperienceOpen} onOpenChange={setIsAddExperienceOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          <AddExperienceForm
-            onClose={() => setIsAddExperienceOpen(false)}
-            jobSeekerId={jobSeekerId}
-          />
-        </DialogContent>
-      </Dialog>
-
-      <Dialog
-        open={isEditExperienceOpen}
-        onOpenChange={setIsEditExperienceOpen}
-      >
-        <DialogContent className='sm:max-w-[500px]'>
-          {selectedExperience && (
-            <EditExperienceForm
-              experience={selectedExperience}
-              jobSeekerId={jobSeekerId}
-              onClose={() => setIsEditExperienceOpen(false)}
+      {jobSeeker && (
+        <Dialog
+          open={isAddExperienceOpen}
+          onOpenChange={setIsAddExperienceOpen}
+        >
+          <DialogContent className='sm:max-w-[500px]'>
+            <AddExperienceForm
+              onClose={() => setIsAddExperienceOpen(false)}
+              jobSeekerId={jobSeeker.id}
             />
-          )}
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
 
-      {/* Education Modals */}
-      <Dialog open={isAddEducationOpen} onOpenChange={setIsAddEducationOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          <AddEducationForm
-            onClose={() => setIsAddEducationOpen(false)}
-            jobSeekerId={jobSeekerId}
-          />
-        </DialogContent>
-      </Dialog>
+      {jobSeeker && (
+        <Dialog
+          open={isEditExperienceOpen}
+          onOpenChange={setIsEditExperienceOpen}
+        >
+          <DialogContent className='sm:max-w-[500px]'>
+            {selectedExperience && (
+              <EditExperienceForm
+                experience={selectedExperience}
+                jobSeekerId={jobSeeker.id}
+                onClose={() => setIsEditExperienceOpen(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
 
-      <Dialog open={isEditEducationOpen} onOpenChange={setIsEditEducationOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          {selectedEducation && (
-            <EditEducationForm
-              education={selectedEducation}
-              jobSeekerId={jobSeekerId}
-              onClose={() => setIsEditEducationOpen(false)}
+      {jobSeeker && (
+        <Dialog open={isAddEducationOpen} onOpenChange={setIsAddEducationOpen}>
+          <DialogContent className='sm:max-w-[500px]'>
+            <AddEducationForm
+              onClose={() => setIsAddEducationOpen(false)}
+              jobSeekerId={jobSeeker.id}
             />
-          )}
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
 
-      {/* Certification Modals */}
-      <Dialog
-        open={isAddCertificationOpen}
-        onOpenChange={setIsAddCertificationOpen}
-      >
-        <DialogContent className='sm:max-w-[500px]'>
-          <AddCertificationForm
-            jobSeekerId={jobSeekerId}
-            onClose={() => setIsAddCertificationOpen(false)}
-          />
-        </DialogContent>
-      </Dialog>
+      {jobSeeker && (
+        <Dialog
+          open={isEditEducationOpen}
+          onOpenChange={setIsEditEducationOpen}
+        >
+          <DialogContent className='sm:max-w-[500px]'>
+            {selectedEducation && (
+              <EditEducationForm
+                education={selectedEducation}
+                jobSeekerId={jobSeeker.id}
+                onClose={() => setIsEditEducationOpen(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
 
-      <Dialog
-        open={isEditCertificationOpen}
-        onOpenChange={setIsEditCertificationOpen}
-      >
-        <DialogContent className='sm:max-w-[500px]'>
-          {selectedCertification && (
-            <EditCertificationForm
-              certification={selectedCertification}
-              jobSeekerId={jobSeekerId}
-              onClose={() => setIsEditCertificationOpen(false)}
+      {jobSeeker && (
+        <Dialog
+          open={isAddCertificationOpen}
+          onOpenChange={setIsAddCertificationOpen}
+        >
+          <DialogContent className='sm:max-w-[500px]'>
+            <AddCertificationForm
+              jobSeekerId={jobSeeker.id}
+              onClose={() => setIsAddCertificationOpen(false)}
             />
-          )}
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
 
-      {/* Skill Modals */}
-      <Dialog open={isAddSkillOpen} onOpenChange={setIsAddSkillOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          <AddSkillForm
-            onClose={() => setIsAddSkillOpen(false)}
-            jobSeekerId={jobSeekerId}
-          />
-        </DialogContent>
-      </Dialog>
+      {jobSeeker && (
+        <Dialog
+          open={isEditCertificationOpen}
+          onOpenChange={setIsEditCertificationOpen}
+        >
+          <DialogContent className='sm:max-w-[500px]'>
+            {selectedCertification && (
+              <EditCertificationForm
+                certification={selectedCertification}
+                jobSeekerId={jobSeeker.id}
+                onClose={() => setIsEditCertificationOpen(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
 
-      <Dialog open={isEditSkillOpen} onOpenChange={setIsEditSkillOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          {selectedSkill && (
-            <EditSkillForm
-              skill={selectedSkill}
-              jobSeekerId={jobSeekerId}
-              onClose={() => setIsEditSkillOpen(false)}
+      {jobSeeker && (
+        <Dialog open={isAddSkillOpen} onOpenChange={setIsAddSkillOpen}>
+          <DialogContent className='sm:max-w-[500px]'>
+            <AddSkillForm
+              onClose={() => setIsAddSkillOpen(false)}
+              jobSeekerId={jobSeeker.id}
             />
-          )}
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
 
-      {/* Resume Modals */}
-      <Dialog open={isAddResumeOpen} onOpenChange={setIsAddResumeOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          <AddResumeForm
-            onClose={() => setIsAddResumeOpen(false)}
-            jobSeekerId={jobSeekerId}
-          />
-        </DialogContent>
-      </Dialog>
+      {jobSeeker && (
+        <Dialog open={isEditSkillOpen} onOpenChange={setIsEditSkillOpen}>
+          <DialogContent className='sm:max-w-[500px]'>
+            {selectedSkill && (
+              <EditSkillForm
+                skill={selectedSkill}
+                jobSeekerId={jobSeeker.id}
+                onClose={() => setIsEditSkillOpen(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
 
-      <Dialog open={isEditResumeOpen} onOpenChange={setIsEditResumeOpen}>
-        <DialogContent className='sm:max-w-[500px]'>
-          {selectedResume && (
-            <EditResumeForm
-              resume={selectedResume}
-              jobSeekerId={jobSeekerId}
-              onClose={() => setIsEditResumeOpen(false)}
+      {jobSeeker && (
+        <Dialog open={isAddResumeOpen} onOpenChange={setIsAddResumeOpen}>
+          <DialogContent className='sm:max-w-[500px]'>
+            <AddResumeForm
+              onClose={() => setIsAddResumeOpen(false)}
+              jobSeekerId={jobSeeker.id}
             />
-          )}
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {jobSeeker && (
+        <Dialog open={isEditResumeOpen} onOpenChange={setIsEditResumeOpen}>
+          <DialogContent className='sm:max-w-[500px]'>
+            {selectedResume && (
+              <EditResumeForm
+                resume={selectedResume}
+                jobSeekerId={jobSeeker.id}
+                onClose={() => setIsEditResumeOpen(false)}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

@@ -11,8 +11,8 @@ import { DeleteConfirmationDialog } from '@/features/user/pages/profile/componen
 import { Education } from '@/interfaces/education';
 
 interface EducationCardProps {
-  educations: Education[];
-  jobSeekerId: string;
+  educations?: Education[];
+  jobSeekerId?: string;
   onAdd: () => void;
   onEdit: (education: Education) => void;
 }
@@ -38,7 +38,7 @@ export function EducationCard({
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
     },
-    ['educations/job-seeker', jobSeekerId]
+    ['educations/job-seeker', jobSeekerId ?? '']
   );
 
   const handleDeleteClick = (education: Education) => {
@@ -75,7 +75,7 @@ export function EducationCard({
       </CardHeader>
 
       <CardContent>
-        {educations.length > 0 ? (
+        {educations && educations.length > 0 ? (
           <div className='space-y-6'>
             {educations.map((education) => (
               <div key={education.id} className='group relative flex gap-4'>

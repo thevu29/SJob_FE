@@ -1,3 +1,4 @@
+import { FieldDetail } from '@/interfaces';
 import { JobType, JobStatus, Job } from '@/interfaces/job';
 import { formatSalary } from '@/lib/utils';
 import {
@@ -37,8 +38,9 @@ export const getJobTypeInfo = (type: string) => {
   }
 };
 
-export const generateJobDetails = (job: Job) => {
+export const generateJobDetails = (job: Job, fieldDetails: FieldDetail[]) => {
   const jobTypeInfo = getJobTypeInfo(job.type);
+  console.log('fieldDetails', fieldDetails);
 
   return [
     {
@@ -48,7 +50,9 @@ export const generateJobDetails = (job: Job) => {
     },
     {
       label: 'NGÀNH NGHỀ',
-      value: 'Kinh Doanh > Bán Hàng/Phát Triển Kinh Doanh',
+      value: Array.isArray(fieldDetails)
+        ? fieldDetails.map((item) => item.name).join(', ')
+        : 'Không có dữ liệu',
       icon: <Building className='h-4 w-4' />
     },
     {
@@ -56,11 +60,11 @@ export const generateJobDetails = (job: Job) => {
       value: formatSalary(job.salary),
       icon: <Banknote className='h-4 w-4' />
     },
-    {
-      label: 'LĨNH VỰC',
-      value: 'Phần Mềm CNTT/Dịch vụ Phần mềm',
-      icon: <Briefcase className='h-4 w-4' />
-    },
+    // {
+    //   label: 'LĨNH VỰC',
+    //   value: 'Phần Mềm CNTT/Dịch vụ Phần mềm',
+    //   icon: <Briefcase className='h-4 w-4' />
+    // },
     {
       label: 'SỐ LƯỢNG TUYỂN DỤNG',
       value: job.slots > 0 ? job.slots : 'Không hiển thị',

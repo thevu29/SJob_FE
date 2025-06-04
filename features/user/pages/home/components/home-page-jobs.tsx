@@ -8,7 +8,7 @@ import JobListingSkeleton from '@/features/user/pages/home/components/job-listin
 
 export default function HomePageJobs() {
   const currentPage = 1;
-  const pageSize = 50;
+  const pageSize = 9;
 
   const { data, isLoading } = useGetPaginatedPublic<Job>(
     'jobs',

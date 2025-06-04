@@ -25,7 +25,7 @@ export interface UseJobSeekerProfileResult {
 }
 
 export function useJobSeekerProfile(
-  jobSeekerId: string
+  jobSeekerId?: string
 ): UseJobSeekerProfileResult {
   // gọi nhiều API song song với useQueries
   const queries = useQueries({
@@ -33,33 +33,34 @@ export function useJobSeekerProfile(
       {
         queryKey: ['job-seekers', jobSeekerId],
         queryFn: () => get<JobSeeker>('job-seekers/' + jobSeekerId),
-        staleTime: 5 * 60 * 1000
+        enabled: !!jobSeekerId
       },
       {
         queryKey: ['educations/job-seeker', jobSeekerId],
-        queryFn: () => get<Education>('educations/job-seeker/' + jobSeekerId),
-        staleTime: 5 * 60 * 1000
+        queryFn: () => get<Education[]>('educations/job-seeker/' + jobSeekerId),
+        enabled: !!jobSeekerId
       },
       {
         queryKey: ['skills/job-seeker', jobSeekerId],
-        queryFn: () => get<Skill>('skills/job-seeker/' + jobSeekerId),
-        staleTime: 5 * 60 * 1000
+        queryFn: () => get<Skill[]>('skills/job-seeker/' + jobSeekerId),
+        enabled: !!jobSeekerId
       },
       {
         queryKey: ['experiences/job-seeker', jobSeekerId],
-        queryFn: () => get<Experience>('experiences/job-seeker/' + jobSeekerId),
-        staleTime: 5 * 60 * 1000
+        queryFn: () =>
+          get<Experience[]>('experiences/job-seeker/' + jobSeekerId),
+        enabled: !!jobSeekerId
       },
       {
         queryKey: ['certifications/job-seeker', jobSeekerId],
         queryFn: () =>
-          get<Certification>('certifications/job-seeker/' + jobSeekerId),
-        staleTime: 5 * 60 * 1000
+          get<Certification[]>('certifications/job-seeker/' + jobSeekerId),
+        enabled: !!jobSeekerId
       },
       {
         queryKey: ['resumes/job-seeker', jobSeekerId],
-        queryFn: () => get<Resume>('resumes/job-seeker/' + jobSeekerId),
-        staleTime: 5 * 60 * 1000
+        queryFn: () => get<Resume[]>('resumes/job-seeker/' + jobSeekerId),
+        enabled: !!jobSeekerId
       }
     ]
   });
@@ -70,12 +71,12 @@ export function useJobSeekerProfile(
     ?.error as AxiosError | null;
 
   const data: JobSeekerProfile = {
-    jobSeeker: queries[0].data?.data as unknown as JobSeeker,
-    educations: queries[1].data?.data as unknown as Education[],
-    skills: queries[2].data?.data as unknown as Skill[],
-    experiences: queries[3].data?.data as unknown as Experience[],
-    certifications: queries[4].data?.data as unknown as Certification[],
-    resumes: queries[5].data?.data as unknown as Resume[]
+    jobSeeker: queries[0].data?.data,
+    educations: queries[1].data?.data,
+    skills: queries[2].data?.data,
+    experiences: queries[3].data?.data,
+    certifications: queries[4].data?.data,
+    resumes: queries[5].data?.data
   };
 
   return { data, isLoading, isError, error };

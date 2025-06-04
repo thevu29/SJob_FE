@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface IntroduceCardProps {
-  about: string;
+  about?: string;
 }
 export function IntroduceCard({ about }: IntroduceCardProps) {
   return (
@@ -11,7 +11,13 @@ export function IntroduceCard({ about }: IntroduceCardProps) {
         <CardTitle className='text-xl'>Giới thiệu</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>{about}</p>
+        {about ? (
+          <p>{about}</p>
+        ) : (
+          <div className='text-muted-foreground py-8 text-center'>
+            <p>Chưa có thông tin giới thiệu</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

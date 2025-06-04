@@ -21,11 +21,16 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Notification } from '@/interfaces/notification';
 import { useGet, usePut } from '@/hooks/use-queries';
 import { NotificationItem } from '@/features/notification/components/notification-item';
+import { JobSeeker, Recruiter, User } from '@/interfaces';
 
-export function NotificationBell() {
-  const userId = '681c72d8693e8f380167412d';
+interface NotificationBellProps {
+  user: User | JobSeeker | Recruiter;
+}
+
+export function NotificationBell({ user }: NotificationBellProps) {
   const [open, setOpen] = useState(false);
   const [hasNewNotifications, setHasNewNotifications] = useState(false);
+  const userId = 'userId' in user && user.userId;
 
   // Mock data for notifications since we can't access the API
   const { data, refetch } = useGet<Notification[]>(
@@ -91,7 +96,7 @@ export function NotificationBell() {
   ).length;
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>

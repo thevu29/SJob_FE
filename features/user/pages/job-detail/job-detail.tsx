@@ -6,35 +6,32 @@ import { useParams } from 'next/navigation';
 import { Job } from '@/interfaces/job';
 import { useGetPublic } from '@/hooks/use-queries';
 import JobInfo from '@/features/user/pages/job-detail/components/job-info';
-import { Recruiter } from '@/interfaces';
+import { FieldDetail, Recruiter } from '@/interfaces';
 
 export default function JobDetailPage() {
   const params = useParams();
   const jobId = params.jobId as string;
 
-  const { data: jobData } = useGetPublic<Job>('jobs/' + jobId, ['jobs', jobId]);
-  const job = (jobData?.data as Job) || {};
-
-  const { data: recruiterData } = useGetPublic<Recruiter>(
-    'recruiters/' + job?.recruiterId,
-    ['recruiters', job?.recruiterId],
-    undefined,
-    {
-      enabled: !!job.recruiterId
-    }
+  const { data: job } = useGetPublic<Job>('jobs/' + jobId, ['jobs', jobId]);
+  const { data: fieldDetails } = useGetPublic<FieldDetail[]>(
+    'field-details/jobs/' + jobId,
+    ['field-details/jobs/', jobId]
   );
-  const recruiter = (recruiterData?.data as Recruiter) || {};
   return (
     <div className='bg-background min-h-screen pb-32'>
       <div className='container mx-auto px-4 py-6 md:py-8 lg:max-w-6xl'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
           <div className='space-y-6 lg:col-span-2'>
-            <JobInfo job={job} />
+            {job && job.data && fieldDetails && fieldDetails.data && (
+              <JobInfo job={job.data} fieldDetails={fieldDetails.data} />
+            )}
           </div>
           <div className='lg:col-span-1'>
             <div className='space-y-6'>
-              <CompanyInfo recruiter={recruiter} />
-              <SimilarJobs />
+              {job && job.data && <CompanyInfo job={job.data} />}
+              {fieldDetails && fieldDetails.data && (
+                <SimilarJobs fieldDetails={fieldDetails.data} />
+              )}
             </div>
           </div>
         </div>
