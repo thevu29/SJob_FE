@@ -42,3 +42,16 @@ export interface ViewedJob {
   jobSeekerId: string;
   job: Job;
 }
+
+export interface IHasSavedJobData {
+  jobId: string;
+  jobSeekerId: string;
+}
+
+export interface ISavedJobData {
+  jobId: string;
+  jobSeekerId: string;
+}
+export interface IUnSavedJobData {
+  id: string;
+}
