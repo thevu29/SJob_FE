@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogClose
 } from '@/components/ui/dialog';
-import { formatDate, formatSalary } from '@/lib/utils';
+import { formatDate, formatExperience, formatSalary } from '@/lib/utils';
 import type { Job } from '@/interfaces/job';
 import { JobStatus, JobType } from '@/interfaces/job';
 import { Badge } from '@/components/ui/badge';
@@ -173,7 +173,9 @@ export function JobDetail({ isOpen, onClose, job }: JobDetailModalProps) {
                   <p className='text-muted-foreground text-sm font-medium'>
                     Kinh nghiệm
                   </p>
-                  <p className='font-medium'>{job.experience}</p>
+                  <p className='font-medium'>
+                    {formatExperience(job.experience)}
+                  </p>
                 </div>
               </div>
 

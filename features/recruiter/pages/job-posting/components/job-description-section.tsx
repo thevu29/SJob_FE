@@ -23,6 +23,7 @@ import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
 import { Combobox } from '@/components/common/combobox';
+import { InputFieldWithType } from '@/features/recruiter/components/common/input-field-with-type';
 
 interface JobDescriptionSectionProps {
   form: UseFormReturn<TCreateJob>;
@@ -186,25 +187,17 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className='text-base font-medium'>
-              Kinh nghiệm yêu cầu<span className='text-destructive'>*</span>
+              Kinh nghiệm yêu cầu
+              <span className='text-destructive'>*</span>{' '}
             </FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Chọn số năm kinh nghiệm' />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value='Không yêu cầu'>Không yêu cầu</SelectItem>
-                <SelectItem value='Dưới 1 năm'>Dưới 1 năm</SelectItem>
-                <SelectItem value='1-2 năm'>1-2 năm</SelectItem>
-                <SelectItem value='2-3 năm'>2-3 năm</SelectItem>
-                <SelectItem value='3-5 năm'>3-5 năm</SelectItem>
-                <SelectItem value='5-7 năm'>5-7 năm</SelectItem>
-                <SelectItem value='7-10 năm'>7-10 năm</SelectItem>
-                <SelectItem value='Trên 10 năm'>Trên 10 năm</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className='grid grid-cols-1 items-center gap-4'>
+              <InputFieldWithType name='experience' control={form.control} />
+              {/* <Input
+                type='text'
+                placeholder='8.000.000'
+                onChange={(e) => field.onChange(e.target.value)}
+              /> */}
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -244,31 +237,7 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
               <span className='text-muted-foreground text-xs'>(VND)</span>
             </FormLabel>
             <div className='grid grid-cols-1 items-center gap-4'>
-              <Input
-                type='text'
-                placeholder='8.000.000'
-                onChange={(e) => field.onChange(e.target.value)}
-              />
-              {/* <div className='flex items-center gap-2'>
-                <Input type='number' placeholder='1500' />
-                <FormField
-                  control={form.control}
-                  name='showSalary'
-                  render={({ field }) => (
-                    <FormItem className='flex items-center space-y-0 space-x-2'>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className='text-muted-foreground text-xs'>
-                        Hiển thị cho Ứng Viên
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              </div> */}
+              <InputFieldWithType name='salary' control={form.control} />
             </div>
             <FormMessage />
           </FormItem>
@@ -287,7 +256,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
               <RichTextEditor
                 value={field.value || ''}
                 onChange={field.onChange}
-                placeholder='- Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm'
               />
             </FormControl>
             <FormMessage />
@@ -307,7 +275,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
               <RichTextEditor
                 value={field.value || ''}
                 onChange={field.onChange}
-                placeholder='- Có kinh nghiệm ít nhất 2 năm với vị trí Tester'
               />
             </FormControl>
             <FormMessage />
@@ -327,7 +294,6 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
               <RichTextEditor
                 value={field.value || ''}
                 onChange={field.onChange}
-                placeholder='- Được đóng BHXH, BHYT, BHTN theo quy định'
               />
             </FormControl>
             <FormMessage />

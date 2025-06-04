@@ -32,7 +32,7 @@ export const CreateJobSchema = z.object({
     .min(1, 'Số lượng cần tuyển phải lớn hơn 0'),
   type: z.string().min(1, 'Vui lòng chọn hình thức làm việc'),
   education: z.string().min(1, 'Vui lòng chọn yêu cầu học vấn'),
-  experience: z.string().min(1, 'Vui lòng chọn yêu cầu kinh nghiệm'),
+  experience: z.string().min(1, 'Vui lòng nhập kinh nghiệm'),
   fieldDetails: z.string({ message: 'Vui lòng chọn ngành nghề chi tiết' })
 });
 
@@ -76,7 +76,7 @@ export const UpdateJobSchema = z.object({
     .optional(),
   type: z.string().min(1, 'Vui lòng chọn hình thức làm việc').optional(),
   education: z.string().min(1, 'Vui lòng chọn yêu cầu học vấn').optional(),
-  experience: z.string().min(1, 'Vui lòng chọn yêu cầu kinh nghiệm').optional(),
+  experience: z.string().min(1, 'Vui lòng nhập kinh nghiệm').optional(),
   fieldDetails: z
     .string({ message: 'Vui lòng chọn ngành nghề chi tiết' })
     .optional()

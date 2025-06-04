@@ -3,7 +3,7 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import { Eye, MoreHorizontal, Pencil, Trash } from 'lucide-react';
+import { Eye, MoreHorizontal, Pencil, Sparkles, Trash } from 'lucide-react';
 
 import { useDelete } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
@@ -86,9 +86,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuLabel>Hành động</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(
+                `/recruiter-dashboard/job-seeker/suggested/${data.id}`
+              );
+            }}
+          >
+            <Sparkles className='mr-2 h-4 w-4 text-indigo-500' />
+            <p className='text-indigo-500'>Gợi ý ứng viên</p>
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setShowDetail(true)}>
-            <Eye className='mr-2 h-4 w-4 text-blue-500' />
-            <p className='text-blue-500'>Xem chi tiết</p>
+            <Eye className='mr-2 h-4 w-4 text-gray-700' />
+            <p className='text-gray-700'>Xem chi tiết</p>
           </DropdownMenuItem>
           {JobStatus[data.status as unknown as keyof typeof JobStatus] ===
             JobStatus.OPEN && (
