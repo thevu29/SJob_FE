@@ -18,10 +18,10 @@ const WEIGHTS = {
 /**
  * Calculate the completion percentage of personal information
  */
-const calculatePersonalInfoCompletion = (profile: JobSeeker): number => {
+const calculatePersonalInfoCompletion = (profile?: JobSeeker): number => {
   const requiredFields = ['name', 'email', 'phone', 'field'];
   const availableFields = requiredFields.filter((field) =>
-    Boolean(profile[field as keyof JobSeeker])
+    profile ? Boolean(profile[field as keyof JobSeeker]) : false
   );
 
   return availableFields.length / requiredFields.length;
@@ -31,29 +31,32 @@ const calculatePersonalInfoCompletion = (profile: JobSeeker): number => {
  * Calculate profile completion percentage
  */
 export const calculateProfileCompletion = (
-  profile: JobSeeker,
-  experiences: Experience[],
-  educations: Education[],
-  skills: Skill[],
-  resumes: Resume[],
-  certifications: Certification[]
+  profile?: JobSeeker,
+  experiences?: Experience[],
+  educations?: Education[],
+  skills?: Skill[],
+  resumes?: Resume[],
+  certifications?: Certification[]
 ): number => {
   // Calculate completion for each section
   const personalInfoCompletion =
     calculatePersonalInfoCompletion(profile) * WEIGHTS.personalInfo;
 
-  const experienceCompletion = experiences.length > 0 ? WEIGHTS.experience : 0;
+  const experienceCompletion =
+    experiences && experiences.length > 0 ? WEIGHTS.experience : 0;
 
-  const educationCompletion = educations.length > 0 ? WEIGHTS.education : 0;
+  const educationCompletion =
+    educations && educations.length > 0 ? WEIGHTS.education : 0;
 
-  const skillsCompletion = skills.length > 0 ? WEIGHTS.skills : 0;
+  const skillsCompletion = skills && skills.length > 0 ? WEIGHTS.skills : 0;
 
-  const resumesCompletion = resumes.length > 0 ? WEIGHTS.resumes : 0;
+  const resumesCompletion = resumes && resumes.length > 0 ? WEIGHTS.resumes : 0;
 
   const certificationsCompletion =
-    certifications.length > 0 ? WEIGHTS.certifications : 0;
+    certifications && certifications.length > 0 ? WEIGHTS.certifications : 0;
 
-  const profilePictureCompletion = profile.image ? WEIGHTS.profilePicture : 0;
+  const profilePictureCompletion =
+    profile && profile.image ? WEIGHTS.profilePicture : 0;
 
   // Calculate total completion percentage
   const totalCompletion =

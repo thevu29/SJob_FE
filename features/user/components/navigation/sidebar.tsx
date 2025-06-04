@@ -32,11 +32,11 @@ export function Sidebar() {
   const debouncedIsSeeking = useDebounce(isSeeking, 1000);
   const {
     jobSeeker,
-    educations = [],
-    skills = [],
-    experiences = [],
-    certifications = [],
-    resumes = []
+    educations,
+    skills,
+    experiences,
+    certifications,
+    resumes
   } = data;
   const updateJobSeekerMutation = usePatchFormData<JobSeeker>(
     'job-seekers',
@@ -53,7 +53,6 @@ export function Sidebar() {
   );
 
   useEffect(() => {
-    if (!jobSeeker) return;
     // Calculate profile completion
     const completion = calculateProfileCompletion(
       jobSeeker,
@@ -64,7 +63,7 @@ export function Sidebar() {
       certifications
     );
     setProfileCompletion(completion);
-    setIsSeeking(jobSeeker.seeking);
+    setIsSeeking(jobSeeker?.seeking ?? false);
   }, [jobSeeker, experiences, educations, skills, resumes, certifications]);
 
   const isProfileComplete = isProfileCompleteEnough(profileCompletion);

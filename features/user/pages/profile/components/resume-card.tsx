@@ -13,8 +13,8 @@ import { DeleteConfirmationDialog } from '@/features/user/pages/profile/componen
 import { Resume } from '@/interfaces/resume';
 
 interface ResumeCardProps {
-  resumes: Resume[];
-  jobSeekerId: string;
+  resumes?: Resume[];
+  jobSeekerId?: string;
   onAdd: () => void;
   onEdit: (resume: Resume) => void;
 }
@@ -38,7 +38,7 @@ export function ResumeCard({
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
     },
-    ['resumes/job-seeker', jobSeekerId]
+    ['resumes/job-seeker', jobSeekerId ?? '']
   );
 
   const handleDeleteClick = (resume: Resume) => {
@@ -75,7 +75,7 @@ export function ResumeCard({
       </CardHeader>
 
       <CardContent>
-        {resumes.length > 0 ? (
+        {resumes && resumes.length > 0 ? (
           <div className='space-y-4'>
             {resumes.map((resume) => (
               <div

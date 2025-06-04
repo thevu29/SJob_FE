@@ -14,8 +14,8 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 interface SkillCardProps {
-  skills: Skill[];
-  jobSeekerId: string;
+  skills?: Skill[];
+  jobSeekerId?: string;
   onAdd: () => void;
   onEdit: (skill: Skill) => void;
 }
@@ -39,7 +39,7 @@ export function SkillCard({
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
     },
-    ['skills/job-seeker', jobSeekerId]
+    ['skills/job-seeker', jobSeekerId ?? '']
   );
 
   const handleDeleteClick = (skill: Skill, event: React.MouseEvent) => {
@@ -77,7 +77,7 @@ export function SkillCard({
       </CardHeader>
 
       <CardContent>
-        {skills.length > 0 ? (
+        {skills && skills.length > 0 ? (
           <div className='flex flex-wrap gap-2'>
             {skills.map((skill) => (
               <Badge

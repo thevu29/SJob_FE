@@ -10,10 +10,8 @@ export default function UserLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jobSeekerId = '35a7eaf6-a6d4-4332-a489-77c4fd4074f4';
-
   return (
-    <JobSeekerProvider jobSeekerId={jobSeekerId}>
+    <JobSeekerProvider>
       <div>
         <Header />
         <div className='bg-muted/30 flex min-h-screen flex-col md:flex-row'>

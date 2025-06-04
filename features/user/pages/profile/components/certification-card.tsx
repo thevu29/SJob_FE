@@ -11,8 +11,8 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 
 interface CertificationCardProps {
-  certifications: Certification[];
-  jobSeekerId: string;
+  certifications?: Certification[];
+  jobSeekerId?: string;
   onAdd: () => void;
   onEdit: (certification: Certification) => void;
 }
@@ -37,7 +37,7 @@ export function CertificationCard({
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
     },
-    ['certifications/job-seeker', jobSeekerId]
+    ['certifications/job-seeker', jobSeekerId ?? '']
   );
 
   const handleDeleteClick = (certification: Certification) => {
@@ -74,7 +74,7 @@ export function CertificationCard({
       </CardHeader>
 
       <CardContent>
-        {certifications.length > 0 ? (
+        {certifications && certifications.length > 0 ? (
           <div className='space-y-6'>
             {certifications.map((certification) => (
               <div key={certification.id} className='group relative flex gap-4'>
