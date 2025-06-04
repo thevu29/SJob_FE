@@ -6,7 +6,7 @@ import { LogOut } from 'lucide-react';
 
 import { useLogout } from '@/hooks';
 import { shortenName } from '@/lib/utils';
-import { navUserItems } from '@/constants/navigation';
+import { NavItem, navUserItems } from '@/constants/navigation';
 import type { JobSeeker, Recruiter, User } from '@/interfaces';
 import {
   DropdownMenu,
@@ -19,9 +19,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface UserDropdownProps {
   user: User | JobSeeker | Recruiter;
+  navItems: NavItem[];
 }
 
-export function UserDropdown({ user }: UserDropdownProps) {
+export function UserDropdown({ user, navItems }: UserDropdownProps) {
   const [open, setOpen] = useState(false);
 
   const { logout, isLoading: isLoggingOut } = useLogout();
@@ -50,8 +51,8 @@ export function UserDropdown({ user }: UserDropdownProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-[300px] p-0' align='end'>
         <div className='p-1'>
-          {navUserItems &&
-            navUserItems.map((navItem, index) => (
+          {navItems &&
+            navItems.map((navItem, index) => (
               <DropdownMenuItem
                 key={index}
                 className='focus:bg-sidebar-accent text-sidebar-foreground flex items-center border-b p-3'

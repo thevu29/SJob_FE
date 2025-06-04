@@ -47,12 +47,12 @@ export const navUserItems: NavItem[] = [
 export const navRecruiterItems: NavItem[] = [
   {
     title: 'Thông tin công ty',
-    url: '/recruiter/company-general',
+    url: ROUTES.RECRUITER.SETTINGS.COMPANY_GENERAL,
     icon: <FileText className='mr-2 h-5 w-5 text-gray-500' />
   },
   {
     title: 'Quản lý tài khoản',
-    url: '/recruiter/my-account',
+    url: ROUTES.RECRUITER.SETTINGS.MY_ACCOUNT,
     icon: <Briefcase className='mr-2 h-5 w-5 text-gray-500' />
   }
 ];
