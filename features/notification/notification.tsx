@@ -9,8 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-  DropdownMenuLabel,
-  DropdownMenuItem
+  DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
 import {
   Tooltip,
@@ -19,9 +18,8 @@ import {
   TooltipContent
 } from '@/components/ui/tooltip';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
 import type { Notification } from '@/interfaces/notification';
-import { useGet, useGetPaginated, usePut } from '@/hooks/use-queries';
+import { useGet, usePut } from '@/hooks/use-queries';
 import { NotificationItem } from '@/features/notification/components/notification-item';
 import { JobSeeker, Recruiter, User } from '@/interfaces';
 

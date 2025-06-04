@@ -56,18 +56,24 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
 
     setIsModalOpen(true);
   };
+  
   return (
     <>
       <Card>
         <CardContent className='space-y-4'>
           <div className='space-y-4'>
             <h1 className='text-2xl font-bold md:text-3xl'>{job.name}</h1>
-
+    <Card>
+      <CardContent className='space-y-4'>
+        <div className='space-y-4'>
+          <h1 className='text-2xl font-bold md:text-3xl'>{job.name}</h1>
             <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
               <div className='text-color-5 flex items-center text-lg font-semibold'>
                 {formatSalary(job.salary)}
               </div>
             </div>
+          </div>
+
 
             <div className='flex flex-wrap gap-4'>
               <div className='text-muted-foreground flex items-center gap-1 text-sm'>
@@ -75,7 +81,6 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
                 <span>{getExpirationMessage(job.deadline)}</span>
               </div>
             </div>
-
             <div className='mt-4 flex w-full gap-2 sm:w-auto'>
               {isExpired(job.deadline) ? (
                 <Badge variant='outline' className='text-red-500'>
@@ -99,6 +104,15 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
                 Lưu công việc này
               </Button>
             </div>
+          </div>
+
+          <div className='mt-4 flex w-full gap-2 sm:w-auto'>
+            <Button className='flex-1 bg-[#ff7a59] text-white hover:bg-[#ff7a59]/90 sm:flex-none'>
+              Nộp đơn
+            </Button>
+            <Button variant='outline' className='flex-1 sm:flex-none'>
+              Lưu công việc này
+            </Button>
           </div>
 
           <h3 className='pt-4 text-lg font-semibold'>Mô tả công việc</h3>

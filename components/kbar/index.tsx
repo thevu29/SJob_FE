@@ -38,7 +38,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
                 shortcut: navItem.shortcut,
                 keywords: navItem.title.toLowerCase(),
                 section: 'Navigation',
-                subtitle: `Go to ${navItem.title}`,
+                subtitle: `Đi đến trang ${navItem.title}`,
                 perform: () => navigateTo(navItem.url)
               }
             : null;
@@ -51,7 +51,7 @@ export default function KBar({ children }: { children: React.ReactNode }) {
             shortcut: childItem.shortcut,
             keywords: childItem.title.toLowerCase(),
             section: navItem.title,
-            subtitle: `Go to ${childItem.title}`,
+            subtitle: `Đi đến trang ${childItem.title}`,
             perform: () => navigateTo(childItem.url)
           })) ?? [];
 
@@ -73,11 +73,14 @@ const KBarComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <KBarPortal>
-        <KBarPositioner className='scrollbar-hide fixed inset-0 z-[99999] bg-black/80 !p-0 backdrop-blur-xs'>
-          <KBarAnimator className='bg-background text-foreground relative !mt-64 w-full max-w-[600px] !-translate-y-12 overflow-hidden rounded-lg border shadow-lg'>
+        <KBarPositioner className='scrollbar-hide fixed inset-0 z-[99999] !items-center bg-black/80 !p-0 backdrop-blur-xs'>
+          <KBarAnimator className='bg-background text-foreground relative w-full max-w-[600px] overflow-hidden rounded-lg border shadow-lg'>
             <div className='bg-background'>
               <div className='border-x-0 border-b-2'>
-                <KBarSearch className='bg-background w-full border-none px-6 py-4 text-lg outline-hidden focus:ring-0 focus:ring-offset-0 focus:outline-hidden' />
+                <KBarSearch
+                  defaultPlaceholder='Nhập shortcut hoặc tìm kiếm'
+                  className='bg-background w-full border-none px-6 py-4 text-lg outline-hidden focus:ring-0 focus:ring-offset-0 focus:outline-hidden'
+                />
               </div>
               <RenderResults />
             </div>

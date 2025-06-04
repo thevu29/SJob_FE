@@ -1,4 +1,6 @@
 'use client';
+
+import { LoadingPage } from '@/components/common/loading';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ProfileSkeleton } from '@/features/user/components/skeleton/profile-skeleton';
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
