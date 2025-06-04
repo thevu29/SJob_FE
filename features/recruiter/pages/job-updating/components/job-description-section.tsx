@@ -1,4 +1,5 @@
 'use client';
+
 import type { UseFormReturn } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
@@ -18,22 +19,19 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { RichTextEditor } from '@/features/recruiter/components/common/rich-text-editor';
-import {
-  TCreateJob,
-  TUpdateJob
-} from '@/features/recruiter/schemas/job.schema';
+import { TUpdateJob } from '@/features/recruiter/schemas/job.schema';
 import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
-export function JobDescriptionSection({
-  form
-}: {
+
+interface JobDescriptionSectionProps {
   form: UseFormReturn<TUpdateJob>;
-}) {
+}
+
+export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
   const { data: fieldDetailsData } = useGet<FieldDetail[]>('field-details', [
     'field-details'
   ]);
-  console.log('form', form.getValues());
 
   const fieldDetails = fieldDetailsData?.data || [];
   return (

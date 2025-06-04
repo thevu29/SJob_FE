@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -29,7 +28,7 @@ import {
 } from '@/features/recruiter/schemas/recruiter.schema';
 import { useGet, usePutFormData } from '@/hooks/use-queries';
 import { Recruiter } from '@/interfaces';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Field } from '@/interfaces/field';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

@@ -17,19 +17,13 @@ export function JobStatusCard() {
             description='Đang hiển thị'
           />
           <StatsCard title='Đang ẩn' value='0' description='Đang ẩn' />
-          {/* <StatsCard
-            title='Nhập'
-            value='1'
-            description='Nhập'
-            color='text-green-500'
-          />
-          <StatsCard title='Việc làm ảo' value='0' description='Việc làm ảo' /> */}
-          <StatsCard title='Hết hạn' value='0' description='Hết hạn' />
-          {/* <StatsCard
-            title='Hết hạn trong 7 ngày'
+          <StatsCard
+            title='Việc làm ảo'
             value='0'
-            description='Hết hạn trong 7 ngày'
-          /> */}
+            description='Việc làm ảo'
+          />{' '}
+          */
+          <StatsCard title='Hết hạn' value='0' description='Hết hạn' />
         </div>
       </CardContent>
     </Card>

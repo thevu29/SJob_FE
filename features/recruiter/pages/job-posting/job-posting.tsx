@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -63,7 +62,6 @@ export default function JobPostingForm() {
         ...values,
         fieldDetails: [values.fieldDetails]
       };
-      console.log('Submitting form with values:', payload);
       await createJobMutation.mutateAsync(payload as any);
       form.reset();
       router.push(ROUTES.RECRUITER.JOBS.LIST);
@@ -73,7 +71,6 @@ export default function JobPostingForm() {
   }
 
   const handleCancel = () => {
-    console.log('hi');
     form.reset();
     router.push(ROUTES.RECRUITER.DASHBOARD);
   };

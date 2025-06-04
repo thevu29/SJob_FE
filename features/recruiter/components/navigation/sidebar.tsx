@@ -11,8 +11,10 @@ export function Sidebar() {
   const [companyExpanded, setCompanyExpanded] = useState(false);
 
   // Xác định active item và sub-item dựa trên pathname
-  const isAccountActive = pathname === '/recruiter/my-account';
-  const isCompanyActive = pathname.includes('/recruiter/company-general');
+  const isAccountActive = pathname === '/recruiter-dashboard/my-account';
+  const isCompanyActive = pathname.includes(
+    '/recruiter-dashboard/company-general'
+  );
 
   const toggleAccount = () => {
     setAccountExpanded(!accountExpanded);
@@ -42,7 +44,7 @@ export function Sidebar() {
         {accountExpanded && (
           <div>
             <Link
-              href='/recruiter/my-account'
+              href='/recruiter-dashboard/my-account'
               className={`block p-4 ${isAccountActive ? 'bg-accent text-accent-foreground' : ''}`}
             >
               Quản lý tài khoản
@@ -69,7 +71,7 @@ export function Sidebar() {
         {companyExpanded && (
           <div className='flex flex-col'>
             <Link
-              href='/recruiter/company-general'
+              href='/recruiter-dashboard/company-general'
               className={`p-4 ${isCompanyActive ? 'bg-accent text-accent-foreground' : ''}`}
             >
               Thông tin chung

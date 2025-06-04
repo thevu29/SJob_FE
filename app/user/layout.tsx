@@ -1,9 +1,10 @@
 'use client';
+
+import React from 'react';
 import { Footer } from '@/features/recruiter/components/navigation/footer';
 import { Header } from '@/features/user/components/navigation/header';
 import { Sidebar } from '@/features/user/components/navigation/sidebar';
 import { JobSeekerProvider } from '@/features/user/contexts/job-seeker-context';
-import React from 'react';
 
 export default function UserLayout({
   children

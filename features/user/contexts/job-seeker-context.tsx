@@ -7,9 +7,7 @@ import {
 import { useGetCurrentUser } from '@/hooks';
 import { createContext, useContext } from 'react';
 
-interface JobSeekerContextType extends UseJobSeekerProfileResult {}
-
-const JobSeekerContext = createContext<JobSeekerContextType | undefined>(
+const JobSeekerContext = createContext<UseJobSeekerProfileResult | undefined>(
   undefined
 );
 

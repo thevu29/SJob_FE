@@ -6,7 +6,6 @@ import { columns } from '@/features/recruiter/pages/invitation-listing/component
 import { DataTable as InvitationTable } from '@/components/ui/table/data-table';
 
 export default function InvitationListingPage() {
-  const id = '68144e36647b71355acf11d1';
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get('page') || '1');
@@ -37,7 +36,6 @@ export default function InvitationListingPage() {
     data?.data.map((job) => ({
       ...job
     })) || [];
-  console.log('formattedData', formattedData);
 
   return (
     <InvitationTable

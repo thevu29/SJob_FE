@@ -1,4 +1,5 @@
 'use client';
+
 import EducationCard from '@/features/recruiter/pages/profile-jobseeker/components/education-card';
 import SkillsCard from '@/features/recruiter/pages/profile-jobseeker/components/skills-card';
 import { useGet } from '@/hooks/use-queries';
@@ -21,26 +22,32 @@ import placeholder from '@/public/placeholder.jpg';
 export default function ProfileJobSeeker() {
   const params = useParams();
   const jobSeekerId = params.jobSeekerId as string;
+
   const { data: jobSeekerData } = useGet<JobSeeker>(
     'job-seekers/' + jobSeekerId,
     ['job-seekers', jobSeekerId]
   );
+
   const { data: educationData } = useGet<Education>(
     'educations/job-seeker/' + jobSeekerId,
     ['educations/job-seeker/', jobSeekerId]
   );
+
   const { data: skillData } = useGet<Skill>(
     'skills/job-seeker/' + jobSeekerId,
     ['skills/job-seeker/', jobSeekerId]
   );
+
   const { data: experienceData } = useGet<Experience>(
     'experiences/job-seeker/' + jobSeekerId,
     ['experiences/job-seeker/', jobSeekerId]
   );
+
   const { data: certificationData } = useGet<Certification>(
     'certifications/job-seeker/' + jobSeekerId,
     ['certifications/job-seeker/', jobSeekerId]
   );
+
   const { data: resumeData } = useGet<Resume>(
     'resumes/job-seeker/' + jobSeekerId,
     ['resumes/job-seeker/', jobSeekerId]

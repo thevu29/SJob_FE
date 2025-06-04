@@ -3,16 +3,9 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import {
-  Eye,
-  LockKeyhole,
-  LockKeyholeOpen,
-  MoreHorizontal,
-  Pencil,
-  Trash
-} from 'lucide-react';
+import { Eye, MoreHorizontal, Trash } from 'lucide-react';
 
-import { useDelete, usePut } from '@/hooks/use-queries';
+import { useDelete } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,9 +15,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Job, JobStatus } from '@/interfaces/job';
-import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/constants/routes';
 import { Invitation } from '@/interfaces/invitation';
 import { InvitationDetail } from '@/features/recruiter/pages/invitation-listing/components/invitation-detail';
 
@@ -35,7 +25,6 @@ interface CellActionProps {
 type ActionMode = 'delete' | null;
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [actionMode, setActionMode] = useState<ActionMode>(null);

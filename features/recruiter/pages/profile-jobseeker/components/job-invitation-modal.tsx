@@ -3,17 +3,14 @@
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { X, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogClose
+  DialogTitle
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
@@ -66,10 +63,12 @@ export function JobInvitationModal() {
     'jobs/recruiters/',
     recruiterId
   ]);
+
   const jobSeekerData = queryClient.getQueryData<{ data: JobSeeker }>([
     'job-seekers',
     jobSeekerId
   ]);
+
   const jobSeeker = jobSeekerData?.data as JobSeeker;
   const jobs = jobData?.data as Job[];
 
@@ -108,18 +107,16 @@ export function JobInvitationModal() {
         jobSeekerName: jobSeeker?.name as string,
         message: decodedContent
       };
+
       await createInvitationMutation.mutateAsync(payload);
       form.reset();
-      setOpen(false);
-    } else {
-      console.log(data);
     }
+
     setOpen(false);
   }
 
   const handleEditorChange = (content: string, editor: any) => {
     form.setValue('message', content);
-    // Calculate character count from the text content (excluding HTML tags)
     const textContent = editor.getContent({ format: 'text' });
     setCharCount(textContent.length);
   };

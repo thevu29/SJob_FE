@@ -17,7 +17,7 @@ const AUTH_PATHS = [
   '/verify-otp'
 ];
 const ADMIN_PATHS = ['/dashboard'];
-const RECRUITER_PATHS = ['/recruiter'];
+const RECRUITER_PATHS = ['/recruiter-dashboard'];
 const USER_PATHS = ['/user'];
 
 export function middleware(request: NextRequest) {
@@ -58,7 +58,7 @@ export function middleware(request: NextRequest) {
           }
         } else if (role === UserRole.RECRUITER) {
           if (isAuthPath) {
-            return NextResponse.redirect(new URL('/recruiter', request.url));
+            return NextResponse.redirect(new URL('/recruiter-dashboard', request.url));
           }
         } else if (role === UserRole.JOB_SEEKER) {
           if (isAuthPath) {
@@ -94,7 +94,7 @@ export function middleware(request: NextRequest) {
       if (isRecruiterPath) {
         return NextResponse.next();
       } else if (isAdminPath || isUserPath) {
-        return NextResponse.redirect(new URL('/recruiter', request.url));
+        return NextResponse.redirect(new URL('/recruiter-dashboard', request.url));
       }
       return NextResponse.next();
     }
@@ -120,7 +120,7 @@ export const config = {
   matcher: [
     '/',
     '/dashboard/:path*',
-    '/recruiter/:path*',
+    '/recruiter-dashboard/:path*',
     '/user/:path*',
     '/login',
     '/sign-up/:path*',

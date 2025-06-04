@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Pencil, ChevronRight, Crown } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PasswordChangeForm } from '@/features/recruiter/pages/company-general/components/password-change-form';
+
 export function MyAccount() {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [showEmailForm, setShowEmailForm] = useState(false);
 
   return (
     <div className='space-y-4'>
@@ -31,24 +31,12 @@ export function MyAccount() {
                 <div className='font-medium'>Họ và tên</div>
                 <div className='col-span-1 flex items-center gap-2 md:col-span-2'>
                   Vuong Hoang
-                  {/* <Button variant='ghost' size='icon' className='h-5 w-5 p-0'>
-                    <Pencil className='h-3.5 w-3.5' />
-                  </Button> */}
                 </div>
               </div>
             </div>
           </div>
 
           <div className='space-y-2'>
-            {/* <Button
-              variant="outline"
-              className="flex items-center justify-between w-full sm:w-[240px] bg-accent text-accent-foreground hover:bg-accent/80 border-none"
-              onClick={() => setShowEmailForm(!showEmailForm)}
-            >
-              <span>Thay đổi địa chỉ email</span>
-              <ChevronRight className="h-4 w-4" />
-            </Button> */}
-
             <Button
               variant='outline'
               className={`flex w-full items-center justify-between sm:w-[240px] ${showPasswordForm ? 'bg-primary text-primary-foreground' : 'bg-accent text-accent-foreground'} hover:bg-primary/90 border-none`}
@@ -70,13 +58,6 @@ export function MyAccount() {
           <div className='font-medium'>Sjob email</div>
           <div className='col-span-1 flex items-center gap-2 break-words md:col-span-2'>
             <span className='break-all'>ndmW398451@service.sjob.com</span>
-            {/* <Button
-              variant='ghost'
-              size='icon'
-              className='h-5 w-5 flex-shrink-0 p-0'
-            >
-              <Pencil className='h-3.5 w-3.5' />
-            </Button> */}
           </div>
         </div>
 

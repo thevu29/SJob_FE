@@ -22,11 +22,12 @@ import { TCreateJob } from '@/features/recruiter/schemas/job.schema';
 import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
-export function JobDescriptionSection({
-  form
-}: {
+
+interface JobDescriptionSectionProps {
   form: UseFormReturn<TCreateJob>;
-}) {
+}
+
+export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
   const { data: fieldDetailsData } = useGet<FieldDetail[]>('field-details', [
     'field-details'
   ]);
@@ -292,8 +293,6 @@ export function JobDescriptionSection({
                 value={field.value || ''}
                 onChange={field.onChange}
                 placeholder='- Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm'
-                //                 initialContent={`- Viết test case và thực hiện test manual hoặc automation theo chức năng phần mềm của Tập đoàn
-                // - Tham gia vào quá trình phân tích chức năng, phát triển tính năng của hệ thống phần mềm`}
               />
             </FormControl>
             <FormMessage />
@@ -314,9 +313,6 @@ export function JobDescriptionSection({
                 value={field.value || ''}
                 onChange={field.onChange}
                 placeholder='- Có kinh nghiệm ít nhất 2 năm với vị trí Tester'
-                //                 initialContent={`- Tốt nghiệp các chuyên ngành có liên quan
-                // - Có kinh nghiệm ít nhất 2 năm với vị trí Tester
-                // - Có thể giao tiếp tiếng Anh cơ bản`}
               />
             </FormControl>
             <FormMessage />
@@ -337,9 +333,6 @@ export function JobDescriptionSection({
                 value={field.value || ''}
                 onChange={field.onChange}
                 placeholder='- Được đóng BHXH, BHYT, BHTN theo quy định'
-                //                 initialContent={`- Mức lương cạnh tranh, review định kỳ 2 lần/năm
-                // - Thưởng hiệu suất và các dịp lễ tết trong năm
-                // - Được đóng BHXH, BHYT, BHTN theo quy định`}
               />
             </FormControl>
             <FormMessage />

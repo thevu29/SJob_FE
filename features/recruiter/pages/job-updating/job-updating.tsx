@@ -3,19 +3,16 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import {
-  CreateJobSchema,
-  TCreateJob,
   TUpdateJob,
   UpdateJobSchema
 } from '@/features/recruiter/schemas/job.schema';
-import { useGet, usePost, usePut } from '@/hooks/use-queries';
+import { useGet, usePut } from '@/hooks/use-queries';
 import { Job } from '@/interfaces/job';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';

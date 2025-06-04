@@ -1,6 +1,5 @@
 'use client';
 
-import { LoadingPage } from '@/components/common/loading';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ProfileSkeleton } from '@/features/user/components/skeleton/profile-skeleton';
 import { useJobSeekerContext } from '@/features/user/contexts/job-seeker-context';
@@ -23,7 +22,6 @@ import { ProfileCompletionCard } from '@/features/user/pages/profile/components/
 import { ResumeCard } from '@/features/user/pages/profile/components/resume-card';
 import { SkillCard } from '@/features/user/pages/profile/components/skill-card';
 import { calculateProfileCompletion } from '@/features/user/pages/profile/utils/profile-completion';
-import { JobSeeker } from '@/interfaces';
 import { Certification } from '@/interfaces/certification';
 import { Education } from '@/interfaces/education';
 import { Experience } from '@/interfaces/experience';

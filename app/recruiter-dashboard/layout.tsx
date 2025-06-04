@@ -1,4 +1,3 @@
-import { SidebarInset } from '@/components/ui/sidebar';
 import { Footer } from '@/features/recruiter/components/navigation/footer';
 import { Header } from '@/features/recruiter/components/navigation/header';
 

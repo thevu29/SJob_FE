@@ -5,9 +5,9 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import type { User } from '@/interfaces';
 import { formatDate } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 import { CellAction } from './cell-action';
-import { Button } from '@/components/ui/button';
 
 export const columns: ColumnDef<User>[] = [
   {

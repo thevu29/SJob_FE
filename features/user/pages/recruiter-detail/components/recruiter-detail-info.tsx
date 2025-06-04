@@ -1,4 +1,5 @@
 'use client';
+
 import { Avatar } from '@/components/ui/avatar';
 import Image from 'next/image';
 import placeholder from '@/public/placeholder.jpg';

@@ -1,4 +1,5 @@
 'use client';
+
 import HeroBanner from '@/components/common/hero-banner';
 import React from 'react';
 import FieldListings from '@/features/user/pages/home/components/field-listing';

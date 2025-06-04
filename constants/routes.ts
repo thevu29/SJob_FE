@@ -11,21 +11,20 @@ export const ROUTES = {
 
   // Recruiter routes
   RECRUITER: {
-    DASHBOARD: '/recruiter',
+    DASHBOARD: '/recruiter-dashboard',
     JOBS: {
-      LIST: '/recruiter/job',
-      CREATE: '/recruiter/job/posting',
-      EDIT: (id: string) => `/recruiter/job/${id}`
-      // DETAIL: (id: string) => `/recruiter/jobs/${id}`,
+      LIST: '/recruiter-dashboard/job',
+      CREATE: '/recruiter-dashboard/job/posting',
+      EDIT: (id: string) => `/recruiter-dashboard/job/${id}`
     },
     JOBSEEKER: {
-      INVITATION_LISTING: '/recruiter/invitation-listing',
-      SEARCH: '/recruiter/job-seeker/search',
-      DETAIL: (id: string) => `/recruiter/job-seeker/${id}`
+      INVITATION_LISTING: '/recruiter-dashboard/invitation-listing',
+      SEARCH: '/recruiter-dashboard/job-seeker/search',
+      DETAIL: (id: string) => `/recruiter-dashboard/job-seeker/${id}`
     },
     SETTINGS: {
-      COMPANY_GENERAL: '/recruiter/company-general',
-      MY_ACCOUNT: '/recruiter/my-account'
+      COMPANY_GENERAL: '/recruiter-dashboard/company-general',
+      MY_ACCOUNT: '/recruiter-dashboard/my-account'
     }
   },
 

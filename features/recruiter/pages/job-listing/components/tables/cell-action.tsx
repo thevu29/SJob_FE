@@ -3,16 +3,9 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import {
-  Eye,
-  LockKeyhole,
-  LockKeyholeOpen,
-  MoreHorizontal,
-  Pencil,
-  Trash
-} from 'lucide-react';
+import { Eye, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
-import { useDelete, usePut } from '@/hooks/use-queries';
+import { useDelete } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
 import { Button } from '@/components/ui/button';
 import {

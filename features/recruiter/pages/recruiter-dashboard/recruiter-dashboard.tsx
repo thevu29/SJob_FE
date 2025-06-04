@@ -1,4 +1,3 @@
-import { CandidateCard } from '@/features/recruiter/pages/recruiter-dashboard/components/candidate-card';
 import { JobManagementCard } from '@/features/recruiter/pages/recruiter-dashboard/components/job-management-card';
 import { JobStatusCard } from '@/features/recruiter/pages/recruiter-dashboard/components/job-status-card';
 import { ReportCard } from '@/features/recruiter/pages/recruiter-dashboard/components/report-card';
@@ -16,7 +15,6 @@ export function RecruiterDashboardPage() {
       </div>
       <div className='grid gap-6 md:grid-cols-1'>
         <JobStatusCard />
-        {/* <CandidateCard /> */}
       </div>
     </div>
   );

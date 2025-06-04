@@ -5,7 +5,6 @@ import PageContainer from '@/components/layout/page-layout';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import React, { Suspense } from 'react';
-import JobTableAction from '@/features/recruiter/pages/job-listing/components/tables/job-table-action';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 import InvitationTableAction from '@/features/recruiter/pages/invitation-listing/components/tables/invitation-table-action';
 
