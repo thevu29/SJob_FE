@@ -3,6 +3,8 @@ export interface Job {
   recruiterId: string;
   recruiterName: string;
   recruiterImage: string;
+  recruiterAddress: string;
+  recruiterMembers: number;
   name: string;
   description: string;
   salary: string;

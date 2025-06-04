@@ -13,16 +13,18 @@ import { useGetCurrentUser, usePost } from '@/hooks';
 import { Badge } from '@/components/ui/badge';
 import { IHasAppliedJobData } from '@/interfaces/application';
 import { AxiosError } from 'axios';
+import { FieldDetail } from '@/interfaces';
 
 interface JobInfoProps {
   job: Job;
+  fieldDetails: FieldDetail[];
 }
 
-export default function JobInfo({ job }: JobInfoProps) {
+export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const { data: user } = useGetCurrentUser();
-  const details = generateJobDetails(job);
+  const details = generateJobDetails(job, fieldDetails);
 
   const { mutateAsync: hasAppliedJobMutation, isPending } = usePost<
     Boolean,
