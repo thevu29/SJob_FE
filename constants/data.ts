@@ -29,10 +29,10 @@ export const navItems: NavItem[] = [
     items: []
   },
   {
-    title: 'User',
+    title: 'Người dùng',
     url: '#',
     icon: 'user',
-    isActive: true,
+    isActive: false,
 
     items: [
       {

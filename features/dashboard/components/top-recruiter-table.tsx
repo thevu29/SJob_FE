@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { TopRecruiterTableSkeleton } from './top-recruiter-tabke-skeleton';
 import { shortenName } from '@/lib/utils';
+import { LongText } from '@/components/common/long-text';
 
 export function TopRecruiterTable() {
   const { data: recruiters, isLoading } = useGet<IGetTopRecruiter[]>(
@@ -44,9 +45,7 @@ export function TopRecruiterTable() {
                   <AvatarFallback>{shortenName(recruiter.name)}</AvatarFallback>
                 </Avatar>
                 <div className='ml-4 space-y-1'>
-                  <p className='text-sm leading-none font-medium'>
-                    {recruiter.name}
-                  </p>
+                  <LongText className='max-w-[350px] text-sm'>{recruiter.name}</LongText>
                   <p className='text-muted-foreground text-sm'>
                     {recruiter.email}
                   </p>
