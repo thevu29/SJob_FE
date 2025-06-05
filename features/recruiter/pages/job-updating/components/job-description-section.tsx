@@ -24,10 +24,55 @@ import { useGet } from '@/hooks/use-queries';
 import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
 import { Combobox } from '@/components/common/combobox';
+import MyTooltip from '@/features/recruiter/components/common/tooltip';
+import { InputFieldWithType } from '@/features/recruiter/components/common/input-field-with-type';
 
 interface JobDescriptionSectionProps {
   form: UseFormReturn<TUpdateJob>;
 }
+
+const ExperienceTooltipContent = () => (
+  <div className='w-full space-y-2 text-sm'>
+    <div>
+      <strong>[≤]:</strong> Dưới X năm kinh nghiệm (VD: ≤2 = dưới 2 năm)
+    </div>
+    <div>
+      <strong>[≥]:</strong> Ít nhất X năm kinh nghiệm (VD: ≥3 = ít nhất 3 năm)
+    </div>
+    <div>
+      <strong>[=]:</strong> Đúng X năm kinh nghiệm (VD: =5 = đúng 5 năm) (VD: =0
+      = Không yêu cầu kinh nghiệm)
+    </div>
+    <div>
+      <strong>[x-y]:</strong> Từ X đến Y năm kinh nghiệm (VD: 2-5 = từ 2 đến 5
+      năm)
+    </div>
+  </div>
+);
+
+const SalaryTooltipContent = () => (
+  <div className='w-full space-y-2 text-sm'>
+    <div>
+      <strong>≤:</strong> Dưới X triệu đồng (VD: ≤10 = dưới 10 triệu)
+    </div>
+    <div>
+      <strong>≥:</strong> Ít nhất X triệu đồng (VD: ≥15 = trên 15 triệu)
+    </div>
+    <div>
+      <strong>=:</strong> Đúng X triệu đồng (VD: =20 = đúng 20 triệu) (VD: =0 =
+      Thỏa thuận)
+    </div>
+    <div>
+      <strong>x-y:</strong> Từ X đến Y triệu đồng (VD: 10-20 = từ 10 đến 20
+      triệu)
+    </div>
+  </div>
+);
+const DeadlineTooltipContent = () => (
+  <div className='w-full space-y-2 text-sm'>
+    Hạn nộp hồ sơ phải là một ngày trong tương lai
+  </div>
+);
 
 export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
   const { data: fieldDetailsData } = useGet<FieldDetail[]>('field-details', [
@@ -169,6 +214,9 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
             <FormItem>
               <FormLabel className='text-base font-medium'>
                 Hạn nộp hồ sơ<span className='text-destructive'>*</span>
+                <MyTooltip>
+                  <DeadlineTooltipContent />
+                </MyTooltip>
               </FormLabel>
               <FormControl>
                 <Input type='date' {...field} className='w-full' />
@@ -186,24 +234,17 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
           <FormItem>
             <FormLabel className='text-base font-medium'>
               Kinh nghiệm yêu cầu<span className='text-destructive'>*</span>
+              <MyTooltip>
+                <ExperienceTooltipContent />
+              </MyTooltip>
             </FormLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
-              <FormControl>
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Chọn số năm kinh nghiệm' />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value='Không yêu cầu'>Không yêu cầu</SelectItem>
-                <SelectItem value='Dưới 1 năm'>Dưới 1 năm</SelectItem>
-                <SelectItem value='1-2 năm'>1-2 năm</SelectItem>
-                <SelectItem value='2-3 năm'>2-3 năm</SelectItem>
-                <SelectItem value='3-5 năm'>3-5 năm</SelectItem>
-                <SelectItem value='5-7 năm'>5-7 năm</SelectItem>
-                <SelectItem value='7-10 năm'>7-10 năm</SelectItem>
-                <SelectItem value='Trên 10 năm'>Trên 10 năm</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className='grid grid-cols-1 items-center gap-4'>
+              <InputFieldWithType
+                name='experience'
+                control={form.control}
+                value={field.value}
+              />
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -240,14 +281,15 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
           <FormItem>
             <FormLabel className='text-base font-medium'>
               Mức lương mong muốn<span className='text-destructive'>*</span>{' '}
-              <span className='text-muted-foreground text-xs'>(VND)</span>
+              <MyTooltip>
+                <SalaryTooltipContent />
+              </MyTooltip>
             </FormLabel>
             <div className='grid grid-cols-1 items-center gap-4'>
-              <Input
-                type='text'
-                placeholder='8000000'
+              <InputFieldWithType
+                name='salary'
+                control={form.control}
                 value={field.value}
-                onChange={(e) => field.onChange(e.target.value)}
               />
             </div>
             <FormMessage />

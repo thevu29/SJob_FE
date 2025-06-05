@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type Control, useController } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import {
@@ -17,12 +17,14 @@ interface EnhancedFieldProps {
   name: string;
   control: Control<any>;
   placeholder?: string;
+  value?: string; // <-- NEW
 }
 
 export function InputFieldWithType({
   name,
   control,
-  placeholder
+  placeholder,
+  value
 }: EnhancedFieldProps) {
   const [operator, setOperator] = useState<OperatorType>('>=');
   const [value1, setValue1] = useState('');
@@ -33,7 +35,32 @@ export function InputFieldWithType({
     control
   });
 
-  // Update the form field value when operator or values change
+  // Parse value on mount or when value prop changes
+  setTimeout(() => {
+    if (!value) return;
+
+    let operator: OperatorType = '>=';
+    let val1 = '';
+    let val2 = '';
+    if (value.startsWith('>=')) {
+      operator = '>=';
+      val1 = value.slice(2);
+    } else if (value.startsWith('<=')) {
+      operator = '<=';
+      val1 = value.slice(2);
+    } else if (value.startsWith('=')) {
+      operator = '=';
+      val1 = value.slice(1);
+    } else if (value.includes('-')) {
+      operator = 'x-y';
+      [val1, val2] = value.split('-');
+    }
+
+    setOperator(operator);
+    setValue1(val1);
+    setValue2(val2);
+  }, 0);
+
   const updateFieldValue = (
     newOperator: OperatorType,
     newValue1: string,
@@ -87,7 +114,6 @@ export function InputFieldWithType({
           }
           className='flex-1'
         />
-
         {operator === 'x-y' && (
           <>
             <span className='text-muted-foreground flex items-center px-2'>
@@ -102,9 +128,6 @@ export function InputFieldWithType({
           </>
         )}
       </div>
-      {/* {field.value && (
-        <p className='text-muted-foreground text-sm'>Preview: {field.value}</p>
-      )} */}
     </div>
   );
 }
