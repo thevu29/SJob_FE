@@ -71,10 +71,15 @@ export function middleware(request: NextRequest) {
   }
 
   if (!token) {
+    if (isPublicPath) {
+      return NextResponse.next();
+    }
+
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
   }
+
   try {
     const decoded = jwtDecode<ICustomJwtPayload>(token);
     const role = getRole(decoded.realm_access.roles || []);

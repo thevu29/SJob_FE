@@ -224,7 +224,7 @@ export function JobCard({ job }: JobCardProps) {
         </Card>
       </Link>
       <div className='col-span-12 mt-[-60px] flex justify-end gap-2 p-4 md:col-span-3'>
-        {application ? (
+        {application && application.data ? (
           <Button
             className='bg-primary hover:bg-primary/80 flex-1 text-white sm:flex-none'
             disabled

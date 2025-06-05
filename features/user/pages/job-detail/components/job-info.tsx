@@ -160,7 +160,7 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
             </div>
 
             <div className='mt-4 flex w-full gap-2 sm:w-auto'>
-              {application ? (
+              {application && application.data ? (
                 <Button
                   className='bg-primary hover:bg-primary/80 flex-1 text-white sm:flex-none'
                   disabled

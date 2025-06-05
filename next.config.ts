@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'sjob-storage.s3.ap-southeast-1.amazonaws.com',
         port: ''
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: ''
       }
     ]
   },
