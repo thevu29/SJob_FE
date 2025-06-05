@@ -18,7 +18,7 @@ export default function CompanyInfo({ job }: CompanyInfoProps) {
           <div className='relative mb-4 h-24 w-24 overflow-hidden'>
             <Image
               src={job.recruiterImage || placeholder}
-              alt='1C Vietnam LLC'
+              alt={job.recruiterName}
               width={96}
               height={96}
               className='object-contain'
@@ -29,12 +29,14 @@ export default function CompanyInfo({ job }: CompanyInfoProps) {
           </Link>
 
           <div className='mt-4 w-full space-y-3'>
-            <div className='flex items-start gap-2 text-sm'>
-              <MapPin className='mt-0.5 h-4 w-4 shrink-0' />
-              <div className='text-left'>
-                <span>{job.recruiterAddress}</span>
+            {job.recruiterAddress && (
+              <div className='flex items-start gap-2 text-sm'>
+                <MapPin className='mt-0.5 h-4 w-4 shrink-0' />
+                <div className='text-left'>
+                  <span>{job.recruiterAddress}</span>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className='flex items-center gap-2 text-sm'>
               <Users className='h-4 w-4 shrink-0' />

@@ -24,10 +24,54 @@ import { FieldDetail } from '@/interfaces/field';
 import { JobType } from '@/interfaces/job';
 import { Combobox } from '@/components/common/combobox';
 import { InputFieldWithType } from '@/features/recruiter/components/common/input-field-with-type';
+import MyTooltip from '@/features/recruiter/components/common/tooltip';
 
 interface JobDescriptionSectionProps {
   form: UseFormReturn<TCreateJob>;
 }
+
+const ExperienceTooltipContent = () => (
+  <div className='w-full space-y-2 text-sm'>
+    <div>
+      <strong>[≤]:</strong> Dưới X năm kinh nghiệm (VD: ≤2 = dưới 2 năm)
+    </div>
+    <div>
+      <strong>[≥]:</strong> Ít nhất X năm kinh nghiệm (VD: ≥3 = ít nhất 3 năm)
+    </div>
+    <div>
+      <strong>[=]:</strong> Đúng X năm kinh nghiệm (VD: =5 = đúng 5 năm) (VD: =0
+      = Không yêu cầu kinh nghiệm)
+    </div>
+    <div>
+      <strong>[x-y]:</strong> Từ X đến Y năm kinh nghiệm (VD: 2-5 = từ 2 đến 5
+      năm)
+    </div>
+  </div>
+);
+
+const SalaryTooltipContent = () => (
+  <div className='w-full space-y-2 text-sm'>
+    <div>
+      <strong>≤:</strong> Dưới X triệu đồng (VD: ≤10 = dưới 10 triệu)
+    </div>
+    <div>
+      <strong>≥:</strong> Ít nhất X triệu đồng (VD: ≥15 = trên 15 triệu)
+    </div>
+    <div>
+      <strong>=:</strong> Đúng X triệu đồng (VD: =20 = đúng 20 triệu) (VD: =0 =
+      Thỏa thuận)
+    </div>
+    <div>
+      <strong>x-y:</strong> Từ X đến Y triệu đồng (VD: 10-20 = từ 10 đến 20
+      triệu)
+    </div>
+  </div>
+);
+const DeadlineTooltipContent = () => (
+  <div className='w-full space-y-2 text-sm'>
+    Hạn nộp hồ sơ phải là một ngày trong tương lai
+  </div>
+);
 
 export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
   const { data: fieldDetailsData } = useGet<FieldDetail[]>('field-details', [
@@ -166,14 +210,12 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
             <FormItem>
               <FormLabel className='text-base font-medium'>
                 Hạn nộp hồ sơ<span className='text-destructive'>*</span>
+                <MyTooltip>
+                  <DeadlineTooltipContent />
+                </MyTooltip>
               </FormLabel>
               <FormControl>
-                <Input
-                  type='date'
-                  {...field}
-                  // min={new Date().toISOString().split('T')[0]} // Set min date to today
-                  className='w-full'
-                />
+                <Input type='date' {...field} className='w-full' />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -189,14 +231,13 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
             <FormLabel className='text-base font-medium'>
               Kinh nghiệm yêu cầu
               <span className='text-destructive'>*</span>{' '}
+              <MyTooltip>
+                <ExperienceTooltipContent />
+              </MyTooltip>
             </FormLabel>
+
             <div className='grid grid-cols-1 items-center gap-4'>
               <InputFieldWithType name='experience' control={form.control} />
-              {/* <Input
-                type='text'
-                placeholder='8.000.000'
-                onChange={(e) => field.onChange(e.target.value)}
-              /> */}
             </div>
             <FormMessage />
           </FormItem>
@@ -233,8 +274,11 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className='text-base font-medium'>
-              Mức lương mong muốn<span className='text-destructive'>*</span>{' '}
-              <span className='text-muted-foreground text-xs'>(VND)</span>
+              Mức lương mong muốn
+              <span className='text-destructive'>*</span>{' '}
+              <MyTooltip>
+                <SalaryTooltipContent />
+              </MyTooltip>
             </FormLabel>
             <div className='grid grid-cols-1 items-center gap-4'>
               <InputFieldWithType name='salary' control={form.control} />

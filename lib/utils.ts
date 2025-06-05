@@ -119,8 +119,28 @@ export function formatCurrency(amount: number): string {
 }
 
 export const formatSalary = (salary: string) => {
-  if (salary === '0') return 'Thỏa thuận';
-  return `${salary}tr ₫/tháng`;
+  const trimmed = salary.trim();
+
+  if (/^=\d+$/.test(trimmed)) {
+    const salarys = trimmed.slice(1);
+    if (salarys === '0') return 'Thỏa thuận';
+    return `${salarys} tr ₫/tháng`;
+  }
+
+  if (/^>=\d+$/.test(trimmed)) {
+    const salarys = trimmed.slice(2);
+    return `Ít nhất ${salarys} tr ₫/tháng`;
+  }
+
+  if (/^<=\d+$/.test(trimmed)) {
+    const salarys = trimmed.slice(2);
+    return `Dưới ${salarys} tr ₫/tháng`;
+  }
+
+  if (/^\d+-\d+$/.test(trimmed)) {
+    return `${trimmed} tr ₫/tháng`;
+  }
+  return 'Không có mức lương';
 };
 
 export function formatExperience(exp: string) {
@@ -128,17 +148,18 @@ export function formatExperience(exp: string) {
 
   if (/^=\d+$/.test(trimmed)) {
     const years = trimmed.slice(1);
+    if (years === '0') return 'Không yêu cầu kinh nghiệm';
     return `${years} năm kinh nghiệm`;
   }
 
   if (/^>=\d+$/.test(trimmed)) {
     const years = trimmed.slice(2);
-    return `ít nhất ${years} năm kinh nghiệm`;
+    return `Ít nhất ${years} năm kinh nghiệm`;
   }
 
   if (/^<=\d+$/.test(trimmed)) {
     const years = trimmed.slice(2);
-    return `dưới ${years} năm kinh nghiệm`;
+    return `Dưới ${years} năm kinh nghiệm`;
   }
 
   if (/^\d+-\d+$/.test(trimmed)) {

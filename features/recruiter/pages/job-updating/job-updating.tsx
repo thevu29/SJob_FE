@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react';
@@ -20,6 +20,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { JobDescriptionSection } from '@/features/recruiter/pages/job-updating/components/job-description-section';
 import { FieldDetail } from '@/interfaces/field';
+import { LoadingPage } from '@/components/common/loading';
 
 export default function JobUpdatingForm() {
   const params = useParams();
@@ -28,15 +29,14 @@ export default function JobUpdatingForm() {
 
   const [openJobDescription, setOpenJobDescription] = useState(true);
 
-  const { data: jobData } = useGet<Job>('jobs/' + jobId, ['jobs', jobId]);
+  const { data: job, isPending: isJobPending } = useGet<Job>('jobs/' + jobId, [
+    'jobs',
+    jobId
+  ]);
 
-  const { data: fieldDetailData } = useGet<FieldDetail[]>(
-    '/field-details/jobs/' + jobId,
-    ['field-details', jobId]
-  );
-
-  const job = jobData?.data as Job;
-  const fieldDetails = fieldDetailData?.data[0] as FieldDetail;
+  const { data: fieldDetails, isPending: isFieldDetailPending } = useGet<
+    FieldDetail[]
+  >('/field-details/jobs/' + jobId, ['field-details', jobId]);
 
   const updateJobMutation = usePut<Job, TUpdateJob>(
     'jobs',
@@ -53,20 +53,49 @@ export default function JobUpdatingForm() {
 
   const form = useForm<TUpdateJob>({
     resolver: zodResolver(UpdateJobSchema),
-    values: {
-      name: job?.name || '',
-      description: job?.description || '',
-      salary: job?.salary || '',
-      requirement: job?.requirement || '',
-      benefit: job?.benefit || '',
-      deadline: job?.deadline || new Date().toISOString().split('T')[0], // 2015-03-25
-      slots: job?.slots || 1,
-      type: job?.type || 'FULL_TIME',
-      education: job?.education || 'Cử nhân',
-      experience: job?.experience || 'Không yêu cầu',
-      fieldDetails: fieldDetails?.id || ''
+    defaultValues: {
+      name: '',
+      description: '',
+      salary: '',
+      requirement: '',
+      benefit: '',
+      deadline: new Date()
+        .toLocaleDateString('en-GB')
+        .split('/')
+        .reverse()
+        .join('-'), // 2015-03-25
+      slots: 1,
+      type: 'FULL_TIME',
+      education: 'Cử nhân',
+      experience: '',
+      fieldDetails: ''
     }
   });
+
+  useEffect(() => {
+    if (job && job.data && fieldDetails && fieldDetails.data) {
+      const jobResponse = job.data;
+      const fieldDetailsResponse = fieldDetails.data;
+      form.reset({
+        name: jobResponse.name || '',
+        description: jobResponse.description || '',
+        salary: jobResponse.salary || '',
+        requirement: jobResponse.requirement || '',
+        benefit: jobResponse.benefit || '',
+        deadline: new Date(jobResponse.deadline)
+          .toLocaleDateString('en-GB')
+          .split('/')
+          .reverse()
+          .join('-'),
+        slots: jobResponse.slots || 1,
+        type: jobResponse.type || 'FULL_TIME',
+        education: jobResponse.education || 'Cử nhân',
+        experience: jobResponse.experience || '',
+        fieldDetails: fieldDetailsResponse[0].id
+      });
+      console.log(form.getValues());
+    }
+  }, [job, form]);
 
   async function onSubmit(values: TUpdateJob) {
     try {
@@ -91,6 +120,10 @@ export default function JobUpdatingForm() {
     setOpenJobDescription(!openJobDescription);
   };
 
+  if (isJobPending || isFieldDetailPending) {
+    return <LoadingPage text='Đang tải dữ liệu' />;
+  }
+
   return (
     <div className='mx-auto max-w-4xl'>
       <Form {...form}>
@@ -99,7 +132,7 @@ export default function JobUpdatingForm() {
             <CardHeader className='flex flex-row items-center gap-2 pb-2'>
               <Pencil className='text-muted-foreground h-5 w-5' />
               <CardTitle className='text-2xl font-bold'>
-                Đăng Tin Tuyển Dụng
+                Sửa Tin Tuyển Dụng
               </CardTitle>
             </CardHeader>
             <CardContent>
