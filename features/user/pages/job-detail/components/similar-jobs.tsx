@@ -6,6 +6,8 @@ import { FieldDetail } from '@/interfaces';
 import { useGetPaginatedPublic } from '@/hooks';
 import { Job } from '@/interfaces/job';
 import qs from 'qs';
+import { formatSalary } from '@/lib/utils';
+import { ROUTES } from '@/constants/routes';
 
 interface SimilarJob {
   id: string;
@@ -37,41 +39,6 @@ export default function SimilarJobs({ fieldDetails }: SimilarJobsProps) {
         qs.stringify(params, { arrayFormat: 'repeat' })
     }
   );
-  const similarJobs: SimilarJob[] = [
-    {
-      id: '1',
-      title: 'Nhân Viên Kinh Doanh',
-      company: 'Công Ty TNHH Rich Media',
-      logo: '',
-      salary: '10tr-30tr đ/tháng',
-      location: 'Hà Nội'
-    },
-    {
-      id: '2',
-      title: 'Chuyên Viên Kinh Doanh',
-      company: 'Stavian Group',
-      logo: '',
-      salary: '$ 500-2,000 /tháng',
-      location: 'Hà Nội, Hưng Yên'
-    },
-    {
-      id: '3',
-      title: 'Nhân Viên Kinh Doanh',
-      company: 'Công Ty Cổ Phần Vật Tư Chăn Nuôi',
-      logo: '',
-      salary: 'Tới 40,000 đ/tháng',
-      location: 'Hà Nội'
-    },
-    {
-      id: '4',
-      title: 'Chuyên Viên Kinh Doanh',
-      company: 'Công Ty Cổ Phần Xuất Nhập Khẩu',
-      logo: '',
-      salary: 'Thương lượng',
-      location: 'Hà Nội'
-    }
-  ];
-
   return (
     <Card>
       <CardHeader className='pb-3'>
@@ -83,7 +50,7 @@ export default function SimilarJobs({ fieldDetails }: SimilarJobsProps) {
           data.data.map((job) => (
             <Link
               key={job.id}
-              href='#'
+              href={ROUTES.JOBSEEKER.JOBS.DETAIL(job.id)}
               className='hover:bg-muted flex gap-3 rounded-md p-3 transition-colors'
             >
               <div className='shrink-0'>
@@ -101,7 +68,7 @@ export default function SimilarJobs({ fieldDetails }: SimilarJobsProps) {
                   {job.recruiterName}
                 </p>
                 <p className='text-primary mt-1 text-xs font-medium'>
-                  {job.salary}
+                  {formatSalary(job.salary)}
                 </p>
                 <p className='text-muted-foreground text-xs'>
                   {job.recruiterAddress}

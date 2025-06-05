@@ -1,6 +1,6 @@
 import { FieldDetail } from '@/interfaces';
 import { JobType, JobStatus, Job } from '@/interfaces/job';
-import { formatSalary } from '@/lib/utils';
+import { formatExperience, formatSalary } from '@/lib/utils';
 import {
   Calendar,
   Clock,
@@ -71,7 +71,7 @@ export const generateJobDetails = (job: Job, fieldDetails: FieldDetail[]) => {
     },
     {
       label: 'KINH NGHIỆM',
-      value: job.experience || 'Không yêu cầu',
+      value: formatExperience(job.experience),
       icon: <UserCircle className='h-4 w-4' />
     },
     // {
