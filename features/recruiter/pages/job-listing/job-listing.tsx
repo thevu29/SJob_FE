@@ -7,8 +7,10 @@ import { useGetPaginated } from '@/hooks/use-queries';
 import { DataTable as JobTable } from '@/components/ui/table/data-table';
 
 import { columns } from './components/tables/columns';
+import { useGetCurrentUser } from '@/hooks';
 
 export default function JobListingPage() {
+  const { data: user } = useGetCurrentUser();
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get('page') || '1');
@@ -18,13 +20,13 @@ export default function JobListingPage() {
   const status = searchParams.get('status') || '';
   const sortBy = searchParams.get('sortBy') || 'date';
   const direction = searchParams.get('direction') || 'DESC';
-  const recruiterId = searchParams.get('recruiterId') || '';
+  const recruiterId = user?.data?.id ?? '';
 
   const { data } = useGetPaginated<Job>(
     'jobs',
     currentPage,
     pageSize,
-    ['jobs', query, recruiterId, type, status, sortBy, direction],
+    ['jobs', query, type, status, sortBy, direction],
     {
       params: {
         ...(query && { query }),

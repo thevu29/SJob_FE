@@ -41,7 +41,7 @@ export function Header() {
               <li>
                 <Link
                   href={ROUTES.RECRUITER.JOBS.LIST}
-                  className='hover:opacity-90 flex items-center px-4 py-1'
+                  className='flex items-center px-4 py-1 hover:opacity-90'
                 >
                   Việc Làm
                 </Link>
@@ -49,7 +49,7 @@ export function Header() {
               <li>
                 <Link
                   href={ROUTES.RECRUITER.JOBSEEKER.INVITATION_LISTING}
-                  className='hover:opacity-90 flex items-center px-4 py-1'
+                  className='flex items-center px-4 py-1 hover:opacity-90'
                 >
                   Ứng viên
                 </Link>
@@ -65,12 +65,12 @@ export function Header() {
             >
               <Link href={ROUTES.RECRUITER.JOBS.CREATE}>Đăng Tuyển Dụng</Link>
             </Button>
-            <Button
+            {/* <Button
               className='bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs'
               asChild
             >
               <Link href={ROUTES.RECRUITER.JOBSEEKER.SEARCH}>Tìm Ứng Viên</Link>
-            </Button>
+            </Button> */}
           </div>
           <div className='flex items-center space-x-4'>
             {showUserDropdown ? (

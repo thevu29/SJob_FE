@@ -19,15 +19,16 @@ import { toast } from 'sonner';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
+import { useGetCurrentUser } from '@/hooks';
 
 export default function JobPostingForm() {
-  const recruiterId = '68144e36647b71355acf11d1';
+  const { data: user } = useGetCurrentUser();
 
   const [openJobDescription, setOpenJobDescription] = useState(true);
   const router = useRouter();
 
   const createJobMutation = usePost<Job, TCreateJob>(
-    'jobs/recruiters/' + recruiterId,
+    'jobs/recruiters/' + user?.data?.id,
     {
       onSuccess: () => {
         toast.success('Đăng tin tuyển dụng thành công!');
@@ -48,15 +49,20 @@ export default function JobPostingForm() {
       salary: '',
       requirement: '',
       benefit: '',
-      deadline: new Date().toISOString().split('T')[0], // 2015-03-25
+      deadline: new Date()
+        .toLocaleDateString('en-GB')
+        .split('/')
+        .reverse()
+        .join('-'), // 2015-03-25
       slots: 1,
       type: 'FULL_TIME',
       education: 'Cử nhân',
-      experience: 'Không yêu cầu'
+      experience: ''
     }
   });
 
   async function onSubmit(values: TCreateJob) {
+    // console.log(values);
     try {
       const payload = {
         ...values,

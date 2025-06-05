@@ -4,7 +4,12 @@ import { ArrowUpDown } from 'lucide-react';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
-import { formatDate, shortenName } from '@/lib/utils';
+import {
+  formatDate,
+  formatExperience,
+  formatSalary,
+  shortenName
+} from '@/lib/utils';
 
 import { CellAction } from './cell-action';
 import { Job, JobStatus, JobType } from '@/interfaces/job';
@@ -27,8 +32,9 @@ export const columns: ColumnDef<Job>[] = [
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
-    }
+    },
     // header: 'Mức lương'
+    cell: ({ row }) => formatSalary(row.original.salary)
   },
   {
     accessorKey: 'deadline',
@@ -61,7 +67,8 @@ export const columns: ColumnDef<Job>[] = [
   },
   {
     accessorKey: 'experience',
-    header: 'Kinh nghiệm'
+    header: 'Kinh nghiệm',
+    cell: ({ row }) => formatExperience(row.original.experience)
   },
   {
     accessorKey: 'status',

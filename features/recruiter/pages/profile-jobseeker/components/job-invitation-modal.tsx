@@ -41,6 +41,8 @@ import { useGet, usePost } from '@/hooks/use-queries';
 import { Invitation } from '@/interfaces/invitation';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { Textarea } from '@/components/ui/textarea';
+import { useGetCurrentUser } from '@/hooks';
 
 const defaultContent = `Dear [Tên ứng viên],
 
@@ -50,19 +52,23 @@ Vui lòng nộp đơn ứng tuyển của bạn thông qua trang web SJob kèm t
 `;
 
 export function JobInvitationModal() {
+  const { data: user } = useGetCurrentUser();
   const params = useParams();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [charCount, setCharCount] = useState(0);
   const editorRef = useRef<RichEditorRef>(null);
 
-  const recruiterId = '68144e36647b71355acf11d1';
   const jobSeekerId = params.jobSeekerId as string;
 
-  const { data: jobData } = useGet<Job[]>('jobs/recruiters/' + recruiterId, [
-    'jobs/recruiters/',
-    recruiterId
-  ]);
+  const { data: jobData } = useGet<Job[]>(
+    'jobs/recruiters/' + user?.data?.id,
+    ['jobs/recruiters/', user?.data?.id ?? ''],
+    undefined,
+    {
+      enabled: !!user?.data?.id
+    }
+  );
 
   const jobSeekerData = queryClient.getQueryData<{ data: JobSeeker }>([
     'job-seekers',
@@ -97,20 +103,21 @@ export function JobInvitationModal() {
   };
 
   async function onSubmit(data: TCreateInvitation) {
-    if (editorRef.current) {
-      const decodedContent = editorRef.current.getDecodedContent();
-      const payload = {
-        jobId: data.jobId,
-        jobName: getJobNameById(data.jobId),
-        recruiterId: recruiterId,
-        jobSeekerId: jobSeeker?.id as string,
-        jobSeekerName: jobSeeker?.name as string,
-        message: decodedContent
-      };
+    // if (editorRef.current) {
+    //   const decodedContent = editorRef.current.getDecodedContent();
 
-      await createInvitationMutation.mutateAsync(payload);
-      form.reset();
-    }
+    // }
+    const payload = {
+      jobId: data.jobId,
+      jobName: getJobNameById(data.jobId),
+      recruiterId: user?.data?.id,
+      jobSeekerId: jobSeeker?.id as string,
+      jobSeekerName: jobSeeker?.name as string,
+      message: data.message
+    };
+
+    await createInvitationMutation.mutateAsync(payload);
+    form.reset();
 
     setOpen(false);
   }
@@ -186,10 +193,14 @@ export function JobInvitationModal() {
                       <span className='text-red-500'>*</span>
                     </FormLabel>
                     <FormControl>
-                      <RichEditor
+                      {/* <RichEditor
                         ref={editorRef}
                         value={field.value}
                         onChange={handleEditorChange}
+                      /> */}
+                      <Textarea
+                        className='min-h-[100px] resize-none'
+                        {...field}
                       />
                     </FormControl>
                     <div className='text-muted-foreground text-right text-sm'>

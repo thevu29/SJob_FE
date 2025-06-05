@@ -4,8 +4,10 @@ import { useGetPaginated } from '@/hooks/use-queries';
 import { Invitation } from '@/interfaces/invitation';
 import { columns } from '@/features/recruiter/pages/invitation-listing/components/tables/columns';
 import { DataTable as InvitationTable } from '@/components/ui/table/data-table';
+import { useGetCurrentUser } from '@/hooks';
 
 export default function InvitationListingPage() {
+  const { data: user } = useGetCurrentUser();
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get('page') || '1');
@@ -14,7 +16,7 @@ export default function InvitationListingPage() {
   const status = searchParams.get('status') || '';
   const sortBy = searchParams.get('sortBy') || 'date';
   const direction = searchParams.get('direction') || 'DESC';
-  const recruiterId = searchParams.get('recruiterId') || '';
+  const recruiterId = user?.data?.id ?? '';
 
   const { data } = useGetPaginated<Invitation>(
     'invitations',
