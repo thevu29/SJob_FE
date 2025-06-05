@@ -18,19 +18,20 @@ import {
   FormLabel
 } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
-
-const formSchema = z.object({
-  jobMatches: z.boolean().default(true),
-  system: z.boolean().default(false),
-  jobInvitations: z.boolean().default(true),
-  jobApplications: z.boolean().default(true),
-  savedJobs: z.boolean().default(false),
-  expiringJobs: z.boolean().default(true),
-  profileViews: z.boolean().default(true),
-  applicationViews: z.boolean().default(true),
-  followedCompanies: z.boolean().default(true),
-  recruitmentMessages: z.boolean().default(true)
-});
+import { useGet, useGetCurrentUser, usePut } from '@/hooks';
+import {
+  IUpdateNotificationPreferencesData,
+  NotificationPreferences
+} from '@/interfaces/notification';
+import {
+  TUpdateNotificationPreferencesSchema,
+  UpdateNotificationPreferencesSchema
+} from '@/features/user/schemas/notification.schema';
+import { useEffect } from 'react';
+import { DialogDescription } from '@radix-ui/react-dialog';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import { Loader2 } from 'lucide-react';
 
 interface EmailNotificationsProps {
   open: boolean;
@@ -41,23 +42,62 @@ export function EmailNotifications({
   open,
   onOpenChange
 }: EmailNotificationsProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { data: user } = useGetCurrentUser();
+  const userId = user?.data && 'userId' in user.data ? user.data.userId : '';
+  const { data: preferences, refetch } = useGet<NotificationPreferences>(
+    `notification-preferences/${userId}`,
+    ['notification-preferences', userId],
+    undefined,
+    { enabled: !!userId }
+  );
+  const updateNotificationPreferencesMutation = usePut<
+    NotificationPreferences,
+    IUpdateNotificationPreferencesData & { id: string }
+  >(
+    'notification-preferences',
+    {
+      onSuccess: () => {
+        toast.success('Cập nhật cài đặt thông báo thành công!');
+      },
+      onError: (error: AxiosError) => {
+        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+      }
+    },
+    ['notification-preferences']
+  );
+
+  const form = useForm<TUpdateNotificationPreferencesSchema>({
+    resolver: zodResolver(UpdateNotificationPreferencesSchema),
     defaultValues: {
-      jobMatches: true,
-      system: false,
       jobInvitations: true,
-      jobApplications: true,
-      savedJobs: false,
-      expiringJobs: true,
-      profileViews: true,
-      applicationViews: true,
-      followedCompanies: true,
-      recruitmentMessages: true
+      jobApplications: true
+      // expiringJobs: true,
     }
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  useEffect(() => {
+    if (preferences && preferences.data) {
+      const preferencesResponse = preferences.data;
+      form.reset({
+        jobApplications:
+          preferencesResponse.enabledNotificationTypes['JOB_APPLICATION'],
+        jobInvitations:
+          preferencesResponse.enabledNotificationTypes['JOB_INVITATION']
+      });
+    }
+  }, [preferences, form]);
+
+  async function onSubmit(values: TUpdateNotificationPreferencesSchema) {
+    if (updateNotificationPreferencesMutation.isPending) return;
+    const payload = {
+      id: userId,
+      notificationTypeUpdates: {
+        JOB_INVITATION: values.jobInvitations,
+        JOB_APPLICATION: values.jobApplications
+      }
+    };
+    await updateNotificationPreferencesMutation.mutateAsync(payload);
+    // refetch();
     onOpenChange(false);
   }
 
@@ -66,45 +106,10 @@ export function EmailNotifications({
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>Cài đặt thông báo qua Email</DialogTitle>
+          <DialogDescription className='sr-only' />
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-            <FormField
-              control={form.control}
-              name='jobMatches'
-              render={({ field }) => (
-                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3'>
-                  <div className='space-y-0.5'>
-                    <FormLabel>
-                      Email thông báo việc làm phù hợp nhất với bạn
-                    </FormLabel>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='system'
-              render={({ field }) => (
-                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3'>
-                  <div className='space-y-0.5'>
-                    <FormLabel>Email thông báo hệ thống</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name='jobInvitations'
@@ -143,7 +148,7 @@ export function EmailNotifications({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name='expiringJobs'
               render={({ field }) => (
@@ -161,7 +166,7 @@ export function EmailNotifications({
                   </FormControl>
                 </FormItem>
               )}
-            />
+            /> */}
 
             <div className='flex justify-end gap-2 pt-4'>
               <Button
@@ -171,7 +176,15 @@ export function EmailNotifications({
               >
                 Đóng
               </Button>
-              <Button type='submit'>Cập nhật</Button>
+              <Button
+                type='submit'
+                disabled={updateNotificationPreferencesMutation.isPending}
+              >
+                {updateNotificationPreferencesMutation.isPending && (
+                  <Loader2 className='animate-spin' />
+                )}
+                Cập nhật
+              </Button>
             </div>
           </form>
         </Form>
