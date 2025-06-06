@@ -3,7 +3,7 @@ import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton
 import JobListing from '@/features/user/components/common/job-listing';
 import { useGetPaginated } from '@/hooks';
 import { JobSeeker, Recruiter, User } from '@/interfaces';
-import { SavedJob } from '@/interfaces/job';
+import { Application } from '@/interfaces/application';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
@@ -19,7 +19,7 @@ export default function AppliedJobsListing({ user }: AppliedJobsListingProps) {
 
   const jobSeekerId = user ? user.id : '';
 
-  const { data, isLoading } = useGetPaginated<SavedJob>(
+  const { data, isLoading } = useGetPaginated<Application>(
     'applications',
     currentPage,
     pageSize,

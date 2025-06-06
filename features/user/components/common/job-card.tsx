@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ISavedJobData, Job, SavedJob, ViewedJob } from '@/interfaces/job';
 import placeholder from '@/public/placeholder.jpg';
 import {
+  formatApplicationStatus,
   formatExperience,
   formatRelativeDate,
   formatSalary,
@@ -26,13 +27,18 @@ import { useState } from 'react';
 import { JobApplicationModal } from '@/features/user/components/common/job-application';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Application, IHasAppliedJobData } from '@/interfaces/application';
+import {
+  Application,
+  ApplicationStatus,
+  IHasAppliedJobData
+} from '@/interfaces/application';
 
 interface JobCardProps {
   job: Job;
+  status?: string;
 }
 
-export function JobCard({ job }: JobCardProps) {
+export function JobCard({ job, status = '' }: JobCardProps) {
   const router = useRouter();
 
   const { getAccessToken } = useAuthToken();
@@ -195,8 +201,15 @@ export function JobCard({ job }: JobCardProps) {
                     />
                   </div>
                   <div className='min-w-0 flex-1'>
-                    <h3 className='mb-1 line-clamp-2 text-lg font-semibold'>
+                    <h3 className='mb-1 line-clamp-2 flex items-center text-lg font-semibold'>
                       {job.name}
+                      {status && status != '' && (
+                        <Badge className={`ml-2`}>
+                          {formatApplicationStatus(
+                            status as keyof typeof ApplicationStatus
+                          )}
+                        </Badge>
+                      )}
                     </h3>
                     <p className='text-muted-foreground mb-2 text-sm'>
                       {job.recruiterName}

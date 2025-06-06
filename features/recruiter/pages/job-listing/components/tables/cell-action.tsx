@@ -3,7 +3,14 @@
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import { Eye, MoreHorizontal, Pencil, Sparkles, Trash } from 'lucide-react';
+import {
+  Eye,
+  FileText,
+  MoreHorizontal,
+  Pencil,
+  Sparkles,
+  Trash
+} from 'lucide-react';
 
 import { useDelete } from '@/hooks/use-queries';
 import { AlertModal } from '@/components/modal/alert-modal';
@@ -95,6 +102,14 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           >
             <Sparkles className='mr-2 h-4 w-4 text-indigo-500' />
             <p className='text-indigo-500'>Gợi ý ứng viên</p>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(`/recruiter-dashboard/job/${data.id}/applications`);
+            }}
+          >
+            <FileText className='mr-2 h-4 w-4 text-amber-500' />
+            <p className='text-amber-500'>Xem đơn ứng tuyển</p>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setShowDetail(true)}>
             <Eye className='mr-2 h-4 w-4 text-gray-700' />
