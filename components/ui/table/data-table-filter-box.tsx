@@ -28,6 +28,7 @@ interface FilterOption {
 }
 
 interface FilterBoxProps {
+  filterKey: string;
   title: string;
   options: FilterOption[];
   setFilterValue: (
