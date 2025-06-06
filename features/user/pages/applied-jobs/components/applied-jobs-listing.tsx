@@ -1,11 +1,12 @@
 'use client';
-import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
-import JobListing from '@/features/user/components/common/job-listing';
-import { useGetPaginated } from '@/hooks';
-import { JobSeeker, Recruiter, User } from '@/interfaces';
-import { SavedJob } from '@/interfaces/job';
-import { useSearchParams } from 'next/navigation';
+
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
+
+import { useGetPaginated } from '@/hooks';
+import type { Application, JobSeeker, Recruiter, User } from '@/interfaces';
+import JobListing from '@/features/user/components/common/job-listing';
+import JobCardSkeleton from '@/features/user/components/common/job-card-skeleton';
 
 interface AppliedJobsListingProps {
   user: User | JobSeeker | Recruiter;
@@ -19,7 +20,7 @@ export default function AppliedJobsListing({ user }: AppliedJobsListingProps) {
 
   const jobSeekerId = user ? user.id : '';
 
-  const { data, isLoading } = useGetPaginated<SavedJob>(
+  const { data: applications, isLoading } = useGetPaginated<Application>(
     'applications',
     currentPage,
     pageSize,
@@ -34,11 +35,11 @@ export default function AppliedJobsListing({ user }: AppliedJobsListingProps) {
     ? Array(3)
         .fill(0)
         .map((_, index) => <JobCardSkeleton key={index} />)
-    : data && data.data && (
+    : applications && applications.data && (
         <JobListing
-          jobs={data.data}
+          data={applications.data}
           currentPage={currentPage}
-          totalPages={data.meta.totalPages as number}
+          totalPages={applications.meta.totalPages}
         />
       );
 }

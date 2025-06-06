@@ -23,9 +23,10 @@ export default function JobsSearch() {
   const fieldDetailIds = originalFieldDetailIds
     ? originalFieldDetailIds.split(',').filter((id) => id.trim() !== '')
     : [];
+
   const isBrowser = () => typeof window !== 'undefined';
 
-  const { data: JobsData, isLoading } = useGetPaginatedPublic<Job>(
+  const { data: jobsData, isLoading } = useGetPaginatedPublic<Job>(
     'jobs',
     currentPage,
     pageSize,
@@ -66,12 +67,12 @@ export default function JobsSearch() {
             ? Array(10)
                 .fill(0)
                 .map((_, index) => <JobCardSkeleton key={index} />)
-            : JobsData &&
-              JobsData.data && (
+            : jobsData &&
+              jobsData.data && (
                 <JobListing
-                  jobs={JobsData.data}
+                  data={jobsData.data}
                   currentPage={currentPage}
-                  totalPages={JobsData.meta.totalPages as number}
+                  totalPages={jobsData.meta.totalPages as number}
                 />
               )}
         </div>

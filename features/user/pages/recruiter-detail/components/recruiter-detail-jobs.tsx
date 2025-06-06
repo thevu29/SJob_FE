@@ -20,7 +20,7 @@ export default function RecruiterDetailJobs({
   const currentPage = Number(searchParams.get('page') || '1');
   const pageSize = Number(searchParams.get('limit') || '10');
 
-  const { data, isLoading } = useGetPaginatedPublic<Job>(
+  const { data: jobs, isLoading } = useGetPaginatedPublic<Job>(
     'jobs',
     currentPage,
     pageSize,
@@ -45,12 +45,12 @@ export default function RecruiterDetailJobs({
                 ? Array(3)
                     .fill(0)
                     .map((_, index) => <JobCardSkeleton key={index} />)
-                : data &&
-                  data.data && (
+                : jobs &&
+                  jobs.data && (
                     <JobListing
-                      jobs={data.data}
+                      data={jobs.data}
                       currentPage={currentPage}
-                      totalPages={data.meta.totalPages as number}
+                      totalPages={jobs.meta.totalPages}
                     />
                   )}
             </div>

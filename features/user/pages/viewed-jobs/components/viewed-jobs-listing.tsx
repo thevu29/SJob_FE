@@ -19,7 +19,7 @@ export default function ViewedJobsListing({ user }: ViewedJobsListingProps) {
 
   const jobSeekerId = user ? user.id : '';
 
-  const { data, isLoading } = useGetPaginated<SavedJob>(
+  const { data: viewedJobs, isLoading } = useGetPaginated<SavedJob>(
     'viewed-jobs',
     currentPage,
     pageSize,
@@ -34,11 +34,11 @@ export default function ViewedJobsListing({ user }: ViewedJobsListingProps) {
     ? Array(3)
         .fill(0)
         .map((_, index) => <JobCardSkeleton key={index} />)
-    : data && data.data && (
+    : viewedJobs && viewedJobs.data && (
         <JobListing
-          jobs={data.data}
+          data={viewedJobs.data}
           currentPage={currentPage}
-          totalPages={data.meta.totalPages as number}
+          totalPages={viewedJobs.meta.totalPages as number}
         />
       );
 }

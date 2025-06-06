@@ -2,12 +2,11 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { Job } from '@/interfaces/job';
-import { useGetPaginated } from '@/hooks/use-queries';
+import type { Job } from '@/interfaces';
+import { useGetCurrentUser, useGetPaginated } from '@/hooks';
 import { DataTable as JobTable } from '@/components/ui/table/data-table';
 
 import { columns } from './components/tables/columns';
-import { useGetCurrentUser } from '@/hooks';
 
 export default function JobListingPage() {
   const { data: user } = useGetCurrentUser();
@@ -20,13 +19,13 @@ export default function JobListingPage() {
   const status = searchParams.get('status') || '';
   const sortBy = searchParams.get('sortBy') || 'date';
   const direction = searchParams.get('direction') || 'DESC';
-  const recruiterId = user?.data?.id ?? '';
+  const recruiterId = user?.data.id;
 
-  const { data } = useGetPaginated<Job>(
+  const { data: jobs } = useGetPaginated<Job>(
     'jobs',
     currentPage,
     pageSize,
-    ['jobs', query, type, status, sortBy, direction],
+    ['recruiter-jobs', query, type, status, sortBy, direction],
     {
       params: {
         ...(query && { query }),
@@ -36,19 +35,20 @@ export default function JobListingPage() {
         ...(sortBy && { sortBy }),
         ...(direction && { direction })
       }
+    },
+    {
+      enabled: !!recruiterId
     }
   );
 
-  const formattedData =
-    data?.data.map((job) => ({
-      ...job
-    })) || [];
-
   return (
-    <JobTable
-      columns={columns}
-      data={formattedData || []}
-      totalItems={data?.meta.totalElements || 0}
-    />
+    jobs &&
+    jobs.data && (
+      <JobTable
+        columns={columns}
+        data={jobs.data}
+        totalItems={jobs.meta.totalElements || 0}
+      />
+    )
   );
 }

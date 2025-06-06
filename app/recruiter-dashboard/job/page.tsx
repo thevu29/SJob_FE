@@ -26,11 +26,7 @@ export default async function Page(props: pageProps) {
     <PageContainer scrollable={false}>
       <div className='bg-background flex flex-1 flex-col space-y-4 overflow-auto rounded-sm p-4 md:rounded-lg md:p-6'>
         <div className='flex w-full items-start justify-between'>
-          <Heading
-            title='Quản lý các công việc đã đăng tuyển'
-            description=''
-            // description='Quản lý các công việc đã đăng tuyển'
-          />
+          <Heading title='Quản lý các công việc đã đăng tuyển' description='' />
         </div>
         <Separator />
         <JobTableAction />

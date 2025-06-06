@@ -1,25 +1,24 @@
 'use client';
 
+import { toast } from 'sonner';
 import { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronDown, ChevronUp, Pencil } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form } from '@/components/ui/form';
-import { JobDescriptionSection } from '@/features/recruiter/pages/job-posting/components/job-description-section';
+import type { Job } from '@/interfaces';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/constants/routes';
+import { usePost, useGetCurrentUser } from '@/hooks';
 import {
   CreateJobSchema,
   TCreateJob
 } from '@/features/recruiter/schemas/job.schema';
-import { usePost } from '@/hooks/use-queries';
-import { Job } from '@/interfaces/job';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/constants/routes';
-import { useGetCurrentUser } from '@/hooks';
+import { Form } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { JobDescriptionSection } from '@/features/recruiter/pages/job-posting/components/job-description-section';
 
 export default function JobPostingForm() {
   const { data: user } = useGetCurrentUser();
@@ -32,12 +31,13 @@ export default function JobPostingForm() {
     {
       onSuccess: () => {
         toast.success('Đăng tin tuyển dụng thành công!');
-        form.reset(); // Reset form after successful submission
+        form.reset();
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
       }
-    }
+    },
+    ['recruiter-jobs']
   );
 
   const form = useForm<TCreateJob>({
@@ -66,7 +66,9 @@ export default function JobPostingForm() {
         ...values,
         fieldDetails: [values.fieldDetails]
       };
+
       await createJobMutation.mutateAsync(payload as any);
+
       form.reset();
       router.push(ROUTES.RECRUITER.JOBS.LIST);
     } catch (error) {
