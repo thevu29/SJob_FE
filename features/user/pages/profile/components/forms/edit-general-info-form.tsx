@@ -28,6 +28,7 @@ import {
   UpdateJobSeekerSchema
 } from '@/features/user/schemas/job-seeker.schema';
 import { useState } from 'react';
+import { shortenName } from '@/lib/utils';
 
 interface EditGeneralInfoFormProps {
   jobSeeker: JobSeeker;
@@ -52,7 +53,7 @@ export function EditGeneralInfoForm({
       image: '',
       gender: jobSeeker.gender || false,
       address: jobSeeker.address || '',
-      about: jobSeeker.about || '',
+      about: jobSeeker.about || ''
     }
   });
 
@@ -81,22 +82,19 @@ export function EditGeneralInfoForm({
           onSubmit={form.handleSubmit(handleSubmit)}
           className='mt-4 space-y-4'
         >
-          <div className='mb-4 flex items-center gap-4'>
-            <FormField
-              control={form.control}
-              name='image'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <Avatar className='h-20 w-20'>
-                    <AvatarImage src={previewImage} alt='Profile' />
-                    <AvatarFallback>
-                      {form
-                        .getValues('name')
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')}
-                    </AvatarFallback>
-                  </Avatar>
+          <FormField
+            control={form.control}
+            name='image'
+            render={({ field }) => (
+              <FormItem>
+                <div className='mb-4 flex flex-col justify-center items-center gap-4'>
+                    <Avatar className='h-20 w-20'>
+                      <AvatarImage src={previewImage} alt='Profile' />
+                      <AvatarFallback>
+                        {shortenName(jobSeeker.name)}
+                      </AvatarFallback>
+                    </Avatar>
+
                   <FormControl>
                     <Input
                       type='file'
@@ -106,7 +104,6 @@ export function EditGeneralInfoForm({
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          // and get a URL back
                           field.onChange(file);
                           setFile(file);
                         }
@@ -117,6 +114,7 @@ export function EditGeneralInfoForm({
                     type='button'
                     variant='outline'
                     size='sm'
+                    className='w-fit'
                     onClick={() =>
                       document.getElementById('profile-image')?.click()
                     }
@@ -124,10 +122,10 @@ export function EditGeneralInfoForm({
                     Thay đổi ảnh
                   </Button>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                </div>
+              </FormItem>
+            )}
+          />
 
           <div className='grid grid-cols-1 gap-4'>
             <FormField
@@ -196,10 +194,7 @@ export function EditGeneralInfoForm({
               <FormItem>
                 <FormLabel>Ngành nghề</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder='Nhập ngành nghề của bạn'
-                    {...field}
-                  />
+                  <Input placeholder='Nhập ngành nghề của bạn' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

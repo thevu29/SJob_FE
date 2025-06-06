@@ -11,10 +11,8 @@ import {
   CheckCircle
 } from 'lucide-react';
 
-import type { JobSeeker, Recruiter, User } from '@/interfaces';
-import { useDelete, usePut, usePutFormData } from '@/hooks/use-queries';
-import { AlertModal } from '@/components/modal/alert-modal';
-import { Button } from '@/components/ui/button';
+import type { Recruiter, User } from '@/interfaces';
+import { useDelete, usePut, usePutFormData } from '@/hooks';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +20,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { AlertModal } from '@/components/modal/alert-modal';
 
 interface CellActionProps {
   data: Recruiter;
@@ -38,11 +38,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     'users/activate',
     {
       onSuccess: () => {
-        toast.success('Activate nhà tuyển dụng thành công');
+        toast.success('Kích hoạt tài khoản nhà tuyển dụng thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['recruiters']
@@ -52,11 +51,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     'users/block',
     {
       onSuccess: () => {
-        toast.success('Block nhà tuyển dụng thành công');
+        toast.success('Chặn tài khoản nhà tuyển dụng thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['recruiters']
@@ -70,7 +68,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['recruiters']
@@ -87,7 +84,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['recruiters']
@@ -109,7 +105,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         });
       }
     } catch (error) {
-      console.error(error);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -132,7 +128,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
 
           <DropdownMenuItem
             onClick={() => {
@@ -141,7 +137,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             }}
           >
             <LockKeyholeOpen className='mr-2 h-4 w-4' color='#3b82f6' />
-            <p className='text-[#3b82f6]'>Activate</p>
+            <p className='text-[#3b82f6]'>Kích hoạt</p>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
@@ -150,7 +146,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             }}
           >
             <LockKeyhole color='#fbbf24' className='mr-2 h-4 w-4' />
-            <p className='text-[#fbbf24]'>Block</p>
+            <p className='text-[#fbbf24]'>Chặn</p>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {

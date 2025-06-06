@@ -41,12 +41,8 @@ export function Sidebar() {
   const updateJobSeekerMutation = usePatchFormData<JobSeeker>(
     'job-seekers',
     {
-      onSuccess: () => {
-        // toast.success('Cập nhật thông tin hồ sơ thành công!');
-      },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     jobSeeker?.id ? ['job-seekers', jobSeeker.id] : []

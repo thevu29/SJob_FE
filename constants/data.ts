@@ -31,5 +31,13 @@ export const navItems: NavItem[] = [
         shortcut: ['o', 'o']
       }
     ]
+  },
+  {
+    title: 'Báo cáo',
+    url: '/dashboard/report',
+    icon: 'report',
+    isActive: false,
+    shortcut: ['t', 't'],
+    items: []
   }
 ];

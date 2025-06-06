@@ -41,7 +41,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['jobs']
@@ -54,7 +53,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         await deleteMutation.mutateAsync(data.id);
       }
     } catch (error) {
-      console.error(error);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại');
     } finally {
       setLoading(false);
       setOpen(false);

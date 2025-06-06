@@ -114,7 +114,7 @@ export function DataTableFilterBox({
         <Command>
           <CommandInput placeholder={title} />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>Không có kết quả</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
                 <CommandItem
@@ -125,11 +125,14 @@ export function DataTableFilterBox({
                     className={cn(
                       'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-xs border',
                       selectedValuesSet.has(option.value)
-                        ? 'bg-primary text-primary-foreground'
+                        ? 'bg-primary text-white'
                         : 'opacity-50 [&_svg]:invisible'
                     )}
                   >
-                    <CheckIcon className='h-4 w-4' aria-hidden='true' />
+                    <CheckIcon
+                      className='h-4 w-4 text-white'
+                      aria-hidden='true'
+                    />
                   </div>
                   {option.icon && (
                     <option.icon
@@ -149,7 +152,7 @@ export function DataTableFilterBox({
                     onSelect={resetFilter}
                     className='justify-center text-center'
                   >
-                    Clear filters
+                    Xóa lọc
                   </CommandItem>
                 </CommandGroup>
               </>

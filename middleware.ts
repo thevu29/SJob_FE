@@ -93,7 +93,6 @@ export function middleware(request: NextRequest) {
     }
 
     if (role === UserRole.RECRUITER) {
-      console.log(' recruiter');
       if (isRecruiterPath) {
         return NextResponse.next();
       } else {

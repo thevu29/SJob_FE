@@ -31,7 +31,6 @@ export function GeneralInfoCard({ jobSeeker }: GeneralInfoCardProps) {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['job-seekers', jobSeeker?.id ?? '']

@@ -64,7 +64,6 @@ export default function AdminForm() {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Failed to create admin:', error);
       }
     },
     ['admins']

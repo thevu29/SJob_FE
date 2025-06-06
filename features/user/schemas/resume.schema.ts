@@ -36,4 +36,5 @@ export const UpdateResumeSchema = z.object({
     }),
   main: z.boolean().optional()
 });
+
 export type TUpdateResume = z.infer<typeof UpdateResumeSchema>;

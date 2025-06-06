@@ -56,7 +56,6 @@ export function EditExperienceForm({
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['experiences/job-seeker', jobSeekerId]
