@@ -70,7 +70,7 @@ export function EmailNotifications({
     resolver: zodResolver(UpdateNotificationPreferencesSchema),
     defaultValues: {
       jobInvitations: true,
-      jobApplications: true
+      applicationStatus: true
       // expiringJobs: true,
     }
   });
@@ -79,8 +79,8 @@ export function EmailNotifications({
     if (preferences && preferences.data) {
       const preferencesResponse = preferences.data;
       form.reset({
-        jobApplications:
-          preferencesResponse.enabledNotificationTypes['JOB_APPLICATION'],
+        applicationStatus:
+          preferencesResponse.enabledNotificationTypes['APPLICATION_STATUS'],
         jobInvitations:
           preferencesResponse.enabledNotificationTypes['JOB_INVITATION']
       });
@@ -93,7 +93,7 @@ export function EmailNotifications({
       id: userId,
       notificationTypeUpdates: {
         JOB_INVITATION: values.jobInvitations,
-        JOB_APPLICATION: values.jobApplications
+        APPLICATION_STATUS: values.applicationStatus
       }
     };
     await updateNotificationPreferencesMutation.mutateAsync(payload);
@@ -131,12 +131,12 @@ export function EmailNotifications({
             />
             <FormField
               control={form.control}
-              name='jobApplications'
+              name='applicationStatus'
               render={({ field }) => (
                 <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3'>
                   <div className='space-y-0.5'>
                     <FormLabel>
-                      Email thông báo nộp đơn ứng tuyển công việc
+                      Email thông báo cập nhật trạng thái đơn ứng tuyển
                     </FormLabel>
                   </div>
                   <FormControl>
