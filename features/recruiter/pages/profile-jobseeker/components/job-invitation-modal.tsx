@@ -1,15 +1,14 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { ChevronDown } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useGetCurrentUser, useGet, usePost } from '@/hooks';
+import { useGetCurrentUser, usePost, useGetPaginated } from '@/hooks';
 import type { JobSeeker, Job, Invitation } from '@/interfaces';
 import {
   Dialog,
@@ -25,19 +24,13 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import {
   CreateInvitationSchema,
   TCreateInvitation
 } from '@/features/recruiter/schemas/invitation.schema';
+import { Combobox } from '@/components/common/combobox';
 
 const defaultContent = `Dear [Tên ứng viên],
 
@@ -51,27 +44,66 @@ export default function JobInvitationModal() {
 
   const { data: user } = useGetCurrentUser();
 
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
+  const [jobsOptions, setJobsOptions] = useState<
+    Array<{ value: string; label: string }>
+  >([]);
   const [open, setOpen] = useState(false);
   const [charCount, setCharCount] = useState(defaultContent.length);
 
   const jobSeekerId = params.jobSeekerId as string;
 
-  const { data: jobData } = useGet<Job[]>(
-    'jobs/recruiters/' + user?.data?.id,
-    ['jobs/recruiters/', user?.data?.id ?? ''],
-    undefined,
+  const { data: jobs, isLoading } = useGetPaginated<Job>(
+    'jobs',
+    page,
+    10,
+    ['jobs', user?.data.id ?? ''],
     {
-      enabled: !!user?.data?.id
+      params: {
+        recruiterId: user && user.data.id,
+        ...(query && { query })
+      }
+    },
+    {
+      enabled: !!user?.data.id
     }
   );
+
+  const hasMoreExercises =
+    jobs && jobs.meta ? page < jobs.meta.totalPages : false;
 
   const jobSeekerData = queryClient.getQueryData<{ data: JobSeeker }>([
     'job-seekers',
     jobSeekerId
   ]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [query]);
+
+  useEffect(() => {
+    if (jobs) {
+      const options = jobs.data.map((job) => ({
+        value: job.id,
+        label: job.name
+      }));
+
+      setJobsOptions((prev) => (page === 1 ? options : [...prev, ...options]));
+    }
+  }, [jobs, page]);
+
+  const handleSearchJobs = async (query: string) => {
+    setQuery(query);
+  };
+
+  const handleLoadMoreJobs = async () => {
+    if (jobs && jobs.meta && page < jobs.meta.totalPages) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
   const jobSeeker = jobSeekerData?.data as JobSeeker;
-  const jobs = jobData?.data as Job[];
 
   const createInvitationMutation = usePost<Invitation>('invitations', {
     onSuccess: () => {
@@ -92,7 +124,7 @@ export default function JobInvitationModal() {
   });
 
   const getJobNameById = (id: string): string | undefined => {
-    const job = jobs.find((job) => job.id === id);
+    const job = jobs && jobs.data.find((job) => job.id === id);
     return job?.name;
   };
 
@@ -140,25 +172,19 @@ export default function JobInvitationModal() {
                       Chọn công việc để gửi lời mời{' '}
                       <span className='text-red-500'>*</span>
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className='w-full'>
-                          <SelectValue placeholder='Chọn công việc tại đây' />
-                          <ChevronDown className='h-4 w-4 opacity-50' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {jobs &&
-                          jobs.map((job) => (
-                            <SelectItem key={job.id} value={job.id}>
-                              {job.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Combobox
+                        enableServerSideSearch
+                        options={jobsOptions}
+                        field={field}
+                        placeholder='Chọn việc làm'
+                        searchPlaceholder='Tìm kiếm việc làm...'
+                        onSearch={handleSearchJobs}
+                        onLoadMore={handleLoadMoreJobs}
+                        isLoading={isLoading}
+                        hasMore={hasMoreExercises}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

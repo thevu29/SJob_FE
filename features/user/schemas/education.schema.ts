@@ -34,13 +34,17 @@ export const UpdateEducationSchema = z
     endDate: z.string().optional()
   })
   .refine(
-    (data) =>
-      data.startDate !== undefined &&
-      data.endDate !== undefined &&
-      new Date(data.endDate) > new Date(data.startDate),
+    (data) => {
+      if (!data.endDate) return true;
+
+      data.startDate &&
+        data.endDate &&
+        new Date(data.endDate) > new Date(data.startDate);
+    },
     {
       message: 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
       path: ['endDate']
     }
   );
+
 export type TUpdateEducation = z.infer<typeof UpdateEducationSchema>;

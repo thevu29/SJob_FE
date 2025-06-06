@@ -15,7 +15,6 @@ type ResumeCardProps = {
 export default function ResumeCard({ resumes = [] }: ResumeCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  // Filter to only show main resumes
   const mainResumes = resumes.filter((resume) => resume.main);
 
   return (

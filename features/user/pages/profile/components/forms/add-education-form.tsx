@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -142,25 +141,24 @@ export function AddEducationForm({
               )}
             />
 
-            {!isStudying && (
-              <FormField
-                control={form.control}
-                name='endDate'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ngày kết thúc</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='month'
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name='endDate'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ngày kết thúc</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isStudying}
+                      type='month'
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <div className='flex items-center space-x-2 pt-2'>
             <Checkbox

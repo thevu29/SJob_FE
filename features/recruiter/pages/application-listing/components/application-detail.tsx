@@ -94,16 +94,20 @@ export function ApplicationDetail({
               <h4 className='text-muted-foreground text-sm font-medium'>
                 Hồ sơ đính kèm
               </h4>
-              <Link href={application.resumeUrl} target='_blank'>
-                {application.resumeUrl}
+              <Link
+                href={application.resumeUrl}
+                className='text-blue-500'
+                target='_blank'
+              >
+                CV
               </Link>
             </div>
 
             <div className='space-y-2'>
               <h4 className='text-muted-foreground text-sm font-medium'>
-                Thư ứng tuyển
+                Lời nhắn từ ứng viên:
               </h4>
-              <div className='bg-muted/50 rounded-lg p-4'>
+              <div className='bg-muted/50 rounded-lg p-4 border'>
                 <p className='break-words whitespace-pre-wrap'>
                   {application.message}
                 </p>

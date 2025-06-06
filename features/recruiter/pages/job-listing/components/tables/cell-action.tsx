@@ -23,9 +23,10 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Job, JobStatus } from '@/interfaces/job';
-import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/constants/routes';
 import { JobDetail } from '@/features/recruiter/pages/job-listing/components/job-detail';
+import Link from 'next/link';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface CellActionProps {
   data: Job;
@@ -35,6 +36,7 @@ type ActionMode = 'delete' | null;
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [actionMode, setActionMode] = useState<ActionMode>(null);
@@ -66,6 +68,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       setOpen(false);
     }
   };
+
   const onEdit = () => {
     router.push(ROUTES.RECRUITER.JOBS.EDIT(data.id));
   };
@@ -92,24 +95,18 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuLabel>Hành động</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => {
-              router.push(
-                `/recruiter-dashboard/job-seeker/suggested/${data.id}`
-              );
-            }}
-          >
-            <Sparkles className='mr-2 h-4 w-4 text-indigo-500' />
-            <p className='text-indigo-500'>Gợi ý ứng viên</p>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
-              router.push(`/recruiter-dashboard/job/${data.id}/applications`);
-            }}
-          >
-            <FileText className='mr-2 h-4 w-4 text-amber-500' />
-            <p className='text-amber-500'>Xem đơn ứng tuyển</p>
-          </DropdownMenuItem>
+          <Link href={`/recruiter-dashboard/job-seeker/suggested/${data.id}`}>
+            <DropdownMenuItem>
+              <Sparkles className='mr-2 h-4 w-4 text-indigo-500' />
+              <p className='text-indigo-500'>Gợi ý ứng viên</p>
+            </DropdownMenuItem>
+          </Link>
+          <Link href={`/recruiter-dashboard/job/${data.id}/applications`}>
+            <DropdownMenuItem>
+              <FileText className='mr-2 h-4 w-4 text-amber-500' />
+              <p className='text-amber-500'>Xem đơn ứng tuyển</p>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem onClick={() => setShowDetail(true)}>
             <Eye className='mr-2 h-4 w-4 text-gray-700' />
             <p className='text-gray-700'>Xem chi tiết</p>

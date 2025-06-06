@@ -76,9 +76,6 @@ export function ProfileCompletionCard({
                     {getIcon(section.completed)}
                     <span>{section.name}</span>
                   </div>
-                  {/* <span className='text-muted-foreground text-sm'>
-                    {section.weight}
-                  </span> */}
                 </div>
               ))}
             </div>

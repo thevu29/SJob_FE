@@ -57,10 +57,10 @@ export const columns: ColumnDef<Application>[] = [
     cell: ({ row }) => (
       <Link
         href={row.original.resumeUrl}
-        className='block w-48 truncate'
+        className='block w-48 truncate text-blue-500'
         target='_blank'
       >
-        {row.original.resumeUrl}
+        CV
       </Link>
     )
   },

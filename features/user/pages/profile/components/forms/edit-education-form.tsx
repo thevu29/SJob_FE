@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -24,6 +23,8 @@ import { formatToYearMonth } from '@/lib/utils';
 import { usePatch } from '@/hooks/use-queries';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useState } from 'react';
 
 interface EditEducationFormProps {
   education: Education;
@@ -36,6 +37,8 @@ export function EditEducationForm({
   jobSeekerId,
   onClose
 }: EditEducationFormProps) {
+  const [isStudying, setIsStudying] = useState(false);
+
   const updateEducationMutation = usePatch<Education>(
     'educations',
     {
@@ -64,7 +67,8 @@ export function EditEducationForm({
   async function onSubmit(values: TUpdateEducation) {
     const payload = {
       ...values,
-      id: education.id
+      id: education.id,
+      endDate: isStudying ? null : values.endDate
     };
     await updateEducationMutation.mutateAsync(payload);
     onClose();
@@ -148,8 +152,10 @@ export function EditEducationForm({
                   <FormLabel>Ngày kết thúc</FormLabel>
                   <FormControl>
                     <Input
-                      type='month'
                       {...field}
+                      disabled={isStudying}
+                      value={isStudying ? '' : field.value}
+                      type='month'
                       placeholder='Để trống nếu đang học'
                     />
                   </FormControl>
@@ -157,6 +163,24 @@ export function EditEducationForm({
                 </FormItem>
               )}
             />
+          </div>
+          <div className='flex items-center space-x-2 pt-2'>
+            <Checkbox
+              id='studying'
+              checked={isStudying}
+              onCheckedChange={(checked: boolean) => {
+                setIsStudying(checked);
+                if (checked) {
+                  form.setValue('endDate', undefined);
+                }
+              }}
+            />
+            <label
+              htmlFor='studying'
+              className='text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            >
+              Đang học
+            </label>
           </div>
 
           <FormField
