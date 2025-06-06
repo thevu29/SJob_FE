@@ -1,6 +1,8 @@
+'use client';
 import { Notification } from '@/interfaces/notification';
 import { cn } from '@/lib/utils';
 import { DropdownMenuItem } from '@radix-ui/react-dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 interface NotificationItemProps {
   notification: Notification;
@@ -11,12 +13,15 @@ export function NotificationItem({
   notification,
   onRead
 }: NotificationItemProps) {
+  const router = useRouter();
   const handleClick = () => {
     if (!notification.read) {
       onRead(notification.id);
     }
     // Navigate to the notification URL if needed
-    // router.push(notification.url);
+    if (notification.url != '') {
+      router.push(notification.url);
+    }
   };
 
   // Format date

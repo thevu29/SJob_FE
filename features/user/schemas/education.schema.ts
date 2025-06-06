@@ -9,13 +9,13 @@ export const CreateEducationSchema = z
     startDate: z
       .string()
       .min(1, { message: 'Ngày bắt đầu không được để trống' }),
-    endDate: z.string().min(1, { message: 'Ngày kết thúc không được để trống' })
+    endDate: z.string().nullable()
   })
   .refine(
-    (data) =>
-      data.startDate !== undefined &&
-      data.endDate !== undefined &&
-      new Date(data.endDate) > new Date(data.startDate),
+    (data) => {
+      if (!data.endDate) return true;
+      return new Date(data.endDate) > new Date(data.startDate);
+    },
     {
       message: 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
       path: ['endDate']

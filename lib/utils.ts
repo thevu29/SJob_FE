@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { ApplicationStatus } from '@/interfaces/application';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -178,4 +179,10 @@ export const isExpired = (date: string) => {
   const currentDate = new Date();
   const deadline = new Date(date);
   return deadline < currentDate;
+};
+
+export const formatApplicationStatus = (
+  status: keyof typeof ApplicationStatus
+) => {
+  return ApplicationStatus[status];
 };

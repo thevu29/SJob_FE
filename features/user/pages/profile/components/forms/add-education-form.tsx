@@ -23,6 +23,8 @@ import { usePost } from '@/hooks/use-queries';
 import { Education } from '@/interfaces/education';
 import { toast } from 'sonner';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface AddEducationFormProps {
   jobSeekerId: string;
@@ -33,6 +35,8 @@ export function AddEducationForm({
   onClose,
   jobSeekerId
 }: AddEducationFormProps) {
+  const [isStudying, setIsStudying] = useState(false);
+
   const createEducationMutation = usePost<Education>(
     'educations',
     {
@@ -61,7 +65,8 @@ export function AddEducationForm({
   async function onSubmit(values: TCreateEducation) {
     const payload = {
       ...values,
-      jobSeekerId: jobSeekerId
+      jobSeekerId: jobSeekerId,
+      endDate: isStudying ? null : values.endDate
     };
     await createEducationMutation.mutateAsync(payload);
     onClose();
@@ -137,23 +142,43 @@ export function AddEducationForm({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name='endDate'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ngày kết thúc</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='month'
-                      {...field}
-                      placeholder='Để trống nếu đang học'
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            {!isStudying && (
+              <FormField
+                control={form.control}
+                name='endDate'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Ngày kết thúc</FormLabel>
+                    <FormControl>
+                      <Input
+                        type='month'
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+          </div>
+          <div className='flex items-center space-x-2 pt-2'>
+            <Checkbox
+              id='studying'
+              checked={isStudying}
+              onCheckedChange={(checked: boolean) => {
+                setIsStudying(checked);
+                if (checked) {
+                  form.setValue('endDate', null);
+                }
+              }}
             />
+            <label
+              htmlFor='studying'
+              className='text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            >
+              Đang học
+            </label>
           </div>
 
           <FormField
