@@ -1,6 +1,4 @@
-import Link from 'next/link';
 import { Suspense } from 'react';
-import { Plus } from 'lucide-react';
 import { SearchParams } from 'nuqs/server';
 
 import { Heading } from '@/components/ui/heading';

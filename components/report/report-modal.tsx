@@ -89,7 +89,6 @@ export function ReportModal({
   };
 
   const onSubmit = (data: ReportFormData) => {
-    console.log('🚀 ~ onSubmit ~ data:', data);
     const payload: ICreateReportData = {
       ...data
     };
