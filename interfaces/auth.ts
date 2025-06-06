@@ -52,3 +52,9 @@ export interface IResetPasswordData {
   email: string;
   password: string;
 }
+
+export interface IChangePasswordData {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+}

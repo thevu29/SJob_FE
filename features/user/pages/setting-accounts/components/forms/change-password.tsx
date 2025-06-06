@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -21,18 +21,23 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useGetCurrentUser, usePut } from '@/hooks';
+import { IChangePasswordData, User } from '@/interfaces';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
-const formSchema = z
+const changePasswordFormSchema = z
   .object({
-    currentPassword: z
-      .string()
-      .min(1, { message: 'Mật khẩu hiện tại là bắt buộc' }),
+    currentPassword: z.string().nonempty({ message: 'Hãy nhập mật khẩu' }),
+    // .min(1, { message: 'Mật khẩu hiện tại là bắt buộc' }),
     newPassword: z
       .string()
+      .nonempty({ message: 'Hãy nhập mật khẩu' })
       .min(8, { message: 'Mật khẩu phải có ít nhất 8 ký tự' }),
     confirmPassword: z
       .string()
-      .min(1, { message: 'Xác nhận mật khẩu là bắt buộc' })
+      .nonempty({ message: 'Hãy nhập mật khẩu' })
+      .min(8, { message: 'Mật khẩu phải có ít nhất 8 kí tự' })
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: 'Mật khẩu xác nhận không khớp',
@@ -48,9 +53,23 @@ export function ChangePassword({ open, onOpenChange }: ChangePasswordProps) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { data: user } = useGetCurrentUser();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const changePasswordMutation = usePut<User, IChangePasswordData>(
+    'users/change-password',
+    {
+      onSuccess: () => {
+        toast.success('Thay đổi mật khẩu thành công');
+      },
+      onError: (error: AxiosError) => {
+        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
+      }
+    }
+    // ['admins']
+  );
+
+  const form = useForm<z.infer<typeof changePasswordFormSchema>>({
+    resolver: zodResolver(changePasswordFormSchema),
     defaultValues: {
       currentPassword: '',
       newPassword: '',
@@ -58,9 +77,18 @@ export function ChangePassword({ open, onOpenChange }: ChangePasswordProps) {
     }
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    onOpenChange(false);
-    form.reset();
+  async function onSubmit(values: z.infer<typeof changePasswordFormSchema>) {
+    if (changePasswordMutation.isPending) return;
+    if (user && user.data) {
+      const payload: IChangePasswordData = {
+        email: user.data.email,
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword
+      };
+      await changePasswordMutation.mutateAsync(payload);
+      onOpenChange(false);
+      form.reset();
+    }
   }
 
   return (
@@ -185,7 +213,12 @@ export function ChangePassword({ open, onOpenChange }: ChangePasswordProps) {
               >
                 Hủy
               </Button>
-              <Button type='submit'>Lưu</Button>
+              <Button type='submit' disabled={changePasswordMutation.isPending}>
+                {changePasswordMutation.isPending && (
+                  <Loader2 className='animate-spin' />
+                )}
+                Lưu
+              </Button>
             </div>
           </form>
         </Form>

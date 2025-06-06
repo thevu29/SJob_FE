@@ -22,3 +22,13 @@ export interface Notification {
   read: boolean;
   createdAt: string;
 }
+
+export interface NotificationPreferences {
+  id: string;
+  userId: string;
+  enabledNotificationTypes: Record<string, boolean>;
+}
+
+export interface IUpdateNotificationPreferencesData {
+  notificationTypeUpdates: Record<string, boolean>;
+}

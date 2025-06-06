@@ -100,7 +100,7 @@ export function EducationCard({
                           'en-US',
                           { month: 'numeric', year: 'numeric' }
                         )
-                      : 'Present'}
+                      : 'Hiện tại'}
                   </p>
                 </div>
 
