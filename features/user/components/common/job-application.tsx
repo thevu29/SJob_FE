@@ -1,12 +1,18 @@
 'use client';
 
-import type React from 'react';
-
+import { toast } from 'sonner';
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, FileText, Trash2, Loader2 } from 'lucide-react';
-import { Job } from '@/interfaces/job';
+
+import { useGet, usePostFormData } from '@/hooks';
+import type { User, JobSeeker, Job, Application, Resume } from '@/interfaces';
+import {
+  CreateApplicationSchema,
+  TCreateApplication
+} from '@/features/user/schemas/application.schema';
 import {
   Dialog,
   DialogContent,
@@ -22,34 +28,26 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import type { Resume } from '@/interfaces/resume';
-import { useGet, usePostFormData } from '@/hooks';
-import { User, JobSeeker, Recruiter } from '@/interfaces';
-import {
-  CreateApplicationSchema,
-  TCreateApplication
-} from '@/features/user/schemas/application.schema';
-import { Application } from '@/interfaces/application';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
 
 interface JobApplicationModalProps {
   job: Job;
   user: User | JobSeeker;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  refetchGetApplication: () => void;
 }
 
 export function JobApplicationModal({
   job,
   user,
   open,
-  onOpenChange
+  onOpenChange,
+  refetchGetApplication
 }: JobApplicationModalProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -65,7 +63,6 @@ export function JobApplicationModal({
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Failed to create applications:', error);
       }
     }
   );
@@ -98,8 +95,10 @@ export function JobApplicationModal({
     } else if (data.resumeType === 'new' && data.resumeFile) {
       submitData.resumeFile = data.resumeFile;
     }
+
     await apply(submitData as any);
     onOpenChange(false);
+    refetchGetApplication();
   };
 
   const handleDeleteFile = () => {

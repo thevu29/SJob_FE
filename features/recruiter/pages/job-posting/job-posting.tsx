@@ -36,7 +36,6 @@ export default function JobPostingForm() {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Error creating job:', error);
       }
     }
   );
@@ -62,7 +61,6 @@ export default function JobPostingForm() {
   });
 
   async function onSubmit(values: TCreateJob) {
-    // console.log(values);
     try {
       const payload = {
         ...values,
@@ -72,7 +70,7 @@ export default function JobPostingForm() {
       form.reset();
       router.push(ROUTES.RECRUITER.JOBS.LIST);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại');
     }
   }
 

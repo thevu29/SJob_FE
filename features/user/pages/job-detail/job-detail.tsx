@@ -1,12 +1,12 @@
 'use client';
 
+import { useParams } from 'next/navigation';
+
+import { useGetPublic } from '@/hooks';
+import type { FieldDetail, Job } from '@/interfaces';
+import JobInfo from '@/features/user/pages/job-detail/components/job-info';
 import CompanyInfo from '@/features/user/pages/job-detail/components/company-info';
 import SimilarJobs from '@/features/user/pages/job-detail/components/similar-jobs';
-import { useParams } from 'next/navigation';
-import { Job } from '@/interfaces/job';
-import { useGetPublic } from '@/hooks/use-queries';
-import JobInfo from '@/features/user/pages/job-detail/components/job-info';
-import { FieldDetail } from '@/interfaces';
 
 export default function JobDetailPage() {
   const params = useParams();
@@ -32,7 +32,10 @@ export default function JobDetailPage() {
             <div className='space-y-6'>
               {job && job.data && <CompanyInfo job={job.data} />}
               {fieldDetails && fieldDetails.data && (
-                <SimilarJobs fieldDetails={fieldDetails.data} />
+                <SimilarJobs
+                  currentJobId={jobId}
+                  fieldDetails={fieldDetails.data}
+                />
               )}
             </div>
           </div>

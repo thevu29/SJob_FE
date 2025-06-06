@@ -1,14 +1,10 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { generateJobDetails } from '@/features/user/pages/job-detail/utils/generate-job-details';
-import { ISavedJobData, Job, SavedJob, ViewedJob } from '@/interfaces/job';
-import { formatSalary, getExpirationMessage, isExpired } from '@/lib/utils';
-import { Bookmark, Clock } from 'lucide-react';
-import DOMPurify from 'isomorphic-dompurify';
-import { useState } from 'react';
-import { JobApplicationModal } from '@/features/user/components/common/job-application';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
+import DOMPurify from 'isomorphic-dompurify';
+import { Bookmark, Clock, TriangleAlert } from 'lucide-react';
+
 import {
   useAuthToken,
   useDelete,
@@ -16,10 +12,20 @@ import {
   useGetCurrentUser,
   usePost
 } from '@/hooks';
+import type {
+  FieldDetail,
+  Application,
+  ISavedJobData,
+  Job,
+  SavedJob
+} from '@/interfaces';
+import { formatSalary, getExpirationMessage, isExpired } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import { Application } from '@/interfaces/application';
-import { AxiosError } from 'axios';
-import { FieldDetail } from '@/interfaces';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { JobApplicationModal } from '@/features/user/components/common/job-application';
+import { generateJobDetails } from '@/features/user/pages/job-detail/utils/generate-job-details';
+import { ReportModal } from '@/components/report/report-modal';
 
 interface JobInfoProps {
   job: Job;
@@ -36,6 +42,7 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
   const details = generateJobDetails(job, fieldDetails);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const { data: application, refetch: refetchGetApplication } =
     useGet<Application>(
@@ -92,7 +99,6 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Failed to saved job:', error);
       }
     },
     ['saved-jobs', job.id]
@@ -107,7 +113,6 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
         },
         onError: (error: AxiosError) => {
           toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-          console.error('Failed to unSaved job:', error);
         }
       },
       ['saved-jobs', job.id]
@@ -144,7 +149,18 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
       <Card>
         <CardContent className='space-y-4'>
           <div className='space-y-4'>
-            <h1 className='text-2xl font-bold md:text-3xl'>{job.name}</h1>
+            <div className='flex items-center justify-between'>
+              <h1 className='text-2xl font-bold md:text-3xl'>{job.name}</h1>
+              {accessToken && (
+                <Button
+                  variant='ghost'
+                  title='Báo cáo việc làm'
+                  onClick={() => setIsReportModalOpen(true)}
+                >
+                  <TriangleAlert className='text-red-500' />
+                </Button>
+              )}
+            </div>
 
             <div className='flex flex-col gap-3 sm:flex-row sm:items-center'>
               <div className='text-color-5 flex items-center text-lg font-semibold'>
@@ -245,14 +261,23 @@ export default function JobInfo({ job, fieldDetails }: JobInfoProps) {
           </div>
         </CardContent>
       </Card>
+
       {user && user.data && isModalOpen && (
         <JobApplicationModal
           job={job}
           user={user.data}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
+          refetchGetApplication={refetchGetApplication}
         />
       )}
+
+      <ReportModal
+        reportdUser='recruiter'
+        reportedId={job.recruiterId}
+        open={isReportModalOpen}
+        onOpenChange={setIsReportModalOpen}
+      />
     </>
   );
 }

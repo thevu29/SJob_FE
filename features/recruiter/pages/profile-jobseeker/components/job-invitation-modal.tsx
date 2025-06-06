@@ -1,16 +1,22 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronDown } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { useGetCurrentUser, useGet, usePost } from '@/hooks';
+import type { JobSeeker, Job, Invitation } from '@/interfaces';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -26,38 +32,27 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import RichEditor, {
-  type RichEditorRef
-} from '@/components/common/rich-editor';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   CreateInvitationSchema,
   TCreateInvitation
 } from '@/features/recruiter/schemas/invitation.schema';
-import { useParams } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
-import { JobSeeker } from '@/interfaces';
-import { Job } from '@/interfaces/job';
-import { useGet, usePost } from '@/hooks/use-queries';
-import { Invitation } from '@/interfaces/invitation';
-import { toast } from 'sonner';
-import { AxiosError } from 'axios';
-import { Textarea } from '@/components/ui/textarea';
-import { useGetCurrentUser } from '@/hooks';
 
 const defaultContent = `Dear [Tên ứng viên],
 
 Chúng tôi rất vui mừng được mời bạn ứng tuyển vào vị trí [Tên vị trí] tại SJob Service. Nền tảng và kỹ năng ấn tượng của bạn đã thu hút sự chú ý của chúng tôi và chúng tôi tin rằng bạn có thể là một nhân tố tiềm năng cho đội ngũ của chúng tôi.
 
-Vui lòng nộp đơn ứng tuyển của bạn thông qua trang web SJob kèm theo CV của bạn trước ngày [Ngày/tháng].
-`;
+Vui lòng nộp đơn ứng tuyển của bạn thông qua trang web SJob kèm theo CV của bạn trước ngày [Ngày/tháng].`;
 
-export function JobInvitationModal() {
-  const { data: user } = useGetCurrentUser();
+export default function JobInvitationModal() {
   const params = useParams();
   const queryClient = useQueryClient();
+
+  const { data: user } = useGetCurrentUser();
+
   const [open, setOpen] = useState(false);
-  const [charCount, setCharCount] = useState(0);
-  const editorRef = useRef<RichEditorRef>(null);
+  const [charCount, setCharCount] = useState(defaultContent.length);
 
   const jobSeekerId = params.jobSeekerId as string;
 
@@ -84,7 +79,6 @@ export function JobInvitationModal() {
     },
     onError: (error: AxiosError) => {
       toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-      console.error('Failed to create invitation:', error);
       setOpen(false);
     }
   });
@@ -102,11 +96,7 @@ export function JobInvitationModal() {
     return job?.name;
   };
 
-  async function onSubmit(data: TCreateInvitation) {
-    // if (editorRef.current) {
-    //   const decodedContent = editorRef.current.getDecodedContent();
-
-    // }
+  const onSubmit = async (data: TCreateInvitation) => {
     const payload = {
       jobId: data.jobId,
       jobName: getJobNameById(data.jobId),
@@ -120,12 +110,6 @@ export function JobInvitationModal() {
     form.reset();
 
     setOpen(false);
-  }
-
-  const handleEditorChange = (content: string, editor: any) => {
-    form.setValue('message', content);
-    const textContent = editor.getContent({ format: 'text' });
-    setCharCount(textContent.length);
   };
 
   return (
@@ -173,16 +157,12 @@ export function JobInvitationModal() {
                               {job.name}
                             </SelectItem>
                           ))}
-                        {/* <SelectItem value='test-n'>Test N</SelectItem>
-                        <SelectItem value='developer'>Developer</SelectItem>
-                        <SelectItem value='designer'>Designer</SelectItem> */}
                       </SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name='message'
@@ -193,14 +173,13 @@ export function JobInvitationModal() {
                       <span className='text-red-500'>*</span>
                     </FormLabel>
                     <FormControl>
-                      {/* <RichEditor
-                        ref={editorRef}
-                        value={field.value}
-                        onChange={handleEditorChange}
-                      /> */}
                       <Textarea
-                        className='min-h-[100px] resize-none'
                         {...field}
+                        className='min-h-[100px] resize-none'
+                        onChange={(e) => {
+                          field.onChange(e);
+                          setCharCount(e.target.value.length);
+                        }}
                       />
                     </FormControl>
                     <div className='text-muted-foreground text-right text-sm'>
@@ -210,7 +189,6 @@ export function JobInvitationModal() {
                   </FormItem>
                 )}
               />
-
               <div className='flex justify-end gap-2 pt-4'>
                 <Button
                   type='button'

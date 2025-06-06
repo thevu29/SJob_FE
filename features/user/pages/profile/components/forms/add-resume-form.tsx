@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -42,7 +41,7 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
     'resumes',
     {
       onSuccess: () => {
-        toast.success('Thêm mới hồ sơ thành công');
+        toast.success('Thêm mới CV thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
@@ -50,6 +49,7 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
     },
     ['resumes/job-seeker', jobSeekerId]
   );
+
   const form = useForm<TCreateResume>({
     resolver: zodResolver(CreateResumeSchema),
     defaultValues: {
@@ -65,6 +65,7 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
       name: fileName,
       jobSeekerId: jobSeekerId
     };
+
     await createResumeMutation.mutateAsync(payload as any);
     setFile(null);
     onClose();
@@ -73,7 +74,7 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Thêm hồ sơ</DialogTitle>
+        <DialogTitle>Thêm CV</DialogTitle>
       </DialogHeader>
 
       <Form {...form}>
@@ -83,10 +84,10 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
             name='name'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tên hồ sơ</FormLabel>
+                <FormLabel>Tên CV</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder='Tên hồ sơ hiển thị cho nhà tuyển dụng'
+                    placeholder='Tên CV hiển thị cho nhà tuyển dụng'
                     disabled={true}
                     {...field}
                     value={fileName}
@@ -105,7 +106,7 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
             name='file'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tải lên hồ sơ</FormLabel>
+                <FormLabel>Tải lên CV</FormLabel>
                 <FormControl>
                   <Input
                     type='file'
@@ -136,9 +137,9 @@ export function AddResumeForm({ onClose, jobSeekerId }: AddResumeFormProps) {
                   />
                 </FormControl>
                 <div className='space-y-1 leading-none'>
-                  <FormLabel>Đặt làm hồ sơ chính</FormLabel>
+                  <FormLabel>Đặt làm CV chính</FormLabel>
                   <p className='text-muted-foreground text-sm'>
-                    Hồ sơ này sẽ được sử dụng làm hồ sơ mặc định khi ứng tuyển
+                    CV này sẽ được sử dụng làm CV mặc định khi ứng tuyển
                     công việc
                   </p>
                 </div>

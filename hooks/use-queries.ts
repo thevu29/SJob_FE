@@ -163,14 +163,7 @@ export function usePost<T, D = unknown>(
 
 export function usePostFormData<T, D = unknown>(
   url: string,
-  options?: Partial<
-    UseMutationOptions<
-      ApiResponse<T>,
-      AxiosError,
-      D & { id: string | number },
-      unknown
-    >
-  >,
+  options?: Partial<UseMutationOptions<ApiResponse<T>, AxiosError, D, unknown>>,
   queryKeys?: string[],
   config?: AxiosRequestConfig
 ) {
@@ -183,12 +176,7 @@ export function usePostFormData<T, D = unknown>(
   delete restOptions.onSuccess;
   delete restOptions.onError;
 
-  return useMutation<
-    ApiResponse<T>,
-    AxiosError,
-    D & { id: string | number },
-    unknown
-  >({
+  return useMutation<ApiResponse<T>, AxiosError, D, unknown>({
     mutationFn: (data) => {
       return postFormData<T, D>(url, data, config);
     },

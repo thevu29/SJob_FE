@@ -6,9 +6,7 @@ import { AxiosError } from 'axios';
 import { LockKeyhole, LockKeyholeOpen, MoreHorizontal } from 'lucide-react';
 
 import type { User } from '@/interfaces';
-import { usePut } from '@/hooks/use-queries';
-import { AlertModal } from '@/components/modal/alert-modal';
-import { Button } from '@/components/ui/button';
+import { usePut } from '@/hooks';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +14,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { AlertModal } from '@/components/modal/alert-modal';
 
 interface CellActionProps {
   data: User;
@@ -32,11 +32,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     'users/activate',
     {
       onSuccess: () => {
-        toast.success('Activate admin thành công');
+        toast.success('Kích hoạt tài khoản admin thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['admins']
@@ -46,11 +45,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
     'users/block',
     {
       onSuccess: () => {
-        toast.success('Block admin thành công');
+        toast.success('Chặn tài khoản admin thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['admins']
@@ -65,7 +63,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         await blockMutation.mutateAsync({ id: data.id });
       }
     } catch (error) {
-      console.error(error);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -88,7 +86,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
 
           <DropdownMenuItem
             onClick={() => {
@@ -97,7 +95,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             }}
           >
             <LockKeyholeOpen className='mr-2 h-4 w-4' color='#3b82f6' />
-            <p className='text-[#3b82f6]'>Activate</p>
+            <p className='text-[#3b82f6]'>Kích hoạt</p>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
@@ -106,7 +104,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             }}
           >
             <LockKeyhole color='#dc2626' className='mr-2 h-4 w-4' />
-            <p className='text-[#dc2626]'>Block</p>
+            <p className='text-[#dc2626]'>Chặn</p>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

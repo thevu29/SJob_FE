@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -42,7 +41,7 @@ export function EditResumeForm({
     'resumes',
     {
       onSuccess: () => {
-        toast.success('Cập nhật chứng chỉ thành công');
+        toast.success('Cập nhật CV thành công');
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
@@ -76,7 +75,7 @@ export function EditResumeForm({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Chỉnh sửa hồ sơ</DialogTitle>
+        <DialogTitle>Chỉnh sửa CV</DialogTitle>
       </DialogHeader>
 
       <Form {...form}>
@@ -86,9 +85,9 @@ export function EditResumeForm({
             name='name'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tên hồ sơ</FormLabel>
+                <FormLabel>Tên CV</FormLabel>
                 <FormControl>
-                  <Input placeholder='Nhập tên cho hồ sơ này' {...field} />
+                  <Input placeholder='Nhập tên cho CV này' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,7 +99,7 @@ export function EditResumeForm({
             name='file'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Tải lên hồ sơ</FormLabel>
+                <FormLabel>Tải lên CV</FormLabel>
                 <FormControl>
                   <Input
                     type='file'
@@ -131,9 +130,9 @@ export function EditResumeForm({
                   />
                 </FormControl>
                 <div className='space-y-1 leading-none'>
-                  <FormLabel>Đặt làm hồ sơ chính</FormLabel>
+                  <FormLabel>Đặt làm CV chính</FormLabel>
                   <p className='text-muted-foreground text-sm'>
-                    Hồ sơ này sẽ được sử dụng làm hồ sơ mặc định khi ứng tuyển
+                    CV này sẽ được sử dụng làm CV mặc định khi ứng tuyển
                     công việc
                   </p>
                 </div>

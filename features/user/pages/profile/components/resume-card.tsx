@@ -62,7 +62,7 @@ export function ResumeCard({
   return (
     <Card>
       <CardHeader className='flex flex-row items-center justify-between pb-2'>
-        <CardTitle className='text-xl'>Hồ Sơ</CardTitle>
+        <CardTitle className='text-xl'>CV</CardTitle>
         <Button
           variant='outline'
           size='sm'
@@ -70,7 +70,7 @@ export function ResumeCard({
           onClick={onAdd}
         >
           <Plus className='h-4 w-4' />
-          <span>Thêm Hồ Sơ</span>
+          <span>Thêm CV</span>
         </Button>
       </CardHeader>
 

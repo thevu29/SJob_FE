@@ -93,7 +93,6 @@ export default function JobUpdatingForm() {
         experience: jobResponse.experience || '',
         fieldDetails: fieldDetailsResponse[0].id
       });
-      console.log(form.getValues());
     }
   }, [job, form]);
 
@@ -108,7 +107,7 @@ export default function JobUpdatingForm() {
       form.reset();
       router.push(ROUTES.RECRUITER.JOBS.LIST);
     } catch (error) {
-      console.error('Error updating job:', error);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại');
     }
   }
 

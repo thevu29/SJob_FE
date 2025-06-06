@@ -59,7 +59,6 @@ export function CompanyGeneral() {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error(error);
       }
     },
     ['recruiters', recruiterId]
@@ -91,7 +90,7 @@ export function CompanyGeneral() {
       await updateRecruiterMutation.mutateAsync(payload);
       setFile(null);
     } catch (error) {
-      console.error('Error submitting form:', error);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại');
     }
   };
 

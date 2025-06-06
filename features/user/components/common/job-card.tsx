@@ -47,15 +47,9 @@ export function JobCard({ job, status = '' }: JobCardProps) {
   const { data: user } = useGetCurrentUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const createViewJobMutation = usePost<ViewedJob>(
-    'viewed-jobs',
-    {
-      onError: (error: AxiosError) => {
-        console.error('Failed to create view job:', error);
-      }
-    },
-    ['viewed-jobs']
-  );
+  const createViewJobMutation = usePost<ViewedJob>('viewed-jobs', {}, [
+    'viewed-jobs'
+  ]);
 
   const { data: application, refetch: refetchGetApplication } =
     useGet<Application>(
@@ -71,14 +65,6 @@ export function JobCard({ job, status = '' }: JobCardProps) {
         enabled: !!accessToken && !!user?.data?.id
       }
     );
-
-  const { mutateAsync: hasAppliedJobMutation, isPending: isHasAppliedPending } =
-    usePost<boolean, IHasAppliedJobData>('applications/check-apply', {
-      onError: (error: AxiosError) => {
-        toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Failed to check applied job:', error);
-      }
-    });
 
   const { data: savedJob, refetch } = useGet<SavedJob>(
     `saved-jobs/job/job-seeker`,
@@ -105,7 +91,6 @@ export function JobCard({ job, status = '' }: JobCardProps) {
       },
       onError: (error: AxiosError) => {
         toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-        console.error('Failed to saved job:', error);
       }
     },
     ['saved-jobs', job.id]
@@ -120,7 +105,6 @@ export function JobCard({ job, status = '' }: JobCardProps) {
         },
         onError: (error: AxiosError) => {
           toast.error(error?.message || 'Có lỗi xảy ra! Vui lòng thử lại!');
-          console.error('Failed to unSaved job:', error);
         }
       },
       ['saved-jobs', job.id]
@@ -168,8 +152,6 @@ export function JobCard({ job, status = '' }: JobCardProps) {
       router.push(`/login`);
       return;
     }
-
-    if (isHasAppliedPending) return;
 
     if (application && application.data) {
       toast.error('Bạn đã ứng tuyển việc làm này!');
@@ -285,6 +267,7 @@ export function JobCard({ job, status = '' }: JobCardProps) {
           user={user.data}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
+          refetchGetApplication={refetchGetApplication}
         />
       )}
     </div>
