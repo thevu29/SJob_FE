@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, Suspense } from 'react';
 import { useRouter } from 'nextjs-toploader/app';
 import { useSearchParams } from 'next/navigation';
 
@@ -10,7 +10,7 @@ import { useAuthToken, usePost } from '@/hooks';
 import { LoadingPage } from '@/components/common/loading';
 import type { IAuthResponse, IGoogleLoginData } from '@/interfaces';
 
-export default function OAuthCallbackPage() {
+function OAuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -68,6 +68,13 @@ export default function OAuthCallbackPage() {
       router.push('/');
     }
   }, [accessToken, isPending, router]);
-
   return <LoadingPage text='Đang xác thực với Google...' />;
+}
+
+export default function OAuthCallbackPage() {
+  return (
+    <Suspense fallback={<LoadingPage text='Đang tải...' />}>
+      <OAuthCallbackContent />
+    </Suspense>
+  );
 }
