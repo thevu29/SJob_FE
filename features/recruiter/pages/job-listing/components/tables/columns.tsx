@@ -17,7 +17,7 @@ import { Job, JobStatus, JobType } from '@/interfaces/job';
 export const columns: ColumnDef<Job>[] = [
   {
     accessorKey: 'name',
-    header: 'Chức danh'
+    header: 'Tên việc làm'
   },
   {
     accessorKey: 'salary',

@@ -107,6 +107,8 @@ export function InputFieldWithType({
           </SelectContent>
         </Select>
         <Input
+          type='number'
+          min={0}
           value={value1}
           onChange={(e) => handleValue1Change(e.target.value)}
           placeholder={
@@ -121,6 +123,8 @@ export function InputFieldWithType({
             </span>
             <Input
               value={value2}
+              min={0}
+              type='number'
               onChange={(e) => handleValue2Change(e.target.value)}
               placeholder='Đến'
               className='flex-1'

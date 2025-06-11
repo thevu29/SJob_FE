@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DOMPurify from 'isomorphic-dompurify';
-import { Building, MapPin, TriangleAlert, User } from 'lucide-react';
+import { Building, Mail, MapPin, TriangleAlert, User } from 'lucide-react';
 
 import type { Recruiter } from '@/interfaces';
 import { useAuthToken, useGet } from '@/hooks';
@@ -58,7 +58,7 @@ export default function RecruiterDetailInfo({
               />
             </Avatar>
 
-            <div className='w-full p-4 md:w-auto'>
+            <div className='w-full md:w-auto'>
               <div className='flex flex-col items-start justify-between gap-2 md:flex-row md:items-center md:gap-8'>
                 <div>
                   <div className='flex items-center gap-4'>
@@ -75,7 +75,12 @@ export default function RecruiterDetailInfo({
                       </Button>
                     )}
                   </div>
-
+                  <div className='flex items-center gap-2'>
+                    <Mail className='size-3' />
+                    <p className='text-muted-foreground text-sm md:text-base'>
+                      {recruiter.data.email}
+                    </p>
+                  </div>
                   <div className='mt-2 flex items-center justify-start gap-6'>
                     {recruiter.data.website && recruiter.data.website.trim() ? (
                       <Link

@@ -17,7 +17,7 @@ export const columns: ColumnDef<Invitation>[] = [
   },
   {
     accessorKey: 'jobName',
-    header: 'Chức danh'
+    header: 'Tên việc làm'
   },
   {
     accessorKey: 'status',

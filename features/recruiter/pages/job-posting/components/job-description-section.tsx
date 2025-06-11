@@ -86,7 +86,7 @@ export function JobDescriptionSection({ form }: JobDescriptionSectionProps) {
         render={({ field }) => (
           <FormItem>
             <FormLabel className='text-base font-medium'>
-              Chức danh<span className='text-destructive'>*</span>
+              Tên việc làm<span className='text-destructive'>*</span>
             </FormLabel>
             <FormControl>
               <Input

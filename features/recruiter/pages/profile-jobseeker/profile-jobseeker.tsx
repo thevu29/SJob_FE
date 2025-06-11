@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { TriangleAlert } from 'lucide-react';
+import { Mail, TriangleAlert } from 'lucide-react';
 import { Avatar } from '@radix-ui/react-avatar';
 
 import type {
@@ -89,7 +89,7 @@ export default function ProfileJobSeeker() {
                   className='h-full w-full rounded-full object-cover'
                 />
               </Avatar>
-              <div className='w-full p-4 md:w-auto'>
+              <div className='w-full md:w-auto'>
                 <div className='flex flex-col items-start justify-between gap-2 md:flex-row md:items-center md:gap-8'>
                   <div>
                     <div className='flex items-center gap-4'>
@@ -107,6 +107,10 @@ export default function ProfileJobSeeker() {
                       )}
                     </div>
                     <p className='text-muted-foreground'>{jobSeeker?.field}</p>
+                    <p className='text-muted-foreground text-sm flex items-center gap-1'>
+                      <Mail className='size-3' />
+                      {jobSeeker?.email}
+                    </p>
                   </div>
                   <JobInvitationModal />
                 </div>

@@ -1,6 +1,10 @@
 import JobsSearch from '@/features/user/pages/jobs-search/jobs-search';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 export default function Page() {
-  return <JobsSearch />;
+  return (
+    <Suspense>
+      <JobsSearch />
+    </Suspense>
+  );
 }
