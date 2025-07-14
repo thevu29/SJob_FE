@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SJob_FE 🚀
 
-## Getting Started
+**SJob_FE** is the frontend application for the SJob system – a modern job portal platform. It provides an intuitive interface for employers to post jobs and for candidates to search and apply for jobs.
 
-First, run the development server:
+Backend: [https://github.com/thevu29/ClinicCare_BE.git](https://github.com/thevu29/SJob_BE)
 
+---
+
+## 📑 Table of Contents
+- [Project Description](#project-description)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+
+---
+
+## 📘 Project Description
+
+SJob_FE is designed to work with the backend service (SJob_BE) to build a complete job portal system.  
+This platform connects employers and job seekers through features such as:
+
+- Job posting by employers
+- Job browsing and searching for candidates
+- Application submission and tracking
+- User authentication and role-based access
+
+---
+
+## ✨ Features
+
+- 🧑‍💼 Employers can post, edit, and manage job listings  
+- 👩‍💻 Candidates can search, view, and apply for jobs  
+- 🔍 Job search with filters (location, type, keywords, etc.)  
+- 📨 Application tracking and status updates  
+- 🛡 Role-based access: Admin, Employer, Candidate
+- 📱 Responsive and modern UI
+
+---
+
+## 🧪 Tech Stack
+
+- **Frontend Framework**: Next.js
+- **Language**: TypeScript
+- **State Management**: Context API
+- **UI Library**: Shadcn 
+- **API Calls**: Axios, Tanstack Query
+
+---
+
+## ⚙ Getting Started
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/thevu29/SJob_FE.git
+cd SJob_FE
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Start the development server
+```bash
+npm run dev    # Or npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Build for production
+```bash
+npm run build
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Ensure the backend service (`SJob_BE`) is running and API base URLs are properly configured.
