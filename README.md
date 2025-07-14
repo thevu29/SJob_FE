@@ -7,10 +7,10 @@ Backend: https://github.com/thevu29/SJob_BE
 ---
 
 ## 📑 Table of Contents
-- [Project Description](#project-description)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
+- [Project Description](#-project-description)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
 
 ---
 
