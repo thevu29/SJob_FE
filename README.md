@@ -2,7 +2,7 @@
 
 **SJob_FE** is the frontend application for the SJob system – a modern job portal platform. It provides an intuitive interface for employers to post jobs and for candidates to search and apply for jobs.
 
-Backend: [https://github.com/thevu29/ClinicCare_BE.git](https://github.com/thevu29/SJob_BE)
+Backend: [[https://github.com/thevu29/ClinicCare_BE.git](https://github.com/thevu29/SJob_BE)](https://github.com/thevu29/SJob_BE)
 
 ---
 
